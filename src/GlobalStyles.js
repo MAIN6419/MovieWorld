@@ -1,18 +1,22 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
+
 const GlobalStyles = createGlobalStyle` 
   ${reset} 
+  
+  :root{
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  *{
+        box-sizing: border-box;
+   }
 
-    a{
+    a {
         text-decoration: none;
         color: inherit;
     }
-    
-    *{
-        box-sizing: border-box;
-    }
-
+ 
     li {
         list-style-type: none;
     }
@@ -33,11 +37,13 @@ const GlobalStyles = createGlobalStyle`
       -webkit-user-select: auto;
       -ms-user-select: auto;
       user-select: auto;
+      font-family: 'Noto Sans KR', sans-serif;
     }
 
     button {
       border: none;
       padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
       cursor: pointer;
       :disabled {
             cursor: default;
