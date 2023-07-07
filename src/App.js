@@ -17,6 +17,10 @@ function App() {
     <BrowserRouter>
       <GlobalStyles />
       <Routes>
+        <Route path="/" element={<Splash />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/findAccount" element={<FindAccount />} />
         <Route
           element={
             <>
@@ -27,10 +31,6 @@ function App() {
             </>
           }
         >
-          <Route path="/" element={<Splash />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/findAccount" element={<FindAccount />} />
           <Route path="/home" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/mypage" element={<Mypage />} />
