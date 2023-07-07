@@ -8,7 +8,7 @@ import FindAccount from "./pages/findAccount/FindAccount";
 import Home from "./pages/home/Home";
 import Search from "./pages/search/Search";
 import Mypage from "./pages/mypage/Mypage";
-import NavBar from "./compoents/commons/layouts/navBar/NavBar";
+import Header from "./compoents/commons/layouts/Header/Header";
 import Banner from "./compoents/commons/layouts/Banner/Banner";
 import Footer from "./compoents/commons/layouts/Footer/Footer";
 
@@ -20,7 +20,7 @@ function App() {
         <Route
           element={
             <>
-              <NavBar />
+              <Header />
               <Banner />
               <Outlet />
               <Footer />
