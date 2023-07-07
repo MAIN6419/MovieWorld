@@ -22,7 +22,6 @@ export const LoginForm = styled.form`
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
   max-width: 400px;
   width: calc(100% - 60px);
@@ -45,12 +44,13 @@ export const SignupText = styled.p`
   display: inline-block;
   font-size: 12px;
   color: #fff;
+  text-align: center;
 `;
 
 export const SignupLink = styled(Link)`
   color: #b3b3b3;
   font-size: 12px;
-  margin-left: 3px;
+  margin-left: 5px;
 `;
 
 export const FindAccountLink = styled(Link)`
