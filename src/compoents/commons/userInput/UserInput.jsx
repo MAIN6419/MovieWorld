@@ -2,6 +2,7 @@ import React from "react";
 import { Input, Label } from "./userInput.style";
 
 export default function UserInput({
+  value,
   label,
   inputId,
   onChange,
@@ -10,6 +11,7 @@ export default function UserInput({
   minLength,
   placeholder,
   type,
+  InputRef
 }) {
   return (
     <>
@@ -19,9 +21,11 @@ export default function UserInput({
         placeholder={placeholder}
         onChange={onChange}
         id={inputId}
+        value={value}
         onBlur={onBlur}
         maxLength={maxLength}
         minLength={minLength}
+        ref={InputRef}
       />
     </>
   );
