@@ -7,12 +7,12 @@ assignees: ''
 
 ---
 
-## Description
+## 📃 Description
 설명을 작성하세요.
 
-## CheckList
+## ✅ CheckList
 - [ ] todo1
 - [ ] todo2
 
-## Reference
+## 📌 Reference
 참고사항을 작성하세요.
