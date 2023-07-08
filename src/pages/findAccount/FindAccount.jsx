@@ -7,12 +7,14 @@ import {
   FormMenu,
   FormMenuBtn,
   FormMenuLi,
+  LoginLink,
   Title,
   Wrapper,
 } from "./findAccount.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { useValidationInput } from "../../hook/useValidationInput";
+import { changePassword, findEmail } from "../../firebase/auth";
 export default function FindAccount() {
   const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   const nicknameReg = /^[a-zA-z0-9]{4,10}$/;
@@ -38,13 +40,13 @@ export default function FindAccount() {
 
   const [disabled, setDisabled] = useState(false);
   const [findPasswordMenu, setFindPasswordMenu] = useState(false);
-  const [findEmail, setFindEmail] = useState("");
-  const [findPassword, setFindPassword] = useState("");
+  const [findEmailValue, setFindEmailValue] = useState("");
+  const [findPasswordValue, setFindPasswordValue] = useState("");
 
   const onClickFindEmailMenu = () => {
     setFindPasswordMenu(false);
     setDisabled(false);
-    setFindPassword("");
+    setFindPasswordValue("");
     setEmailValue("");
     setEmailValid({ errorMsg: "", valid: false });
     setPhoneValue("");
@@ -54,11 +56,31 @@ export default function FindAccount() {
   const onClickFindPwMenu = () => {
     setFindPasswordMenu(true);
     setDisabled(false);
-    setFindEmail("");
+    setFindEmailValue("");
     setNicknameValue("");
     setNicknameValid({ errorMsg: "", valid: false });
     setPhoneValue("");
     setPhoneValid({ errorMsg: "", valid: false });
+  };
+
+  const onClickFindEmail = async (e) => {
+    e.preventDefault();
+    const res = await findEmail(nicknameValue, phoneValue);
+    if (res) {
+      setFindEmailValue(res);
+    }
+    setNicknameValue("");
+    setPhoneValue("");
+  };
+
+  const onClickFindPassword = async (e) => {
+    e.preventDefault();
+    const res = await changePassword(emailValue, phoneValue);
+    if (res) {
+      setFindPasswordValue(res);
+    }
+    setEmailValue("");
+    setPhoneValue("");
   };
 
   // 전체 input이 유효하다면 버튼 활성화
@@ -93,12 +115,14 @@ export default function FindAccount() {
           </FormMenuBtn>
         </FormMenuLi>
       </FormMenu>
-      <FindAccountForm>
-        {findEmail || findPassword ? (
+      <FindAccountForm
+        onSubmit={findPasswordMenu ? onClickFindPassword : onClickFindEmail}
+      >
+        {findEmailValue || findPasswordValue ? (
           <FindInfoWrapper>
             <FindInfoText>
-              {findEmail
-                ? `찾으시는 이메일은 ${findEmail}입니다.`
+              {findEmailValue
+                ? `찾으시는 이메일은 ${findEmailValue} 입니다.`
                 : "가입된 메일로 비밀번호 변경 메일을 발송하였습니다.\n메일이 없을 경우 스팸 메일함을 확인해주세요."}
             </FindInfoText>
           </FindInfoWrapper>
@@ -147,10 +171,13 @@ export default function FindAccount() {
             {phoneValid.errorMsg && <ErrorMsg message={phoneValid.errorMsg} />}
           </>
         )}
-
-        <FindAccountBtn disabled={disabled}>
-          {findPasswordMenu ? "비밀번호 찾기" : "이메일 찾기"}
-        </FindAccountBtn>
+        {findEmailValue || findPasswordValue ? (
+          <LoginLink to="/login">로그인 하러가기</LoginLink>
+        ) : (
+          <FindAccountBtn type="submit" disabled={disabled}>
+            {findPasswordMenu ? "비밀번호 찾기" : "이메일 찾기"}
+          </FindAccountBtn>
+        )}
       </FindAccountForm>
     </Wrapper>
   );

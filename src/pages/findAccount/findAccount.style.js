@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Wrapper = styled.main`
@@ -46,7 +47,7 @@ export const FormMenuBtn = styled.button`
   color: #fff;
   cursor: pointer;
   @media screen and (max-width: 431px) {
-   font-size: 16px;
+    font-size: 16px;
   }
 `;
 export const FindAccountForm = styled.form`
@@ -82,27 +83,40 @@ export const FindAccountBtn = styled.button`
   transition: all 0.5s;
 `;
 
+export const LoginLink = styled(Link)`
+  display: block;
+  text-align: center;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 4px;
+  background-color: #e50914;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  margin-top: 10px;
+`;
+
 export const FindInfoWrapper = styled.div`
   padding: 20px;
   border: 1px solid #fff;
   width: 100%;
-  @media screen and (max-width: 448px){
+  @media screen and (max-width: 448px) {
     padding: 20px 10px;
   }
-  @media screen and (max-width: 361px){
+  @media screen and (max-width: 361px) {
     padding: 20px 8px;
   }
-`
+`;
 export const FindInfoText = styled.p`
   line-height: 1.5;
   font-size: 14px;
   color: #fff;
   white-space: pre-line;
   text-align: center;
-  @media screen and (max-width: 448px){
+  @media screen and (max-width: 448px) {
     font-size: 14px;
   }
-  @media screen and (max-width: 405px){
+  @media screen and (max-width: 405px) {
     font-size: 12px;
   }
-`
+`;
