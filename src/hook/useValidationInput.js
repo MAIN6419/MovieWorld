@@ -17,5 +17,5 @@ export const useValidationInput = (initialValue, reg, errorMsg) => {
     }
   };
 
-  return [value, valid, setValid, onChnageValue];
+  return [value, setValue, valid, setValid, onChnageValue];
 };
