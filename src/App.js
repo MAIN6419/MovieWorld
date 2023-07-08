@@ -1,5 +1,5 @@
 import GlobalStyles from "./GlobalStyles";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import Splash from "./pages/splash/Splash";
 import Login from "./pages/login/Login";
@@ -11,31 +11,38 @@ import Mypage from "./pages/mypage/Mypage";
 import Header from "./compoents/commons/layouts/Header/Header";
 import Banner from "./compoents/commons/layouts/Banner/Banner";
 import Footer from "./compoents/commons/layouts/Footer/Footer";
+import { useState } from "react";
+import { UserContext } from "./context/userContext";
+
 
 function App() {
+  const [user, setUser] = useState(localStorage.getItem("user")||"");
+
   return (
     <BrowserRouter>
       <GlobalStyles />
-      <Routes>
-        <Route path="/" element={<Splash />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/findAccount" element={<FindAccount />} />
-        <Route
-          element={
-            <>
-              <Header />
-              <Banner />
-              <Outlet />
-              <Footer />
-            </>
-          }
-        >
-          <Route path="/home" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/mypage" element={<Mypage />} />
-        </Route>
-      </Routes>
+      <UserContext.Provider value={{ user, setUser }}>
+        <Routes>
+          <Route path="/" element={user ? <Navigate to="/home"/> : <Splash />} />
+          <Route path="/login" element={user ? <Navigate to="/home"/> : <Login />} />
+          <Route path="/signup" element={user ? <Navigate to="/home"/> : <Signup />} />
+          <Route path="/findAccount" element={user ? <Navigate to="/home"/> : <FindAccount />} />
+          <Route
+            element={
+              <>
+                <Header />
+                <Banner />
+                <Outlet />
+                <Footer />
+              </>
+            }
+          >
+            <Route path="/home" element={!user ? <Navigate to="/login"/> : <Home />} />
+            <Route path="/search" element={!user ? <Navigate to="/login"/> : <Search />} />
+            <Route path="/mypage" element={!user ? <Navigate to="/login"/> : <Mypage />} />
+          </Route>
+        </Routes>
+      </UserContext.Provider>
     </BrowserRouter>
   );
 }
