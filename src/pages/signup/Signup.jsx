@@ -9,6 +9,8 @@ import {
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
+import { duplication, signup } from "../../firebase/auth";
+import Loading from "../../compoents/commons/loading/Loading";
 
 export default function Signup() {
   const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
@@ -33,8 +35,8 @@ export default function Signup() {
   const [emailValue, setEmailValue, emailValid, setEmailValid, onChangeEmail] =
     useValidationInput("", emailReg, "유효한 이메일을 입력해주세요.");
   const [
-    passowrdValue,
-    setPassowrdValue,
+    passwordValue,
+    setpasswordValue,
     passowrdValid,
     setPassowrdValid,
     onChangePassowrd,
@@ -59,11 +61,12 @@ export default function Signup() {
 
   // 회원가입 버튼 활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 비밀번호 확인 onChange 별도 생성 => useValidInput에서 처리하지 못하기 때문
   const onChangePasswordChk = (e) => {
     setPasswordChkValue(e.target.value.trim());
-    if (passowrdValue !== e.target.value) {
+    if (passwordValue !== e.target.value) {
       setPasswordChkValid({
         errorMsg: "비밀번호가 일치하지 않습니다.",
         valid: false,
@@ -73,10 +76,60 @@ export default function Signup() {
     }
   };
 
+  const onBlurNickname = async () => {
+    if (nickNameValid.valid) {
+      const isDulplcation = await duplication(nickNameValue, "nickname");
+      if (isDulplcation) {
+        setNickNameValid({ errorMsg: "중복된 닉네임 입니다!", valid: false });
+      } else {
+        setNickNameValid({ errorMsg: "", valid: true });
+      }
+    }
+  };
+
+  const onBlurEmail = async () => {
+    if (emailValid.valid) {
+      const isDulplcation = await duplication(emailValue, "email");
+      if (isDulplcation) {
+        setEmailValid({ errorMsg: "중복된 이메일 입니다!", valid: false });
+      } else {
+        setEmailValid({ errorMsg: "", valid: true });
+      }
+    }
+  };
+
+  const onBlurPhone = async () => {
+    if (phoneValid.valid) {
+      const isDulplcation = await duplication(
+        phoneValue.replace(/-/g, ""),
+        "phone"
+      );
+      if (isDulplcation) {
+        setPhoneValid({
+          errorMsg: "이미 사용중인 휴대폰 번호 입니다!",
+          valid: false,
+        });
+      } else {
+        setPhoneValid({ errorMsg: "", valid: true });
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(emailValue);
+  }, [emailValue]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    await signup(nickNameValue, emailValue, passwordValue, phoneValue);
+    setIsLoading(false);
+  };
+
   // 전체 input이 유효하다면 버튼 활성화
   useEffect(() => {
     if (
-      nickNameValid &&
+      nickNameValid.valid &&
       emailValid.valid &&
       passowrdValid.valid &&
       passwordChkValid.valid &&
@@ -91,7 +144,7 @@ export default function Signup() {
   return (
     <Wrapper>
       <Title className="a11y-hidden">회원가입 페이지</Title>
-      <SignupForm>
+      <SignupForm onSubmit={(e) => handleSubmit(e)}>
         <SignupTitle>회원가입</SignupTitle>
         <UserInput
           type="text"
@@ -100,6 +153,7 @@ export default function Signup() {
           placeholder={"Nickname"}
           value={nickNameValue}
           onChange={onChangeNickName}
+          onBlur={onBlurNickname}
           minLength={4}
           maxLength={10}
         />
@@ -113,6 +167,7 @@ export default function Signup() {
           placeholder={"Email"}
           value={emailValue}
           onChange={onChangeEmail}
+          onBlur={onBlurEmail}
         />
         {emailValid.errorMsg && <ErrorMsg message={emailValid.errorMsg} />}
         <UserInput
@@ -120,7 +175,7 @@ export default function Signup() {
           label={"비밀번호"}
           id={"input-password"}
           placeholder={"Password"}
-          value={passowrdValue}
+          value={passwordValue}
           onChange={onChangePassowrd}
           minLength={8}
           maxLength={16}
@@ -150,11 +205,21 @@ export default function Signup() {
             .replace(/[^0-9]/g, "")
             .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}
           onChange={onChangePhone}
+          onBlur={onBlurPhone}
           maxLength={13}
         />
         {phoneValid.errorMsg && <ErrorMsg message={phoneValid.errorMsg} />}
-        <SignupBtn disabled={disabled}>회원가입</SignupBtn>
+        <SignupBtn
+          type="submit"
+          disabled={disabled}
+          onMouseOver={(e) => {
+            e.target.focus();
+          }}
+        >
+          회원가입
+        </SignupBtn>
       </SignupForm>
+      {isLoading && <Loading />}
     </Wrapper>
   );
 }

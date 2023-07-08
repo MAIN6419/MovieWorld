@@ -1,7 +1,18 @@
 import {
+  collection,
+  doc,
+  setDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+
+import {
   getAuth,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
 import { db, storage } from "./setting";
 const auth = getAuth();
@@ -22,7 +33,7 @@ onAuthStateChanged(auth, async (user) => {
   } 
 });
 
-// 로그인 함수
+// 로그인 API
 export const login = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
@@ -44,5 +55,50 @@ export const login = async (email, password) => {
       alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
       throw error;
     }
+  }
+};
+
+// 중복검사 API
+export const duplication = async (duplicationValue, duplicationTarget) => {
+  const userRef = collection(db, "user");
+  const q = query(
+    userRef,
+    where(duplicationTarget, "==", duplicationValue.toLowerCase())
+  );
+  const res = await getDocs(q);
+  const data = res.docs.map((el) => el.data());
+  if (data.length > 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// 회원가입 API
+export const signup = async (nickname, email, password, phone) => {
+  try {
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(res.user, {
+      displayName: nickname,
+    });
+
+    const user = collection(db, "user");
+    await setDoc(doc(user, `${res.user.displayName ?? ""}`), {
+      email: res.user.email,
+      nickname: res.user.displayName,
+      phone,
+      likeList:[],
+      profileImgFileName: "",
+      profileImgUrl: "",
+    });
+    alert("회원가입이 완료되었습니다.");
+    window.location.replace("/home");
+  } catch (error) {
+    if (error.message.includes("email-already-in-use")) {
+      alert("이미 사용중인 이메일 입니다!");
+    } else {
+      alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    }
+    throw error;
   }
 };
