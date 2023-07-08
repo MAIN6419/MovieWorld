@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Label } from "./userInput.style";
+import { Input, Label, Wrapper } from "./userInput.style";
 
 export default function UserInput({
   value,
@@ -14,8 +14,8 @@ export default function UserInput({
   InputRef
 }) {
   return (
-    <>
-      <Label htmlFor={inputId} className="a11y-hidden">{label}</Label>
+    <Wrapper>
+      <Label htmlFor={inputId} >{label}</Label>
       <Input
         type={type}
         placeholder={placeholder}
@@ -27,6 +27,6 @@ export default function UserInput({
         minLength={minLength}
         ref={InputRef}
       />
-    </>
+    </Wrapper>
   );
 }
