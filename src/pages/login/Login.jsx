@@ -12,21 +12,27 @@ import {
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
+import { login } from "../../firebase/auth";
 
 export default function Login() {
   const emailRef = useRef(null);
   const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
-  const [emailValue, emailValid, setEmailValid, onChangeEmail] =
+  const [emailValue, setEmailValue, emailValid, setEmailValid, onChangeEmail] =
     useValidationInput("", emailReg, "이메일 형식을 확인해주세요.");
-  const [passowordValue, passwordValid, setPasswordValid, onChangePassword] =
-    useValidationInput(
-      "",
-      passwordReg,
-      "8-16자 특수문자, 숫자, 영문을 포함해야합니다."
-    );
+  const [
+    passowordValue,
+    setPasswordValue,
+    passwordValid,
+    setPasswordValid,
+    onChangePassword,
+  ] = useValidationInput(
+    "",
+    passwordReg,
+    "8-16자 특수문자, 숫자, 영문을 포함해야합니다."
+  );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!emailValue) {
       setEmailValid({ errorMsg: "이메일을 입력해주세요.", valid: false });
@@ -36,13 +42,15 @@ export default function Login() {
       return;
     }
     if (emailValid.valid && passwordValid.valid) {
-      console.log("로그인");
-    } 
+      await login(emailValue, passowordValue);
+      setEmailValue("");
+      setPasswordValue("");
+    }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     emailRef.current.focus();
-  },[])
+  }, []);
   return (
     <>
       <Title className="a11y-hidden">로그인 페이지</Title>

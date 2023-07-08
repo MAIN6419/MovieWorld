@@ -26,13 +26,17 @@ export const LoginForm = styled.form`
   max-width: 400px;
   width: calc(100% - 60px);
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 30px;
+  padding: 30px 40px;
+  @media screen and (max-width:431px){
+    width: calc(100% - 40px);
+    padding: 30px 20px;
+  }
 `;
 
 export const LoginBtn = styled.button`
   width: 100%;
   background-color: #e50914;
-  padding: 16px;
+  padding: 14px 0;
   border-radius: 4px;
   font-size: 16px;
   font-weight: 500;
