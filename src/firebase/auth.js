@@ -13,6 +13,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { db, storage } from "./setting";
 const auth = getAuth();
@@ -22,15 +23,15 @@ const auth = getAuth();
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     localStorage.setItem(
-      'user',
+      "user",
       JSON.stringify({
         uid: user.uid,
         displayName: user.displayName,
-        email: user.email, 
+        email: user.email,
         photoURL: user.photoURL,
-      }),
+      })
     );
-  } 
+  }
 });
 
 // 로그인 API
@@ -87,7 +88,7 @@ export const signup = async (nickname, email, password, phone) => {
       email: res.user.email,
       nickname: res.user.displayName,
       phone,
-      likeList:[],
+      likeList: [],
       profileImgFileName: "",
       profileImgUrl: "",
     });
@@ -99,6 +100,56 @@ export const signup = async (nickname, email, password, phone) => {
     } else {
       alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     }
+    throw error;
+  }
+};
+
+// 이메일 찾기 API
+export const findEmail = async (nickname, phone) => {
+  try {
+    const userRef = collection(db, "user");
+    const q = query(
+      userRef,
+      where("nickname", "==", nickname),
+      where("phone", "==", phone)
+    );
+    const res = await getDocs(q);
+    const datas = res.docs.map((el) => el.data());
+    if (datas.length > 0) return datas[0].email;
+    else {
+      alert("일치하는 정보가 없습니다!");
+      return false;
+    }
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 비밀번호 변경 API
+export const changePassword = async (email, phone) => {
+  try {
+    const userRef = collection(db, "user");
+    const q = query(
+      userRef,
+      where("email", "==", email),
+      where("phone", "==", phone)
+    );
+    const res = await getDocs(q);
+    const datas = res.docs.map((el) => el.data());
+    if (datas.length > 0) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {})
+        .catch((error) => {
+          throw error;
+        });
+      return true;
+    } else {
+      alert("일치하는 정보가 없습니다!");
+      return false;
+    }
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
   }
 };
