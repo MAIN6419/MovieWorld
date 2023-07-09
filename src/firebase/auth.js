@@ -14,6 +14,7 @@ import {
   onAuthStateChanged,
   updateProfile,
   sendPasswordResetEmail,
+  signOut,
 } from "firebase/auth";
 import { db, storage } from "./setting";
 const auth = getAuth();
@@ -53,6 +54,21 @@ export const login = async (email, password) => {
     } else if (error.message.includes("auth/too-many-requests")) {
       alert("많은 로그인 시도로 인해 로그인이 일시적으로 제한됩니다!");
     } else {
+      alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
+      throw error;
+    }
+  }
+};
+
+// 로그아웃 API
+export const logout = async () => {
+  if (window.confirm("정말 로그아웃 하시겠습니까?")) {
+    try {
+      // 로그아웃
+      await signOut(auth);
+      localStorage.removeItem("user");
+      window.location.reload();
+    } catch (error) {
       alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
       throw error;
     }
