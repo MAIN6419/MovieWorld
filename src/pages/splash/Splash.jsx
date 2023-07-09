@@ -12,8 +12,8 @@ export default function Splash() {
 
   useEffect(() => {
     setTimeout(() => {
-      navigate("/login");
-    }, 2300);
+      navigate("/home");
+    }, 2500);
   }, []);
 
   return (
