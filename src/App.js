@@ -16,7 +16,7 @@ import { UserContext } from "./context/userContext";
 
 
 function App() {
-  const [user, setUser] = useState(localStorage.getItem("user")||"");
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user"))||"");
 
   return (
     <BrowserRouter>
@@ -37,8 +37,8 @@ function App() {
               </>
             }
           >
-            <Route path="/home" element={!user ? <Navigate to="/login"/> : <Home />} />
-            <Route path="/search" element={!user ? <Navigate to="/login"/> : <Search />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/search" element={<Search />} />
             <Route path="/mypage" element={!user ? <Navigate to="/login"/> : <Mypage />} />
           </Route>
         </Routes>
