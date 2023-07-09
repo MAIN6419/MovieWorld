@@ -3,12 +3,12 @@ import styled from "styled-components";
 
 export const Wrapper = styled.section`
   position: relative;
-  margin-top: 81px;
+  margin-top: 90px;
   color: #fff;
   object-fit: contain;
   height: 600px;
-  @media screen and (max-width: 1500px) {
-    position: relative;
+  @media screen and (max-width:440px){
+    margin-top: 80px;
   }
 `;
 

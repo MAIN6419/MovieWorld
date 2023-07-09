@@ -11,6 +11,7 @@ export const HeaderBar = styled.header`
   background-color: #000;
   padding: 20px;
   color: #fff;
+  z-index: 999;
 `;
 
 export const HeaderTitle = styled.h1``;
