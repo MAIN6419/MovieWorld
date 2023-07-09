@@ -2,6 +2,29 @@ import { customAxios } from "./customAxios";
 const api_key = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 const language = "ko-KR";
 
+export const fetchNowPlaying = async () => {
+  try {
+    const res = await customAxios.get(`movie/now_playing`, {
+      params: {
+        api_key,
+        language,
+      },
+    });
+    const movieId = res.data.results[Math.floor(Math.random() * res.data.results.length)].id;
+    const video = await customAxios.get(`movie/${movieId}`, {
+      params: {
+        api_key,
+        language,
+        append_to_response: "videos"
+      },
+    })
+    return video.data;
+  } catch (error) {
+    console.log(error);
+    console.error(error.response.data.status_message);
+  }
+};
+
 export const fetchTrending = async (page = 1) => {
   try {
     const res = await customAxios.get(`/trending/all/week`, {
