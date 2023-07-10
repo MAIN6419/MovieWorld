@@ -87,7 +87,6 @@ export const UserMenuBtnIcon = styled.img`
 export const UserMenu = styled.ul`
   position: absolute;
   top: 30px;
-  left: 0;
   width: 90px;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
