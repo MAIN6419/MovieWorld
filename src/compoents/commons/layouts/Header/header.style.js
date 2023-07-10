@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const HeaderBar = styled.header`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
