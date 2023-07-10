@@ -7,7 +7,6 @@ export const BannerWrapper = styled.section`
   width: 100%;
   height: 0;
   padding-bottom: calc(9 / 16 * 100%);
-  height: 600px;
 `;
 export const BannerBox = styled.div`
   position: absolute;
@@ -21,6 +20,16 @@ export const BannerContents = styled.div`
   width: 90%;
   margin: 0 auto;
   padding-top: 140px;
+  @media screen and (max-width: 1031px) {
+    padding-top: 80px;
+  }
+
+  @media screen and (max-width: 910px) {
+    padding-top: 50px;
+  }
+  @media screen and (max-width: 501px) {
+    padding-top: 30px;
+  }
 `;
 
 export const BannerBackdrop = styled.div`
@@ -28,6 +37,14 @@ export const BannerBackdrop = styled.div`
   max-width: 600px;
   height: 400px;
   background-color: rgba(0, 0, 0, 0.5);
+  @media screen and (max-width: 901px) {
+    max-width: 500px;
+    height: 300px;
+  }
+  @media screen and (max-width: 700px) {
+    max-width: 500px;
+    height: 250px;
+  }
 `;
 
 export const Title = styled.h2`
@@ -35,7 +52,7 @@ export const Title = styled.h2`
   font-weight: 800;
   display: inline-block;
   margin-bottom: 30px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 901px) {
     font-size: 30px;
   }
 `;
@@ -63,7 +80,8 @@ export const BannerBtn = styled.button`
     background: url("assets/icon-play.png") no-repeat center left 5px/ 20px #fff;
   }
   &.info {
-    background: url("assets/icon-info.png") no-repeat center left 5px / 20px rgba(109, 109, 110, 0.7);
+    background: url("assets/icon-info.png") no-repeat center left 5px / 20px
+      rgba(109, 109, 110, 0.7);
     color: #fff;
     :hover {
       background-color: ${isMobile ? "" : "rgb(74, 74, 74)"};
@@ -86,6 +104,12 @@ export const BannerDesc = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 7;
   line-height: 1.5;
+  @media screen and (max-width: 901px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 768px) {
+    -webkit-line-clamp: 4;
+  }
 `;
 export const BannerFadeBottom = styled.div`
   position: absolute;
@@ -98,6 +122,9 @@ export const BannerFadeBottom = styled.div`
     rgba(37, 37, 37, 0.61),
     #111
   );
+  @media screen and (max-width: 768px) {
+    height: 80px;
+  }
 `;
 
 export const IframeWrapper = styled.div`
@@ -139,8 +166,36 @@ export const CloseBtn = styled.button`
   width: 24px;
   height: 24px;
   position: absolute;
-  top:0;
+  top: 0;
   right: 20px;
   z-index: 999;
   background: url("assets/icon-close.png") no-repeat center / 24px;
+`;
+export const MobileTitleWrapper = styled.div`
+  text-align: center;
+`;
+export const MobilePlayBtn = styled.button`
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: url("assets/icon-mobile-playBtn.png") no-repeat center / 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  z-index: 99;
+  @media screen and (max-width: 486px) {
+    top: 40%;
+  }
+`;
+
+export const MobileInfoBtn = styled.button`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: url("assets/icon-mobile-infoBtn.png") no-repeat center / 40px;
+  bottom: 20px;
+  z-index: 99;
 `;
