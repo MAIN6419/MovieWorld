@@ -189,18 +189,17 @@ export const MoviePlayBtn = styled.button`
 `;
 
 export const CloseBtn = styled.button`
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   position: absolute;
   top: 8px;
   right: 10px;
   z-index: 999;
-  background: url("assets/icon-close.png") no-repeat center / 24px;
+  background: url("assets/icon-close.png") no-repeat center / 22px;
 `;
 
 export const IframeWrapper = styled.div`
   position: absolute;
-  margin-top: 34px;
   width: 100%;
   height: 100%;
   top: 0;
