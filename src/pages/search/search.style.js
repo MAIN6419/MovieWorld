@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const SearchWrapper = styled.main`
   position: relative;
   padding: 20px 0;
-  width: calc(100% - 60px);
+  width: calc(60%);
   height: 100vh;
   margin: 0 auto;
 `;
@@ -41,15 +41,13 @@ export const SearchMovieList = styled.ul`
   margin: 0 auto;
   width: auto;
   color: white;
-  gap: 15px;
+  gap: 30px;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 `;
 
 export const SearchMovieItem = styled.li`
   width: 100%;
-  max-width: 200px;
   height: 100%;
-  max-height: 320px;
   margin: 0 auto;
   border-radius: 10px;
   overflow: hidden;
@@ -75,3 +73,7 @@ export const SearchMovieImg = styled.img`
   left: 0;
   border-radius: 10px;
 `;
+
+export const InfiniteScrollTarget = styled.div`
+  height: 20px;
+`
