@@ -5,6 +5,11 @@ import reset from "styled-reset";
 const GlobalStyles = createGlobalStyle` 
   ${reset} 
   
+  body{
+    ::-webkit-scrollbar{
+      display: none;
+    }
+  }
   :root{
     font-family: 'Noto Sans KR', sans-serif;
   }
