@@ -1,5 +1,11 @@
 import GlobalStyles from "./GlobalStyles";
-import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
 
 import Splash from "./pages/splash/Splash";
 import Login from "./pages/login/Login";
@@ -14,32 +20,55 @@ import { useState } from "react";
 import { UserContext } from "./context/userContext";
 import Main from "./pages/main/Main";
 
-
 function App() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user"))||"");
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || ""
+  );
 
   return (
     <BrowserRouter>
       <GlobalStyles />
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
-          <Route path="/" element={user ? <Navigate to="/main"/> : <Splash />} />
-          <Route path="/login" element={user ? <Navigate to="/main"/> : <Login />} />
-          <Route path="/signup" element={user ? <Navigate to="/main"/> : <Signup />} />
-          <Route path="/findAccount" element={user ? <Navigate to="/main"/> : <FindAccount />} />
+          <Route
+            path="/"
+            element={user ? <Navigate to="/main" /> : <Splash />}
+          />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/main" /> : <Login />}
+          />
+          <Route
+            path="/signup"
+            element={user ? <Navigate to="/main" /> : <Signup />}
+          />
+          <Route
+            path="/findAccount"
+            element={user ? <Navigate to="/main" /> : <FindAccount />}
+          />
           <Route
             element={
               <>
                 <Header />
-                <Banner />
                 <Outlet />
                 <Footer />
               </>
             }
           >
-            <Route path="/main" element={<Main />} />
+            <Route
+              path="/main"
+              element={
+                <>
+                  <Banner />
+                  <Main />
+                </>
+              }
+            />
             <Route path="/search" element={<Search />} />
-            <Route path="/mypage" element={!user ? <Navigate to="/login"/> : <Mypage />} />
+            <Route
+              path="/mypage"
+              element={!user ? <Navigate to="/login" /> : <Mypage />}
+            />
           </Route>
         </Routes>
       </UserContext.Provider>
