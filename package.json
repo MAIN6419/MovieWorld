@@ -20,7 +20,7 @@
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.11",
     "styled-reset": "^4.5.1",
-    "swiper": "^10.0.3",
+    "swiper": "^10.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
