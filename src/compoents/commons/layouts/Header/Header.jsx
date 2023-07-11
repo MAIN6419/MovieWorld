@@ -33,7 +33,7 @@ export default function Header() {
   return (
     <HeaderBar>
       <HeaderTitle>
-        <HeaderLogoLink to="/home">
+        <HeaderLogoLink to="/main">
           <HeaderLogo src="assets/logo.png" alt="MovieWorld" />
         </HeaderLogoLink>
       </HeaderTitle>
