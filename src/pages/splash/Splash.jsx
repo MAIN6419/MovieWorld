@@ -12,7 +12,7 @@ export default function Splash() {
 
   useEffect(() => {
     setTimeout(() => {
-      navigate("/home");
+      navigate("/main");
     }, 2500);
   }, []);
 

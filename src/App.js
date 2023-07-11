@@ -5,7 +5,6 @@ import Splash from "./pages/splash/Splash";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import FindAccount from "./pages/findAccount/FindAccount";
-import Home from "./pages/home/Home";
 import Search from "./pages/search/Search";
 import Mypage from "./pages/mypage/Mypage";
 import Header from "./compoents/commons/layouts/Header/Header";
@@ -13,6 +12,7 @@ import Banner from "./compoents/commons/layouts/Banner/Banner";
 import Footer from "./compoents/commons/layouts/Footer/Footer";
 import { useState } from "react";
 import { UserContext } from "./context/userContext";
+import Main from "./pages/main/Main";
 
 
 function App() {
@@ -23,10 +23,10 @@ function App() {
       <GlobalStyles />
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
-          <Route path="/" element={user ? <Navigate to="/home"/> : <Splash />} />
-          <Route path="/login" element={user ? <Navigate to="/home"/> : <Login />} />
-          <Route path="/signup" element={user ? <Navigate to="/home"/> : <Signup />} />
-          <Route path="/findAccount" element={user ? <Navigate to="/home"/> : <FindAccount />} />
+          <Route path="/" element={user ? <Navigate to="/main"/> : <Splash />} />
+          <Route path="/login" element={user ? <Navigate to="/main"/> : <Login />} />
+          <Route path="/signup" element={user ? <Navigate to="/main"/> : <Signup />} />
+          <Route path="/findAccount" element={user ? <Navigate to="/main"/> : <FindAccount />} />
           <Route
             element={
               <>
@@ -37,7 +37,7 @@ function App() {
               </>
             }
           >
-            <Route path="/home" element={<Home />} />
+            <Route path="/main" element={<Main />} />
             <Route path="/search" element={<Search />} />
             <Route path="/mypage" element={!user ? <Navigate to="/login"/> : <Mypage />} />
           </Route>
