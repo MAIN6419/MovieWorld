@@ -1,3 +1,4 @@
+import { isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -19,9 +20,9 @@ export const HeaderTitle = styled.h1``;
 export const HeaderLogoLink = styled(Link)``;
 
 export const HeaderLogo = styled.img`
-  width: 150px;
+  width: 110px;
   @media screen and (max-width: 440px) {
-    width: 120px;
+    width: 90px;
   }
 `;
 
@@ -61,13 +62,13 @@ export const UserNickname = styled.strong`
 `;
 
 export const UserProfileImg = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
   border: 1px solid #bdbdbd;
   @media screen and (max-width: 440px) {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
 `;
 
@@ -110,7 +111,7 @@ export const UserMenuLi = styled.li`
   }
 
   :hover {
-    background-color: #739bfa;
+    background-color: ${isMobile ? "" : "#739bfa"};
   }
 `;
 
