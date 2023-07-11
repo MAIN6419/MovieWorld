@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Wrapper = styled.footer`
+  position: absolute;
+  bottom: 0px;
   width: 100%;
   padding: 20px;
   background-color: #000;
@@ -26,7 +28,6 @@ export const FooterMenu = styled.ul`
   width: auto;
   color: white;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  margin-top: 35px;
   gap: 20px;
   padding: 40px 0px;
   @media screen and (max-width:768px) {
