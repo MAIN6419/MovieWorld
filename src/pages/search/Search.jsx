@@ -11,10 +11,13 @@ import {
 } from "./search.style";
 import { debounce } from "lodash";
 import { fetchSearchMovie, fetchTrending } from "../../api/movie";
+import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
 
 export default function Search() {
   const [keyWord, setKeyword] = useState("");
   const [movieData, setMovieData] = useState([]);
+  const [seletedMovie, setSelectedMovie] = useState({});
+  const [isOpenMovieInfo, setIsOpenMovieInfo] = useState(false);
 
   const onChangeKeyword = (e) => {
     if (e.target.value.length === 1 && e.target.value === " ") {
@@ -40,12 +43,18 @@ export default function Search() {
     setMovieData(data);
   }
 
+  const onClickMoiveInfo = (movie) => {
+    setIsOpenMovieInfo(true);
+    setSelectedMovie(movie);
+  }
+
   useEffect(()=>{
     if(!keyWord) {
       fetchData();
     }
   },[keyWord])
   return (
+    <>
     <SearchWrapper>
       <SearchForm>
         <SearchLabel className="a11y-hidden">검색</SearchLabel>
@@ -58,7 +67,7 @@ export default function Search() {
       <SearchMovieList>
         {movieData.map((data) => {
           return (
-            <SearchMovieItem key={data.id}>
+            <SearchMovieItem key={data.id} onClick={()=>onClickMoiveInfo(data)}>
               <SearchMovieImgWrapper>
                 <SearchMovieImg
                   src={
@@ -74,5 +83,7 @@ export default function Search() {
         })}
       </SearchMovieList>
     </SearchWrapper>
+    {isOpenMovieInfo&& <MovieInfo movieData={seletedMovie} setIsOpenMovieInfo={setIsOpenMovieInfo}/>}
+    </>
   );
 }
