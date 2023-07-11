@@ -29,7 +29,6 @@ export default function Banner() {
   const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
   const fetchData = async () => {
     const data = await fetchNowPlaying();
-    console.log(data);
     setMovieData(data);
   };
 
@@ -65,8 +64,8 @@ export default function Banner() {
           </CloseBtnWrapper>
           <IframeWrapper>
             <Container>
-              <Iframe
-                src={`https://www.youtube.com/embed/${movieData.videos.results[0].key}?autoplay=1&mute=1&loop=1&playlist=${movieData.videos.results[0].key}`}
+              <Iframe className="bannerIframe"
+                src={`https://www.youtube.com/embed/${movieData.videos.results[0].key}?autoplay=1&enablejsapi=1&mute=1&loop=1&playlist=${movieData.videos.results[0].key}`}
                 title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
@@ -79,9 +78,9 @@ export default function Banner() {
         <BannerWrapper>
           <BannerBox
             style={
-              movieData.backdrop_path && {
+              movieData.backdrop_path ? {
                 background: `url(https://image.tmdb.org/t/p/original/${movieData.backdrop_path}) no-repeat top center / cover`,
-              }
+              } : {backgroundColor:"#bdbdbd"}
             }
           >
             {isMobile ? (
