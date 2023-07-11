@@ -16,6 +16,8 @@ import {
   UserNickname,
   UserNicknameWrapper,
   UserProfileImg,
+  HeaderSearchLink,
+  HeaderSearchIcon,
 } from "./header.style";
 import { UserContext } from "../../../../context/userContext";
 import { logout } from "../../../../firebase/auth";
@@ -38,6 +40,9 @@ export default function Header() {
         </HeaderLogoLink>
       </HeaderTitle>
       <HeaderRight>
+        <HeaderSearchLink to="/search">
+          <HeaderSearchIcon src="assets/icon-search.png" alt="검색"/>
+        </HeaderSearchLink>
         {user && (
           <UserProfileImg
             src={user.photoURL || "assets/defultProfile.png"}

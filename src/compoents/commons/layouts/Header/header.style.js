@@ -34,6 +34,22 @@ export const HeaderRight = styled.div`
   font-size: 14px;
 `;
 
+export const HeaderSearchLink = styled(Link)`
+  margin-right: 5px;
+  @media screen and (max-width: 440px) {
+    margin-right: 0px;
+  }
+`;
+
+export const HeaderSearchIcon = styled.img`
+  width: 28px;
+  height: 28px;
+  @media screen and (max-width: 440px) {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
 export const HeaderLinks = styled.div``;
 
 export const HeaderLink = styled(Link)`
