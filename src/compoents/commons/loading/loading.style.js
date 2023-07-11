@@ -19,4 +19,5 @@ export const LoadingImg = styled.img``;
 
 export const LoadingText = styled.p`
   font-size: 25px;
+  color: black;
 `;

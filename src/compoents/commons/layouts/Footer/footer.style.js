@@ -6,13 +6,16 @@ export const Wrapper = styled.footer`
   padding: 20px;
   background-color: #000;
   color: #fff;
-  border-top: 1px solid rgb(25, 25, 25);
+  box-shadow: 1px 1px 3px 1px #555;
 `;
 export const FooterContents = styled.div`
   width: 50%;
   margin: 0 auto;
   @media screen and (max-width: 768px) {
       width: 80%;
+  }
+  @media screen and (max-width: 486px) {
+      width: 100%;
   }
 `;
 export const FooterMenu = styled.ul`
@@ -34,7 +37,9 @@ export const FooterMenu = styled.ul`
 }
 `;
 
-export const FooterMenuLi = styled.li``;
+export const FooterMenuLi = styled.li`
+  text-align: center;
+`;
 
 export const FooterMenuLink = styled(Link)``;
 
@@ -43,8 +48,8 @@ export const FooterRights = styled.strong`
   color: white;
   margin-bottom: 20px;
   text-align: center;
-  font-weight: bold;
+  font-size: 14px;
   @media screen and (max-width: 400px) {
-    font-size: 14px;
+    font-size: 12px;
   }
 `;
