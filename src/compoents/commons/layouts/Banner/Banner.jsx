@@ -96,6 +96,7 @@ export default function Banner() {
                 </MobileInfoBtn>
               </>
             ) : (
+              movieData.title&&
               <BannerContents>
                 <BannerBackdrop>
                   <Title>
