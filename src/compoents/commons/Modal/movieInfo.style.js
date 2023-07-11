@@ -9,7 +9,7 @@ export const ModalDim = styled.div`
   position: fixed;
   background-color: rgba(0, 0, 0, 0.7);
   inset: 0;
-  z-index: 99;
+  z-index: 999;
 `;
 
 export const ModalCard = styled.div`
