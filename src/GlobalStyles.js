@@ -1,11 +1,13 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
-
 const GlobalStyles = createGlobalStyle` 
   ${reset} 
   
   body{
+    min-height: 100vh;
+    position: relative;
+    background-color: #111;
     ::-webkit-scrollbar{
       display: none;
     }
