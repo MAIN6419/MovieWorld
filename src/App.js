@@ -51,7 +51,6 @@ function App() {
               <>
                 <Header />
                 <Outlet />
-                <Footer />
               </>
             }
           >
@@ -61,13 +60,23 @@ function App() {
                 <>
                   <Banner />
                   <Main />
+                  <Footer />
                 </>
               }
             />
             <Route path="/search" element={<Search />} />
             <Route
               path="/mypage"
-              element={!user ? <Navigate to="/login" /> : <Mypage />}
+              element={
+                !user ? (
+                  <Navigate to="/login" />
+                ) : (
+                  <>
+                    <Mypage />
+                    <Footer />
+                  </>
+                )
+              }
             />
           </Route>
         </Routes>
