@@ -1,0 +1,8 @@
+import { isMobile } from "react-device-detect";
+import styled from "styled-components";
+
+export const Img = styled.img`
+  :hover {
+    transform: ${isMobile ? "" : "scale(1.05)"};
+  }
+`;
