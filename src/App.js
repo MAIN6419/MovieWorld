@@ -1,11 +1,4 @@
-import GlobalStyles from "./GlobalStyles";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Outlet,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import Splash from "./pages/splash/Splash";
 import Login from "./pages/login/Login";
@@ -26,8 +19,7 @@ function App() {
   );
 
   return (
-    <BrowserRouter>
-      <GlobalStyles />
+    <>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
           <Route
@@ -81,7 +73,7 @@ function App() {
           </Route>
         </Routes>
       </UserContext.Provider>
-    </BrowserRouter>
+    </>
   );
 }
 
