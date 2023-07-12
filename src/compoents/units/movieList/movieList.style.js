@@ -34,17 +34,6 @@ export const MoiveItem = styled.li`
   border-radius: 5px;
 `;
 
-export const MovieImg = styled.img`
-  object-fit: contain;
-  width: 100%;
-  transition: transform 450ms;
-  margin: 25px 0 25px 5px;
-  border-radius: 5px;
-  :hover {
-    transform: ${isMobile ? "" : "scale(1.05)"};
-  }
-`;
-
 export const SwiperContainer = styled(Swiper)`
   &.swiper .swiper-pagination-bullet {
     background: gray !important;

@@ -5,7 +5,6 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import {
   MoiveItem,
-  MovieImg,
   MovieUl,
   SwiperContainer,
   Title,
@@ -15,6 +14,7 @@ import {
 import MovieInfo from "../../commons/Modal/MovieInfo";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { SwiperSlide } from "swiper/react";
+import ProgressiveImg from "../../commons/progressiveImg/ProgressiveImg";
 
 export default function MovieList({ title, fetchMoive }) {
   const [movieData, setMovieData] = useState([]);
@@ -27,8 +27,13 @@ export default function MovieList({ title, fetchMoive }) {
     document.body.style.overflow = "hidden";
 
     // movieInfo 모달창을 열때 banner 동영상이 실행중 이라면 중지 시킴
-    if(document.querySelector('.bannerIframe')!==null){
-      document.querySelector('.bannerIframe').contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}','*');
+    if (document.querySelector(".bannerIframe") !== null) {
+      document
+        .querySelector(".bannerIframe")
+        .contentWindow.postMessage(
+          '{"event":"command","func":"pauseVideo","args":""}',
+          "*"
+        );
     }
   };
 
@@ -82,8 +87,17 @@ export default function MovieList({ title, fetchMoive }) {
               return (
                 <SwiperSlide key={data.id}>
                   <MoiveItem>
-                    <MovieImg
+                    <ProgressiveImg
+                      placeholderSrc={"assets/placeholderImg.png"}
                       src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
+                      styles={{
+                        objectFit: "contain",
+                        width: "100%",
+                        transition: "transform 450ms",
+                        margin: "25px 0 25px 5px",
+                        borderRadius: "5px",
+                      }}
+                      alt="영화 포스터"
                       onClick={() => onClickMovieInfo(data)}
                     />
                   </MoiveItem>
