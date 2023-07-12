@@ -8,6 +8,7 @@ const GlobalStyles = createGlobalStyle`
     min-height: 100vh;
     position: relative;
     background-color: #111;
+    padding-top: 80px;
     ::-webkit-scrollbar{
       display: none;
     }
