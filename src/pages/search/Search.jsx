@@ -13,7 +13,8 @@ import {
 import { debounce } from "lodash";
 import { fetchSearchMovie, fetchTrending } from "../../api/movie";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
-import { InView, useInView } from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
+import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
 
 export default function Search() {
   const [keyWord, setKeyword] = useState("");
@@ -93,18 +94,27 @@ export default function Search() {
         <SearchMovieList>
           {movieData.map((data) => {
             return (
-              <SearchMovieItem
+              // 포스터가 있는 영화 데이터만 받아옴
+              data.poster_path&&<SearchMovieItem
                 key={data.id}
                 onClick={() => onClickMoiveInfo(data)}
               >
                 <SearchMovieImgWrapper>
-                  <SearchMovieImg
-                    src={
-                      `https://image.tmdb.org/t/p/original/${
-                        data.poster_path || data.backdrop_path
-                      }` || "assets/icon-camera.png"
+                  <ProgressiveImg
+                    placeholderSrc={"assets/placeholderImg.png"}
+                    src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
+                    styles={{
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      top: "0",
+                      left: "0",
+                      borderRadius: "10px",
+                    }}
+                    alt="영화 포스터"
+                    onError={(e) =>
+                      (e.target.src = "assets/placeholderImg.png")
                     }
-                    onError={(e) => (e.target.src = "assets/icon-camera.png")}
                   />
                 </SearchMovieImgWrapper>
               </SearchMovieItem>
