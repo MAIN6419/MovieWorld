@@ -10,20 +10,24 @@ import {
   fetchTopRated,
   fetchTrending,
 } from "../../api/movie";
+import TopButton from "../../compoents/commons/topButton/TopButton";
 
 export default function Main() {
   return (
-    <Wrapper>
-      <MovieList title={"Trending Now"} fetchMoive={fetchTrending} />
-      <MovieList title={"Top Rated"} fetchMoive={fetchTopRated} />
-      <MovieList title={"Action Movies"} fetchMoive={fetchActionMovies} />
-      <MovieList title={"Comedy Movies"} fetchMoive={fetchComedyMovies} />
-      <MovieList title={"Romance Movies"} fetchMoive={fetchRomanceMovies} />
-      <MovieList title={"Horror Movies"} fetchMoive={fetchHorrorMovies} />
-      <MovieList
-        title={"Documentary Movies"}
-        fetchMoive={fetchDocumentMovies}
-      />
-    </Wrapper>
+    <>
+      <Wrapper>
+        <MovieList title={"Trending Now"} fetchMoive={fetchTrending} />
+        <MovieList title={"Top Rated"} fetchMoive={fetchTopRated} />
+        <MovieList title={"Action Movies"} fetchMoive={fetchActionMovies} />
+        <MovieList title={"Comedy Movies"} fetchMoive={fetchComedyMovies} />
+        <MovieList title={"Romance Movies"} fetchMoive={fetchRomanceMovies} />
+        <MovieList title={"Horror Movies"} fetchMoive={fetchHorrorMovies} />
+        <MovieList
+          title={"Documentary Movies"}
+          fetchMoive={fetchDocumentMovies}
+        />
+        <TopButton/>
+      </Wrapper>
+    </>
   );
 }

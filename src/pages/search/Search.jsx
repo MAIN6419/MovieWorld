@@ -15,6 +15,7 @@ import { fetchSearchMovie, fetchTrending } from "../../api/movie";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
 import { useInView } from "react-intersection-observer";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
+import TopButton from "../../compoents/commons/topButton/TopButton";
 
 export default function Search() {
   const [keyWord, setKeyword] = useState("");
@@ -95,29 +96,29 @@ export default function Search() {
           {movieData.map((data) => {
             return (
               // 포스터가 있는 영화 데이터만 받아옴
-              data.poster_path&&<SearchMovieItem
-                key={data.id}
-                onClick={() => onClickMoiveInfo(data)}
-              >
-                <SearchMovieImgWrapper>
-                  <ProgressiveImg
-                    placeholderSrc={"assets/placeholderImg.png"}
-                    src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
-                    styles={{
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                      top: "0",
-                      left: "0",
-                      borderRadius: "10px",
-                    }}
-                    alt="영화 포스터"
-                    onError={(e) =>
-                      (e.target.src = "assets/placeholderImg.png")
-                    }
-                  />
-                </SearchMovieImgWrapper>
-              </SearchMovieItem>
+              data.poster_path && (
+                <SearchMovieItem key={data.id}>
+                  <SearchMovieImgWrapper>
+                    <ProgressiveImg
+                      placeholderSrc={"assets/placeholderImg.png"}
+                      src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
+                      styles={{
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        top: "0",
+                        left: "0",
+                        borderRadius: "10px",
+                      }}
+                      alt="영화 포스터"
+                      onError={(e) =>
+                        (e.target.src = "assets/placeholderImg.png")
+                      }
+                      onClick={() => onClickMoiveInfo(data)}
+                    />
+                  </SearchMovieImgWrapper>
+                </SearchMovieItem>
+              )
             );
           })}
         </SearchMovieList>
@@ -129,6 +130,7 @@ export default function Search() {
           setIsOpenMovieInfo={setIsOpenMovieInfo}
         />
       )}
+      <TopButton />
     </>
   );
 }
