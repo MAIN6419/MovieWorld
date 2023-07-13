@@ -5,6 +5,11 @@ import {
   getDocs,
   query,
   where,
+  deleteDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
 } from "firebase/firestore";
 
 import {
@@ -17,7 +22,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { db, storage } from "./setting";
-const auth = getAuth();
+export const auth = getAuth();
 
 // 로그인 변화를 감지
 // 로그인이 된 경우 로컬스토리지에 필요한 유저정보 저장
@@ -39,7 +44,7 @@ onAuthStateChanged(auth, async (user) => {
 export const login = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.replace("/home");
+    window.location.replace("/main");
   } catch (error) {
     if (error.message.includes("auth/invalid-email")) {
       alert("유효하지 않은 이메일 형식 입니다!");
@@ -109,7 +114,7 @@ export const signup = async (nickname, email, password, phone) => {
       profileImgUrl: "",
     });
     alert("회원가입이 완료되었습니다.");
-    window.location.replace("/home");
+    window.location.replace("/main");
   } catch (error) {
     if (error.message.includes("email-already-in-use")) {
       alert("이미 사용중인 이메일 입니다!");
@@ -164,6 +169,77 @@ export const changePassword = async (email, phone) => {
       alert("일치하는 정보가 없습니다!");
       return false;
     }
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 유저 데이터 API
+export const getUser = async () => {
+  try {
+    if (auth.currentUser) {
+      const userRef = doc(db, `user/${auth.currentUser.displayName}`);
+      const res = await getDoc(userRef);
+      const data = res.data();
+      return data;
+    }
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 좋아요 추가 API
+export const addLike = async (movieData) => {
+  try {
+    if (auth.currentUser) {
+      const userLikeRef = collection(db, `${auth.currentUser.uid}_LikeList`);
+      await setDoc(doc(userLikeRef, String(movieData.id)), {
+        ...movieData,
+      });
+      const userRef = doc(db, `user/${auth.currentUser.displayName}`);
+      await updateDoc(userRef, {
+        likeList: arrayUnion(movieData.id),
+      });
+      return true;
+    } else {
+      return alert("로그인 후 이용 가능합니다!");
+    }
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 좋아요 제거 API
+export const removeLike = async (movieData) => {
+  try {
+    if (auth.currentUser) {
+      const userLikeRef = collection(db, `${auth.currentUser.uid}_LikeList`);
+      await deleteDoc(doc(userLikeRef, String(movieData.id)));
+      const userRef = doc(db, `user/${auth.currentUser.displayName}`);
+      await updateDoc(userRef, {
+        likeList: arrayRemove(movieData.id),
+      });
+      return true;
+    } else {
+      return alert("로그인 후 이용 가능합니다!");
+    }
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 좋아요 목록 API
+export const fetchLikeList = async () => {
+  try {
+    const uid = JSON.parse(localStorage.getItem("user")).uid;
+    const userRef = collection(db, `${uid}_LikeList`);
+    const res = await getDocs(userRef);
+    const data = res.docs.map((el) => el.data());
+    return data;
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
