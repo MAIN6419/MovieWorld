@@ -32,7 +32,7 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
 
   const fetchData = async () => {
     try {
-      const data = await fetchVideo(movieData.id);
+      const data = await fetchVideo(movieData.id, movieData.media_type);
       // Themovie DB API에서 기존 영화 데이터와 다른 영화 비디오 데이터를 줄때가 있어서 title로 기존 영화 데이터와 비디오 데이터를 비교하여 같지 않으면 그냥 기존 영화 데이터를 적용
       if (
         data.title !== movieData.title &&

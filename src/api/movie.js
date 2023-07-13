@@ -2,14 +2,17 @@ import { customAxios } from "./customAxios";
 const api_key = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 const language = "ko-KR";
 
-export const fetchVideo = async (movieId) => {
-  const video = await customAxios.get(`movie/${movieId}`, {
-    params: {
-      api_key,
-      language,
-      append_to_response: "videos",
-    },
-  });
+export const fetchVideo = async (id, mediaType) => {
+  const video = await customAxios.get(
+    `${mediaType === "tv" ? "tv" : "movie"}/${id}`,
+    {
+      params: {
+        api_key,
+        language,
+        append_to_response: "videos",
+      },
+    }
+  );
   return video.data;
 };
 
@@ -160,3 +163,4 @@ export const fetchSearchMovie = async (keyword, page) => {
     console.error(error.response.data.status_message);
   }
 };
+
