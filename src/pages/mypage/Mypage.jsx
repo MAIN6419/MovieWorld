@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
+  InfiniteScrollTarget,
   MoiveListWrapper,
-  MovieImg,
+  MovieImgWrapper,
   MovieItem,
   MovieMenuBtn,
   MovieMenuItem,
@@ -9,6 +10,7 @@ import {
   MovieMenuTitle,
   MovieMenuUl,
   MovieMenuWrapper,
+  MovieTitle,
   ProfileEmail,
   ProfileImg,
   ProfileInfo,
@@ -21,23 +23,46 @@ import {
   ProfileWrapper,
   Wrapper,
 } from "./mypage.style";
-import { fetchLikeList } from "../../firebase/auth";
+import { fetchFirstLikeList, fetchLikeListPage } from "../../firebase/auth";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
 import { useMovieInfo } from "../../hook/useMovieInfo";
+import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
+import { useInView } from "react-intersection-observer";
 
 export default function Mypage() {
   const [data, setData] = useState([]);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
+  const [page, setPage] = useState("");
+  const [hasMore, setHasMore] = useState(false);
+  const limitPage = 20;
+  const [ref, inview] = useInView();
 
-  const fetchData = async () => {
-    const data = await fetchLikeList();
-    setData(data);
+  const fetchFirstPage = async () => {
+    const res = await fetchFirstLikeList(limitPage);
+    const data = res.docs.map((el) => el.data());
+    setData((prev) => [...prev, ...data]);
+    setPage(res.docs[res.docs.length - 1]);
+    setHasMore(res.docs.length === limitPage);
+  };
+
+  const fetchAddData = async () => {
+    const res = await fetchLikeListPage(page, limitPage);
+    const data = res.docs.map((el) => el.data());
+    setData((prev) => [...prev, ...data]);
+    setPage(res.docs[res.docs.length - 1]);
+    setHasMore(res.docs.length === limitPage);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (!hasMore && inview && !page) {
+      fetchFirstPage();
+    }
+    if (hasMore && inview) {
+      fetchAddData();
+    }
+  }, [inview]);
+
   return (
     <>
       <Wrapper>
@@ -76,16 +101,33 @@ export default function Mypage() {
           </MovieMenuNav>
           <MoiveListWrapper>
             {data &&
-              data.map((item) => {
+              data.map((item, idx) => {
                 return (
-                  <MovieItem key={item.id}>
-                    <MovieImg
-                      src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
-                      onClick={() => onClickMovieInfo(item)}
-                    />
+                  <MovieItem key={item.id + idx}>
+                    <MovieImgWrapper>
+                      <ProgressiveImg
+                        placeholderSrc={"assets/placeholderImg.png"}
+                        src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
+                        styles={{
+                          position: "absolute",
+                          width: "100%",
+                          height: "100%",
+                          top: "0",
+                          left: "0",
+                          borderRadius: "10px",
+                        }}
+                        alt="영화 포스터"
+                        onError={(e) =>
+                          (e.target.src = "assets/placeholderImg.png")
+                        }
+                        onClick={() => onClickMovieInfo(data)}
+                      />
+                    </MovieImgWrapper>
+                    <MovieTitle>{item.title || item.name || item.original_name}</MovieTitle>
                   </MovieItem>
                 );
               })}
+            <InfiniteScrollTarget ref={ref}></InfiniteScrollTarget>
           </MoiveListWrapper>
         </MovieMenuWrapper>
       </Wrapper>

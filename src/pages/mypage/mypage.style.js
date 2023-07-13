@@ -118,16 +118,20 @@ export const MoiveListWrapper = styled.ul`
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 15px;
   padding: 20px;
-  @media screen and (max-width: 786px) {
+  @media screen and (max-width: 486px) {
     grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
   }
 `;
 
-export const MovieItem = styled.li`
+export const MovieItem = styled.li``;
+
+export const MovieImgWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 0;
   padding-bottom: calc(3 / 4 * 100%);
+  margin-bottom: 10px;
+  cursor: pointer;
 `;
 
 export const MovieImg = styled.img`
@@ -142,4 +146,18 @@ export const MovieImg = styled.img`
     transform: ${isMobile ? "" : "scale(1.05)"};
   }
   border-radius: 10px;
+`;
+
+export const MovieTitle = styled.h3`
+  color: #c4c4c4;
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const InfiniteScrollTarget = styled.div`
+  margin-top: 20px;
 `;
