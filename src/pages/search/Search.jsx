@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  SearchMovieImg,
   SearchMovieImgWrapper,
   SearchMovieItem,
   SearchMovieList,
@@ -16,12 +15,13 @@ import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
 import { useInView } from "react-intersection-observer";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
 import TopButton from "../../compoents/commons/topButton/TopButton";
+import { useMovieInfo } from "../../hook/useMovieInfo";
 
 export default function Search() {
   const [keyWord, setKeyword] = useState("");
   const [movieData, setMovieData] = useState([]);
-  const [seletedMovie, setSelectedMovie] = useState({});
-  const [isOpenMovieInfo, setIsOpenMovieInfo] = useState(false);
+  const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
+    useMovieInfo(false);
 
   const [ref, inVeiw] = useInView(false);
   const [page, setPage] = useState(1);
@@ -68,10 +68,6 @@ export default function Search() {
     setHasMore(data.length === 20);
   };
 
-  const onClickMoiveInfo = (movie) => {
-    setIsOpenMovieInfo(true);
-    setSelectedMovie(movie);
-  };
 
   useEffect(() => {
     if (hasMore && inVeiw && keyWord) {
@@ -114,7 +110,7 @@ export default function Search() {
                       onError={(e) =>
                         (e.target.src = "assets/placeholderImg.png")
                       }
-                      onClick={() => onClickMoiveInfo(data)}
+                      onClick={() => onClickMovieInfo(data)}
                     />
                   </SearchMovieImgWrapper>
                 </SearchMovieItem>

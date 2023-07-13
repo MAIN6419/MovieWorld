@@ -15,27 +15,12 @@ import MovieInfo from "../../commons/Modal/MovieInfo";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { SwiperSlide } from "swiper/react";
 import ProgressiveImg from "../../commons/progressiveImg/ProgressiveImg";
+import { useMovieInfo } from "../../../hook/useMovieInfo";
 
 export default function MovieList({ title, fetchMoive }) {
   const [movieData, setMovieData] = useState([]);
-  const [isOpenMovieInfo, setIsOpenMovieInfo] = useState(false);
-  const [movieSelected, setMovieSelected] = useState({});
-
-  const onClickMovieInfo = (movie) => {
-    setIsOpenMovieInfo(true);
-    setMovieSelected(movie);
-    document.body.style.overflow = "hidden";
-
-    // movieInfo 모달창을 열때 banner 동영상이 실행중 이라면 중지 시킴
-    if (document.querySelector(".bannerIframe") !== null) {
-      document
-        .querySelector(".bannerIframe")
-        .contentWindow.postMessage(
-          '{"event":"command","func":"pauseVideo","args":""}',
-          "*"
-        );
-    }
-  };
+  const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
+    useMovieInfo(false);
 
   const fetchData = async () => {
     const data = await fetchMoive();
@@ -98,7 +83,18 @@ export default function MovieList({ title, fetchMoive }) {
                         borderRadius: "5px",
                       }}
                       alt="영화 포스터"
-                      onClick={() => onClickMovieInfo(data)}
+                      onClick={() => {
+                        onClickMovieInfo(data); 
+                        // movieInfo 모달창을 열때 banner 동영상이 실행중 이라면 중지 시킴
+                        if (document.querySelector(".bannerIframe") !== null) {
+                          document
+                            .querySelector(".bannerIframe")
+                            .contentWindow.postMessage(
+                              '{"event":"command","func":"pauseVideo","args":""}',
+                              "*"
+                            );
+                        }
+                      }}
                     />
                   </MoiveItem>
                 </SwiperSlide>
@@ -109,7 +105,7 @@ export default function MovieList({ title, fetchMoive }) {
       </Wrapper>
       {isOpenMovieInfo && (
         <MovieInfo
-          movieData={movieSelected}
+          movieData={seletedMovie}
           setIsOpenMovieInfo={setIsOpenMovieInfo}
         />
       )}
