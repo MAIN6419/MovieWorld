@@ -63,10 +63,7 @@ function App() {
                 !user ? (
                   <Navigate to="/login" />
                 ) : (
-                  <>
                     <Mypage />
-                    <Footer />
-                  </>
                 )
               }
             />
