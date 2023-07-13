@@ -10,6 +10,8 @@ import {
   arrayUnion,
   arrayRemove,
   getDoc,
+  startAfter,
+  limit,
 } from "firebase/firestore";
 
 import {
@@ -233,13 +235,27 @@ export const removeLike = async (movieData) => {
 };
 
 // 좋아요 목록 API
-export const fetchLikeList = async () => {
+export const fetchFirstLikeList = async (limitPage) => {
   try {
     const uid = JSON.parse(localStorage.getItem("user")).uid;
     const userRef = collection(db, `${uid}_LikeList`);
-    const res = await getDocs(userRef);
-    const data = res.docs.map((el) => el.data());
-    return data;
+    const q = query(userRef, limit(limitPage))
+    const res = await getDocs(q);
+    return res;
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 좋아요 목록 페이징 API
+export const fetchLikeListPage = async (page, limitPage) => {
+  try {
+    const uid = JSON.parse(localStorage.getItem("user")).uid;
+    const userRef = collection(db, `${uid}_LikeList`);
+    const q = query(userRef, startAfter(page), limit(limitPage));
+    const res = await getDocs(q);
+    return res;
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
