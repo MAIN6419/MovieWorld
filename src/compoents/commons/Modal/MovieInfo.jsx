@@ -19,12 +19,24 @@ import {
   MovieContetns,
   IframeWrapper,
   Iframe,
+  MovieLikeBtn,
+  MovieBtns,
 } from "./movieInfo.style";
 import { fetchVideo } from "../../../api/movie";
+import { addLike, getUser, removeLike } from "../../../firebase/auth";
 
 export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
   const [isPlay, setIsPlay] = useState(false);
   const [videoData, setVideoData] = useState({});
+  const [like, setLike] = useState(false);
+
+  const fetchLike = async () => {
+    const data = await getUser();
+    const isLike =
+      data && data.likeList.find((likeId) => likeId === videoData.id);
+    setLike(!!isLike);
+  };
+
   const onClickClose = () => {
     setIsOpenMovieInfo(false);
     document.body.style.overflow = "auto";
@@ -51,16 +63,36 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
   };
 
   const onClickPlay = () => {
-    if (!videoData.videos||!videoData.videos.results.length) {
+    if (!videoData.videos || !videoData.videos.results.length) {
       alert("영상이 존재하지 않습니다!");
       return;
     }
     setIsPlay(true);
   };
 
+  const onClickLike = async () => {
+    if (!like) {
+      const res = await addLike(videoData);
+      if (res) {
+        setLike(true);
+      }
+    } else {
+      const res = removeLike(videoData);
+      if (res) {
+        setLike(false);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (videoData.id) {
+      fetchLike();
+    }
+  }, [videoData]);
 
   return (
     <>
@@ -102,13 +134,15 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
                   ? videoData.release_date
                   : videoData.first_air_date}
               </MovieRelease>
-              {videoData.genres&&<MovieGenre>
-                장르 :
-                {videoData.genres &&
-                  videoData.genres.map(({ name }) => {
-                    return <MovieGenreLi key={name}>{name}</MovieGenreLi>;
-                  })}
-              </MovieGenre>}
+              {videoData.genres && (
+                <MovieGenre>
+                  장르 :
+                  {videoData.genres &&
+                    videoData.genres.map(({ name }) => {
+                      return <MovieGenreLi key={name}>{name}</MovieGenreLi>;
+                    })}
+                </MovieGenre>
+              )}
               {videoData.runtime && (
                 <MovieRunTime>상영시간 : {videoData.runtime}분</MovieRunTime>
               )}
@@ -116,7 +150,15 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
                 평점 : <MovieRatingIcon />{" "}
                 {parseFloat(videoData.vote_average).toFixed(2)}
               </MovieRating>
-              <MoviePlayBtn onClick={onClickPlay}>재생</MoviePlayBtn>
+              <MovieBtns>
+                <MoviePlayBtn onClick={onClickPlay}>재생</MoviePlayBtn>
+                <MovieLikeBtn
+                  type="button"
+                  onClick={onClickLike}
+                  like={like}
+                ></MovieLikeBtn>
+              </MovieBtns>
+
               <MovieDesc>
                 {videoData.overview
                   ? videoData.overview

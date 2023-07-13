@@ -28,12 +28,12 @@ export const ModalCard = styled.div`
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
     0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
   background: #111;
-  transition: all 400ms ease-in-out 2s;
-  animation: fadeIn 400ms;
+  transition: all 0.5s ease-in-out 2s;
+  animation: fadeIn 0.5s;
   overflow-y: scroll;
   ::-webkit-scrollbar {
-  display: none;
-}
+    display: none;
+  }
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -160,12 +160,17 @@ export const MovieRatingIcon = styled(StarFilled)`
 `;
 
 export const MovieDesc = styled.p`
-border-bottom: 1px solid #fff;
-padding-bottom: 20px;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 20px;
   line-height: 1.5;
   @media screen and (max-width: 768px) {
     font-size: 14px;
   }
+`;
+
+export const MovieBtns = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const MoviePlayBtn = styled.button`
@@ -177,7 +182,7 @@ export const MoviePlayBtn = styled.button`
   font-weight: 500;
   border-radius: 4px;
   padding: 5px 20px 5px 30px;
-  margin-right: 18px;
+  margin-right: 10px;
   color: black;
   background: url("assets/icon-play.png") no-repeat center left 5px/ 20px #fff;
   :hover {
@@ -186,6 +191,18 @@ export const MoviePlayBtn = styled.button`
       transition: all 0.2s;
     }
   }
+`;
+
+export const MovieLikeBtn = styled.button`
+  width: 35px;
+  height: 35px;
+  transition: all 0.5s;
+  background: ${(props) =>
+    props.like
+      ? "url(assets/like.png) no-repeat center  / 20px"
+      : "url(assets/unlike.png) no-repeat center / 20px"};
+  border: 2px solid #bdbdbd;
+  border-radius: 50%;
 `;
 
 export const CloseBtn = styled.button`
