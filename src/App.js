@@ -27,18 +27,6 @@ function App() {
             element={user ? <Navigate to="/main" /> : <Splash />}
           />
           <Route
-            path="/login"
-            element={user ? <Navigate to="/main" /> : <Login />}
-          />
-          <Route
-            path="/signup"
-            element={user ? <Navigate to="/main" /> : <Signup />}
-          />
-          <Route
-            path="/findAccount"
-            element={user ? <Navigate to="/main" /> : <FindAccount />}
-          />
-          <Route
             element={
               <>
                 <Header />
@@ -46,6 +34,18 @@ function App() {
               </>
             }
           >
+            <Route
+              path="/login"
+              element={user ? <Navigate to="/main" /> : <Login />}
+            />
+            <Route
+              path="/signup"
+              element={user ? <Navigate to="/main" /> : <Signup />}
+            />
+            <Route
+              path="/findAccount"
+              element={user ? <Navigate to="/main" /> : <FindAccount />}
+            />
             <Route
               path="/main"
               element={
@@ -59,13 +59,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route
               path="/mypage"
-              element={
-                !user ? (
-                  <Navigate to="/login" />
-                ) : (
-                    <Mypage />
-                )
-              }
+              element={!user ? <Navigate to="/login" /> : <Mypage />}
             />
           </Route>
         </Routes>
