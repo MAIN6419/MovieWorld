@@ -65,15 +65,6 @@ export const SearchMovieImgWrapper = styled.div`
   padding-bottom: calc(6 / 4 * 100%);
 `;
 
-export const SearchMovieImg = styled.img`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  border-radius: 10px;
-`;
-
 export const InfiniteScrollTarget = styled.div`
   height: 20px;
 `
