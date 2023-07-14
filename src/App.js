@@ -9,18 +9,54 @@ import Mypage from "./pages/mypage/Mypage";
 import Header from "./compoents/commons/layouts/Header/Header";
 import Banner from "./compoents/commons/layouts/Banner/Banner";
 import Footer from "./compoents/commons/layouts/Footer/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserContext } from "./context/userContext";
 import Main from "./pages/main/Main";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || ""
   );
 
+  const refreshUser = () => {
+    const user = getAuth().currentUser;
+    setUser({
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+    });
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(getAuth(), (user) => {
+      if (user) {
+        setUser({
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        });
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+          })
+        );
+      } else {
+        setUser("");
+        localStorage.removeItem("user");
+      }
+    });
+  }, []);
+
   return (
     <>
-      <UserContext.Provider value={{ user, setUser }}>
+      <UserContext.Provider value={{ user, setUser, refreshUser }}>
         <Routes>
           <Route
             path="/"
