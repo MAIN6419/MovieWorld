@@ -80,7 +80,8 @@ export const UserNickname = styled.strong`
 export const UserProfileImg = styled.img`
   width: 40px;
   height: 40px;
-  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
   border: 1px solid #bdbdbd;
   @media screen and (max-width: 440px) {
     width: 30px;
