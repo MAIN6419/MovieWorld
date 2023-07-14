@@ -16,6 +16,7 @@ import { useInView } from "react-intersection-observer";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
 import TopButton from "../../compoents/commons/topButton/TopButton";
 import { useMovieInfo } from "../../hook/useMovieInfo";
+import Blank from "../../compoents/commons/blank/Blank";
 
 export default function Search() {
   const [keyWord, setKeyword] = useState("");
@@ -68,7 +69,6 @@ export default function Search() {
     setHasMore(data.length === 20);
   };
 
-
   useEffect(() => {
     if (hasMore && inVeiw && keyWord) {
       fetchAddMovie();
@@ -88,37 +88,43 @@ export default function Search() {
             onChange={onChangeKeyword}
           />
         </SearchForm>
-        <SearchMovieList>
-          {movieData.map((data) => {
-            return (
-              // 포스터가 있는 영화 데이터만 받아옴
-              data.poster_path && (
-                <SearchMovieItem key={data.id}>
-                  <SearchMovieImgWrapper>
-                    <ProgressiveImg
-                      placeholderSrc={"assets/placeholderImg.png"}
-                      src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
-                      styles={{
-                        position: "absolute",
-                        width: "100%",
-                        height: "100%",
-                        top: "0",
-                        left: "0",
-                        borderRadius: "10px",
-                      }}
-                      alt="영화 포스터"
-                      onError={(e) =>
-                        (e.target.src = "assets/placeholderImg.png")
-                      }
-                      onClick={() => onClickMovieInfo(data)}
-                    />
-                  </SearchMovieImgWrapper>
-                </SearchMovieItem>
-              )
-            );
-          })}
-        </SearchMovieList>
-        <InfiniteScrollTarget ref={ref}></InfiniteScrollTarget>
+        {!movieData.length ?  (
+          <Blank text={`"${keyWord}"에 대한 검색결과가 없습니다.`}/>
+        ): (
+          <>
+            <SearchMovieList>
+              {movieData.map((data) => {
+                return (
+                  // 포스터가 있는 영화 데이터만 받아옴
+                  data.poster_path && (
+                    <SearchMovieItem key={data.id}>
+                      <SearchMovieImgWrapper>
+                        <ProgressiveImg
+                          placeholderSrc={"assets/placeholderImg.png"}
+                          src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
+                          styles={{
+                            position: "absolute",
+                            width: "100%",
+                            height: "100%",
+                            top: "0",
+                            left: "0",
+                            borderRadius: "10px",
+                          }}
+                          alt="영화 포스터"
+                          onError={(e) =>
+                            (e.target.src = "assets/placeholderImg.png")
+                          }
+                          onClick={() => onClickMovieInfo(data)}
+                        />
+                      </SearchMovieImgWrapper>
+                    </SearchMovieItem>
+                  )
+                );
+              })}
+            </SearchMovieList>
+            <InfiniteScrollTarget ref={ref}></InfiniteScrollTarget>
+          </>
+        )}
       </SearchWrapper>
       {isOpenMovieInfo && (
         <MovieInfo
