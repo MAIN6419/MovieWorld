@@ -114,6 +114,7 @@ export const MovieMenuBtn = styled.button`
 `;
 
 export const MoiveListWrapper = styled.ul`
+  position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 15px;
@@ -123,7 +124,9 @@ export const MoiveListWrapper = styled.ul`
   }
 `;
 
-export const MovieItem = styled.li``;
+export const MovieItem = styled.li`
+
+`;
 
 export const MovieImgWrapper = styled.div`
   position: relative;

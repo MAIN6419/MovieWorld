@@ -136,7 +136,7 @@ export default function Mypage() {
                   </MovieMenuItem>
                 </MovieMenuUl>
               </MovieMenuNav>
-              <MoiveListWrapper>
+              <MoiveListWrapper style={{height: !data.length ? "calc(100vh - 325px)":""}}>
                 {!data.length ? <Blank text={"현재 찜 목록이 존재하지 않습니다."}/>:
                   data.map((item, idx) => {
                     return (
