@@ -33,6 +33,7 @@ import Loading from "../../compoents/commons/loading/Loading";
 import { UserContext } from "../../context/userContext";
 import ChangePassword from "./ChangePassword";
 import TopButton from "../../compoents/commons/topButton/TopButton";
+import Blank from "../../compoents/commons/blank/Blank";
 
 export default function Mypage() {
   const { user } = useContext(UserContext);
@@ -136,7 +137,7 @@ export default function Mypage() {
                 </MovieMenuUl>
               </MovieMenuNav>
               <MoiveListWrapper>
-                {data &&
+                {!data.length ? <Blank text={"현재 찜 목록이 존재하지 않습니다."}/>:
                   data.map((item, idx) => {
                     return (
                       <MovieItem key={item.id + idx}>
