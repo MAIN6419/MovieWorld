@@ -7,7 +7,7 @@ export const Title = styled.h2`
   font-size: 40px;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   @media screen and (max-width: 486px) {
     font-size: 30px;
   }
@@ -39,7 +39,7 @@ export const ProfileForm = styled.form`
   gap: 20px;
   margin-bottom: 80px;
   @media screen and (max-width: 486px) {
-    gap: 10px;
+    gap: 20px;
   }
 `;
 
@@ -59,10 +59,7 @@ export const ProfileImg = styled.img`
   border: 3px solid #333;
   border-radius: 50%;
   object-fit: cover;
-  @media screen and (max-width: 486px) {
-    width: 100px;
-    height: 100px;
-  }
+ 
 `;
 
 export const ChangeImgBtn = styled.button`
@@ -79,9 +76,6 @@ export const NicknameWrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   margin-top: 15px;
-  @media screen and (max-width: 486px) {
-    margin-top: 10px;
-  }
 `;
 
 export const NicknameInput = styled.input`
