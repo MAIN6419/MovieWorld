@@ -20,14 +20,14 @@ export const Title = styled.h2`
   }
 `;
 
-export const MovieUl = styled.ul`
+export const MovieItems = styled.div`
   display: flex;
   padding: 20px 0 20px 20px;
   transition: transform 400ms;
   width: 100%;
 `;
 
-export const MoiveItem = styled.li`
+export const MoiveItem = styled.div`
   cursor: pointer;
   transition: transform 400ms;
   width: 95%;

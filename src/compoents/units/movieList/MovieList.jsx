@@ -5,7 +5,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import {
   MoiveItem,
-  MovieUl,
+  MovieItems,
   SwiperContainer,
   Title,
   Wrapper,
@@ -67,7 +67,7 @@ export default function MovieList({ title, fetchMoive }) {
             },
           }}
         >
-          <MovieUl>
+          <MovieItems>
             {movieData.map((data) => {
               return (
                 <SwiperSlide key={data.id}>
@@ -100,7 +100,7 @@ export default function MovieList({ title, fetchMoive }) {
                 </SwiperSlide>
               );
             })}
-          </MovieUl>
+          </MovieItems>
         </SwiperContainer>
       </Wrapper>
       {isOpenMovieInfo && (
