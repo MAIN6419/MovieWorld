@@ -8,7 +8,7 @@ export const Wrapper = styled.section`
   position: absolute;
   z-index: 999;
   inset: 0;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
   font-size: 30px;
   font-weight: bold;
 `;
