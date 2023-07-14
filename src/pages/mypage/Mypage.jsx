@@ -23,10 +23,7 @@ import {
   ProfileWrapper,
   Wrapper,
 } from "./mypage.style";
-import {
-  fetchFirstLikeList,
-  fetchLikeListPage,
-} from "../../firebase/auth";
+import { fetchFirstLikeList, fetchLikeListPage } from "../../firebase/auth";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
@@ -34,20 +31,21 @@ import { useInView } from "react-intersection-observer";
 import ChangeProfile from "./ChangeProfile";
 import Loading from "../../compoents/commons/loading/Loading";
 import { UserContext } from "../../context/userContext";
+import ChangePassword from "./ChangePassword";
 
 export default function Mypage() {
   const { user } = useContext(UserContext);
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProfileEdit, setIsProfileEdit] = useState(false);
-
+  const [isChangePassword, setIsChangePassword] = useState(false);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
   const [page, setPage] = useState("");
   const [hasMore, setHasMore] = useState(false);
   const limitPage = 20;
   const [ref, inview] = useInView();
-
 
   const fetchFirstPage = async () => {
     const res = await fetchFirstLikeList(limitPage);
@@ -68,6 +66,11 @@ export default function Mypage() {
 
   const onClickProfileEdit = () => {
     setIsProfileEdit(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const onClickChangePassword = () => {
+    setIsChangePassword(true);
     document.body.style.overflow = "hidden";
   };
 
@@ -92,9 +95,9 @@ export default function Mypage() {
               <ProfileTitle>내 정보</ProfileTitle>
               <ProfileInfo>
                 <ProfileImg
-                  src={user.photoURL||"assets/defultProfile.png"}
+                  src={user.photoURL || "assets/defultProfile.png"}
                   alt="프로필 이미지"
-                  onError={(e)=>e.target.src="assets/defultProfile.png"}
+                  onError={(e) => (e.target.src = "assets/defultProfile.png")}
                 />
                 <ProfileNameWrapper>
                   <ProfileNickname>
@@ -110,7 +113,7 @@ export default function Mypage() {
                   </ProfileMenuBtn>
                 </ProfileMenuItem>
                 <ProfileMenuItem>
-                  <ProfileMenuBtn>비밀번호 변경</ProfileMenuBtn>
+                  <ProfileMenuBtn onClick={onClickChangePassword}>비밀번호 변경</ProfileMenuBtn>
                 </ProfileMenuItem>
               </ProfileMenu>
             </ProfileWrapper>
@@ -169,7 +172,19 @@ export default function Mypage() {
               setIsOpenMovieInfo={setIsOpenMovieInfo}
             />
           )}
-          {isProfileEdit && <ChangeProfile user={user} setIsProfileEdit={setIsProfileEdit} setIsLoading={setIsLoading}/>}
+          {isProfileEdit && (
+            <ChangeProfile
+              user={user}
+              setIsProfileEdit={setIsProfileEdit}
+              setIsLoading={setIsLoading}
+            />
+          )}
+          {isChangePassword && (
+            <ChangePassword
+              setIsChangePassword={setIsChangePassword}
+              setIsLoading={setIsLoading}
+            />
+          )}
         </>
       )}
     </>
