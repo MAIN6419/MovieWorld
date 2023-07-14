@@ -159,8 +159,8 @@ export default function Mypage() {
                       </MovieItem>
                     );
                   })}
-                <InfiniteScrollTarget ref={ref}></InfiniteScrollTarget>
               </MoiveListWrapper>
+              <InfiniteScrollTarget ref={ref}></InfiniteScrollTarget>
             </MovieMenuWrapper>
           </Wrapper>
           {isOpenMovieInfo && (
