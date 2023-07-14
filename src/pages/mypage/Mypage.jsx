@@ -32,6 +32,7 @@ import ChangeProfile from "./ChangeProfile";
 import Loading from "../../compoents/commons/loading/Loading";
 import { UserContext } from "../../context/userContext";
 import ChangePassword from "./ChangePassword";
+import TopButton from "../../compoents/commons/topButton/TopButton";
 
 export default function Mypage() {
   const { user } = useContext(UserContext);
@@ -113,7 +114,9 @@ export default function Mypage() {
                   </ProfileMenuBtn>
                 </ProfileMenuItem>
                 <ProfileMenuItem>
-                  <ProfileMenuBtn onClick={onClickChangePassword}>비밀번호 변경</ProfileMenuBtn>
+                  <ProfileMenuBtn onClick={onClickChangePassword}>
+                    비밀번호 변경
+                  </ProfileMenuBtn>
                 </ProfileMenuItem>
               </ProfileMenu>
             </ProfileWrapper>
@@ -187,6 +190,7 @@ export default function Mypage() {
           )}
         </>
       )}
+      <TopButton />
     </>
   );
 }
