@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { UserContext } from "./context/userContext";
 import Main from "./pages/main/Main";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import NotFound from "./pages/notFound/NotFound";
 
 function App() {
   const [user, setUser] = useState(
@@ -98,6 +99,7 @@ function App() {
               element={!user ? <Navigate to="/login" /> : <Mypage />}
             />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </UserContext.Provider>
     </>
