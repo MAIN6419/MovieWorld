@@ -159,5 +159,5 @@ export const MovieTitle = styled.h3`
 `;
 
 export const InfiniteScrollTarget = styled.div`
-  margin-top: 20px;
+  margin-top: -20px;
 `;
