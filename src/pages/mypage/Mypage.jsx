@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   InfiniteScrollTarget,
   MoiveListWrapper,
@@ -23,14 +23,24 @@ import {
   ProfileWrapper,
   Wrapper,
 } from "./mypage.style";
-import { fetchFirstLikeList, fetchLikeListPage } from "../../firebase/auth";
+import {
+  fetchFirstLikeList,
+  fetchLikeListPage,
+} from "../../firebase/auth";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
 import { useInView } from "react-intersection-observer";
+import ChangeProfile from "./ChangeProfile";
+import Loading from "../../compoents/commons/loading/Loading";
+import { UserContext } from "../../context/userContext";
 
 export default function Mypage() {
+  const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isProfileEdit, setIsProfileEdit] = useState(false);
+
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
   const [page, setPage] = useState("");
@@ -38,12 +48,14 @@ export default function Mypage() {
   const limitPage = 20;
   const [ref, inview] = useInView();
 
+
   const fetchFirstPage = async () => {
     const res = await fetchFirstLikeList(limitPage);
     const data = res.docs.map((el) => el.data());
     setData((prev) => [...prev, ...data]);
     setPage(res.docs[res.docs.length - 1]);
     setHasMore(res.docs.length === limitPage);
+    setIsLoading(false);
   };
 
   const fetchAddData = async () => {
@@ -54,10 +66,16 @@ export default function Mypage() {
     setHasMore(res.docs.length === limitPage);
   };
 
+  const onClickProfileEdit = () => {
+    setIsProfileEdit(true);
+    document.body.style.overflow = "hidden";
+  };
+
   useEffect(() => {
-    if (!hasMore && inview && !page) {
-      fetchFirstPage();
-    }
+    fetchFirstPage();
+  }, []);
+
+  useEffect(() => {
     if (hasMore && inview) {
       fetchAddData();
     }
@@ -65,77 +83,94 @@ export default function Mypage() {
 
   return (
     <>
-      <Wrapper>
-        <ProfileWrapper>
-          <ProfileTitle>내 정보</ProfileTitle>
-          <ProfileInfo>
-            <ProfileImg src={"assets/defultProfile.png"} alt="프로필 이미지" />
-            <ProfileNameWrapper>
-              <ProfileNickname>test 님</ProfileNickname>
-              <ProfileEmail>test@a.com</ProfileEmail>
-            </ProfileNameWrapper>
-          </ProfileInfo>
-          <ProfileMenu>
-            <ProfileMenuItem>
-              <ProfileMenuBtn>프로필 변경</ProfileMenuBtn>
-            </ProfileMenuItem>
-            <ProfileMenuItem>
-              <ProfileMenuBtn>비밀번호 변경</ProfileMenuBtn>
-            </ProfileMenuItem>
-          </ProfileMenu>
-        </ProfileWrapper>
-        <MovieMenuWrapper>
-          <MovieMenuTitle className="a11y-hidden">찜 목록</MovieMenuTitle>
-          <MovieMenuNav>
-            <MovieMenuUl>
-              <MovieMenuItem>
-                <MovieMenuBtn className="active">찜 목록</MovieMenuBtn>
-              </MovieMenuItem>
-              <MovieMenuItem>
-                <MovieMenuBtn>최근 본 영화</MovieMenuBtn>
-              </MovieMenuItem>
-              <MovieMenuItem>
-                <MovieMenuBtn>다시보기</MovieMenuBtn>
-              </MovieMenuItem>
-            </MovieMenuUl>
-          </MovieMenuNav>
-          <MoiveListWrapper>
-            {data &&
-              data.map((item, idx) => {
-                return (
-                  <MovieItem key={item.id + idx}>
-                    <MovieImgWrapper>
-                      <ProgressiveImg
-                        placeholderSrc={"assets/placeholderImg.png"}
-                        src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
-                        styles={{
-                          position: "absolute",
-                          width: "100%",
-                          height: "100%",
-                          top: "0",
-                          left: "0",
-                          borderRadius: "10px",
-                        }}
-                        alt="영화 포스터"
-                        onError={(e) =>
-                          (e.target.src = "assets/placeholderImg.png")
-                        }
-                        onClick={() => onClickMovieInfo(data)}
-                      />
-                    </MovieImgWrapper>
-                    <MovieTitle>{item.title || item.name || item.original_name}</MovieTitle>
-                  </MovieItem>
-                );
-              })}
-            <InfiniteScrollTarget ref={ref}></InfiniteScrollTarget>
-          </MoiveListWrapper>
-        </MovieMenuWrapper>
-      </Wrapper>
-      {isOpenMovieInfo && (
-        <MovieInfo
-          movieData={seletedMovie}
-          setIsOpenMovieInfo={setIsOpenMovieInfo}
-        />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <Wrapper>
+            <ProfileWrapper>
+              <ProfileTitle>내 정보</ProfileTitle>
+              <ProfileInfo>
+                <ProfileImg
+                  src={user.photoURL||"assets/defultProfile.png"}
+                  alt="프로필 이미지"
+                  onError={(e)=>e.target.src="assets/defultProfile.png"}
+                />
+                <ProfileNameWrapper>
+                  <ProfileNickname>
+                    {user && user.displayName} 님
+                  </ProfileNickname>
+                  <ProfileEmail>{user.email}</ProfileEmail>
+                </ProfileNameWrapper>
+              </ProfileInfo>
+              <ProfileMenu>
+                <ProfileMenuItem>
+                  <ProfileMenuBtn onClick={onClickProfileEdit}>
+                    프로필 변경
+                  </ProfileMenuBtn>
+                </ProfileMenuItem>
+                <ProfileMenuItem>
+                  <ProfileMenuBtn>비밀번호 변경</ProfileMenuBtn>
+                </ProfileMenuItem>
+              </ProfileMenu>
+            </ProfileWrapper>
+            <MovieMenuWrapper>
+              <MovieMenuTitle className="a11y-hidden">찜 목록</MovieMenuTitle>
+              <MovieMenuNav>
+                <MovieMenuUl>
+                  <MovieMenuItem>
+                    <MovieMenuBtn className="active">찜 목록</MovieMenuBtn>
+                  </MovieMenuItem>
+                  <MovieMenuItem>
+                    <MovieMenuBtn>최근 본 영화</MovieMenuBtn>
+                  </MovieMenuItem>
+                  <MovieMenuItem>
+                    <MovieMenuBtn>다시보기</MovieMenuBtn>
+                  </MovieMenuItem>
+                </MovieMenuUl>
+              </MovieMenuNav>
+              <MoiveListWrapper>
+                {data &&
+                  data.map((item, idx) => {
+                    return (
+                      <MovieItem key={item.id + idx}>
+                        <MovieImgWrapper>
+                          <ProgressiveImg
+                            placeholderSrc={"assets/placeholderImg.png"}
+                            src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
+                            styles={{
+                              position: "absolute",
+                              width: "100%",
+                              height: "100%",
+                              top: "0",
+                              left: "0",
+                              borderRadius: "10px",
+                            }}
+                            alt="영화 포스터"
+                            onError={(e) =>
+                              (e.target.src = "assets/placeholderImg.png")
+                            }
+                            onClick={() => onClickMovieInfo(item)}
+                          />
+                        </MovieImgWrapper>
+                        <MovieTitle>
+                          {item.title || item.name || item.original_name}
+                        </MovieTitle>
+                      </MovieItem>
+                    );
+                  })}
+                <InfiniteScrollTarget ref={ref}></InfiniteScrollTarget>
+              </MoiveListWrapper>
+            </MovieMenuWrapper>
+          </Wrapper>
+          {isOpenMovieInfo && (
+            <MovieInfo
+              movieData={seletedMovie}
+              setIsOpenMovieInfo={setIsOpenMovieInfo}
+            />
+          )}
+          {isProfileEdit && <ChangeProfile user={user} setIsProfileEdit={setIsProfileEdit} setIsLoading={setIsLoading}/>}
+        </>
       )}
     </>
   );
