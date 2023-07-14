@@ -22,6 +22,9 @@ import {
   updateProfile,
   sendPasswordResetEmail,
   signOut,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
 } from "firebase/auth";
 import { db, storage } from "./setting";
 import {
@@ -35,21 +38,6 @@ import { v4 as uuidv4 } from "uuid";
 
 const auth = getAuth();
 const userData = JSON.parse(localStorage.getItem("user"));
-// 로그인 변화를 감지
-// 로그인이 된 경우 로컬스토리지에 필요한 유저정보 저장
-// onAuthStateChanged(auth, async (user) => {
-//   if (user) {
-//     localStorage.setItem(
-//       "user",
-//       JSON.stringify({
-//         uid: user.uid,
-//         displayName: user.displayName,
-//         email: user.email,
-//         photoURL: user.photoURL,
-//       })
-//     );
-//   }
-// });
 
 // 로그인 API
 export const login = async (email, password) => {
@@ -192,9 +180,40 @@ export const changePassword = async (email, phone) => {
     throw error;
   }
 };
+// 로그인 상태에서 비밀번호 변경 API
+export async function changeUserPassword(currentPassword, newPassword) {
+  try {
+    const user = auth.currentUser;
+    const credential = EmailAuthProvider.credential(
+      user.email,
+      currentPassword
+    );
+    // 현재 사용자의 정보를 확인하는 메서드
+    // => 이것을 이용하여 현재 로그인한 유저의 비밀번화 일치하는지 판별해서
+    // 일치하지 않는다면 오류가 발생하는데 이것을 예외처리해서
+    // 비밀번호가 일치하지 않는다는 것을 판별
+    await reauthenticateWithCredential(user, credential);
+    if (currentPassword === newPassword) {
+      alert("현재 비밀번호와 새 비밀번호가 같습니다!");
+      return false;
+    }
+    await updatePassword(auth.currentUser, newPassword);
+    alert(
+      "비밀번호가 변경되었습니다. 변경사항 확인을 위해 다시 로그인 해주세요."
+    );
+    await signOut(auth);
+    window.location.replace("/login");
+  } catch (error) {
+    if (error.message.includes("auth/wrong-password")) {
+      alert("현재 비밀번호가 일치하지 않습니다!");
+      return;
+    } else {
+      throw error;
+    }
+  }
+}
 
 // 유저 프로필 수정 API
-
 export const updateUserProfile = async (file, displayName) => {
   try {
     const fileName = file && `${uuidv4()}_${file.name}`;
@@ -227,19 +246,19 @@ export const updateUserProfile = async (file, displayName) => {
       });
       userData.displayName = displayName;
       userData.photoURL = uploadfileUrl;
-    } 
+    }
 
     // 2. 닉네임만 변경된 경우
-    else if (displayName && !file) { 
+    else if (displayName && !file) {
       await updateProfile(auth.currentUser, { displayName });
       await updateDoc(updateUser, {
         displayName,
       });
       userData.displayName = displayName;
-    } 
+    }
 
     // 3. 이미지만 변경된 경우
-    else if (!displayName && file) { 
+    else if (!displayName && file) {
       if (user.photoFileName)
         await deleteObject(
           storageRef(storage, `images/profile/${String(user.photoFileName)}`)
