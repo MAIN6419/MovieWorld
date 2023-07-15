@@ -186,17 +186,15 @@ export const MoviePlayBtn = styled.button`
   color: black;
   background: url("assets/icon-play.png") no-repeat center left 5px/ 20px #fff;
   :hover {
-    :hover {
-      background-color: ${isMobile ? "" : "rgba(170, 170, 170, 0.9)"};
-      transition: all 0.2s;
-    }
+    background-color: ${isMobile ? "" : "rgba(170, 170, 170, 0.9)"};
+    transition: all 0.2s;
   }
 `;
 
 export const MovieLikeBtn = styled.button`
   width: 35px;
   height: 35px;
-  transition: all 0.5s;
+  transition: all 0.2s;
   background: ${(props) =>
     props.like
       ? "url(assets/like.png) no-repeat center  / 20px"
