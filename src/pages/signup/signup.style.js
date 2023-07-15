@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Wrapper = styled.main`
   width: 100vw;
   height: 100vh;
-  background: url("assets/signup-bg.jpg") no-repeat center / cover;
+  background: url("assets/login-bg.png") no-repeat center / cover;
 `;
 
 export const Title = styled.h1``;
