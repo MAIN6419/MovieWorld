@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   SignupBtn,
   SignupForm,
@@ -11,23 +11,27 @@ import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { duplication, signup } from "../../firebase/auth";
 import Loading from "../../compoents/commons/loading/Loading";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/userContext";
 
 export default function Signup() {
+  const { refreshUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-  const nicknameReg = /^[a-zA-z0-9]{4,10}$/;
+  const displayNameReg = /^[a-zA-z0-9]{4,10}$/;
   const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
   const phoneReg = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
 
   // 닉네임 유효성 input
   const [
-    nickNameValue,
-    setNickNameValue,
-    nickNameValid,
-    setNickNameValid,
+    displayNameValue,
+    setDisplayNameValue,
+    displayNameValid,
+    setDisplayNameValid,
     onChangeNickName,
   ] = useValidationInput(
     "",
-    nicknameReg,
+    displayNameReg,
     "4-10자 영문, 영문+숫자를 입력해주세요."
   );
 
@@ -52,7 +56,6 @@ export default function Signup() {
     setPasswordChkValue,
     passwordChkValid,
     setPasswordChkValid,
-    _,
   ] = useValidationInput("", passwordReg, "비밀번호가 일치하지 않습니다.");
 
   // 휴대폰 유효성 input
@@ -77,12 +80,15 @@ export default function Signup() {
   };
 
   const onBlurNickname = async () => {
-    if (nickNameValid.valid) {
-      const isDulplcation = await duplication(nickNameValue, "nickname");
+    if (displayNameValid.valid) {
+      const isDulplcation = await duplication(displayNameValue, "displayName");
       if (isDulplcation) {
-        setNickNameValid({ errorMsg: "중복된 닉네임 입니다!", valid: false });
+        setDisplayNameValid({
+          errorMsg: "중복된 닉네임 입니다!",
+          valid: false,
+        });
       } else {
-        setNickNameValid({ errorMsg: "", valid: true });
+        setDisplayNameValid({ errorMsg: "", valid: true });
       }
     }
   };
@@ -115,21 +121,24 @@ export default function Signup() {
     }
   };
 
-  useEffect(() => {
-    console.log(emailValue);
-  }, [emailValue]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    await signup(nickNameValue, emailValue, passwordValue, phoneValue);
+    await signup(
+      displayNameValue,
+      emailValue,
+      passwordValue,
+      phoneValue.replace(/-/g, "")
+    );
     setIsLoading(false);
+    refreshUser();
+    navigate("/main", { replace: true });
   };
 
   // 전체 input이 유효하다면 버튼 활성화
   useEffect(() => {
     if (
-      nickNameValid.valid &&
+      displayNameValid.valid &&
       emailValid.valid &&
       passowrdValid.valid &&
       passwordChkValid.valid &&
@@ -139,7 +148,13 @@ export default function Signup() {
     } else {
       setDisabled(true);
     }
-  }, [nickNameValid, emailValid, passowrdValid, passwordChkValid, phoneValid]);
+  }, [
+    displayNameValid,
+    emailValid,
+    passowrdValid,
+    passwordChkValid,
+    phoneValid,
+  ]);
 
   return (
     <Wrapper>
@@ -151,14 +166,14 @@ export default function Signup() {
           label={"닉네임"}
           id={"input-nickname"}
           placeholder={"Nickname"}
-          value={nickNameValue}
+          value={displayNameValue}
           onChange={onChangeNickName}
           onBlur={onBlurNickname}
           minLength={4}
           maxLength={10}
         />
-        {nickNameValid.errorMsg && (
-          <ErrorMsg message={nickNameValid.errorMsg} />
+        {displayNameValid.errorMsg && (
+          <ErrorMsg message={displayNameValid.errorMsg} />
         )}
         <UserInput
           type="text"
