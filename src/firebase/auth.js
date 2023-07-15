@@ -180,6 +180,7 @@ export const changePassword = async (email, phone) => {
     throw error;
   }
 };
+
 // 로그인 상태에서 비밀번호 변경 API
 export async function changeUserPassword(currentPassword, newPassword) {
   try {
@@ -226,57 +227,68 @@ export const updateUserProfile = async (file, displayName) => {
     const user = await getUser();
     const uploadfileUrl = file && (await getDownloadURL(res.ref));
     const updateUser = doc(db, `user/${auth.currentUser.uid}`);
-    // 수정 사항의 경우 닉네임과 이미지 모두 변경, 닉네임만 변경, 이미지만 변경할 경우를 나눔
-    // 필요만 API만 사용하여 불필요한 API 사용을 방지
+    const promises = [];
 
     // 1. 닉네임과 이미지 파일이 모두 변경된 경우
     if (displayName && file) {
-      if (user.photoFileName)
-        await deleteObject(
-          storageRef(storage, `images/profile/${String(user.photoFileName)}`)
+      if (user.photoFileName) {
+        promises.push(
+          deleteObject(
+            storageRef(storage, `images/profile/${String(user.photoFileName)}`)
+          )
         );
-      await updateProfile(auth.currentUser, {
-        displayName,
-        photoURL: uploadfileUrl,
-      });
-      await updateDoc(updateUser, {
-        displayName,
-        photoFileName: fileName,
-        photoURL: uploadfileUrl,
-      });
+      }
+      promises.push(
+        updateProfile(auth.currentUser, {
+          displayName,
+          photoURL: uploadfileUrl,
+        }),
+        updateDoc(updateUser, {
+          displayName,
+          photoFileName: fileName,
+          photoURL: uploadfileUrl,
+        })
+      );
       userData.displayName = displayName;
       userData.photoURL = uploadfileUrl;
     }
 
     // 2. 닉네임만 변경된 경우
     else if (displayName && !file) {
-      await updateProfile(auth.currentUser, { displayName });
-      await updateDoc(updateUser, {
-        displayName,
-      });
+      promises.push(
+        updateProfile(auth.currentUser, { displayName }),
+        updateDoc(updateUser, { displayName })
+      );
       userData.displayName = displayName;
     }
 
     // 3. 이미지만 변경된 경우
     else if (!displayName && file) {
-      if (user.photoFileName)
-        await deleteObject(
-          storageRef(storage, `images/profile/${String(user.photoFileName)}`)
+      if (user.photoFileName) {
+        promises.push(
+          deleteObject(
+            storageRef(storage, `images/profile/${String(user.photoFileName)}`)
+          )
         );
-      await updateProfile(auth.currentUser, { photoURL: uploadfileUrl });
-      await updateDoc(updateUser, {
-        photoFileName: fileName,
-        photoURL: uploadfileUrl,
-      });
+      }
+      promises.push(
+        updateProfile(auth.currentUser, { photoURL: uploadfileUrl }),
+        updateDoc(updateUser, {
+          photoFileName: fileName,
+          photoURL: uploadfileUrl,
+        })
+      );
       userData.photoURL = uploadfileUrl;
     }
 
+    await Promise.all(promises);
     localStorage.setItem("user", JSON.stringify(userData));
   } catch (error) {
     alert("알 수 없는 오류가 발생하였습니다. 잠시 후 다시 시도해주세요.");
     throw error;
   }
 };
+
 
 // 유저 데이터 API
 export const getUser = async () => {
