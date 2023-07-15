@@ -28,7 +28,6 @@ export const HeaderLogo = styled.img`
 
 export const HeaderRight = styled.div`
   display: flex;
-  gap: 10px;
   align-items: center;
   margin-right: 10px;
   font-size: 14px;
@@ -55,13 +54,13 @@ export const HeaderLinks = styled.div``;
 export const HeaderLink = styled(Link)`
   color: #fff;
   margin-right: 8px;
-  :first-child::after {
+  :nth-child(2)::before {
     content: "";
     width: 1px;
     height: 12px;
     background-color: #fff;
     display: inline-block;
-    margin-left: 8px;
+    margin-right: 8px;
   }
 `;
 
@@ -83,6 +82,7 @@ export const UserProfileImg = styled.img`
   object-position: center;
   overflow: hidden;
   border: 1px solid #bdbdbd;
+  margin: 0 10px;
   @media screen and (max-width: 440px) {
     width: 30px;
     height: 30px;
@@ -105,10 +105,10 @@ export const UserMenuBtnIcon = styled.img`
 export const UserMenu = styled.ul`
   position: absolute;
   top: 30px;
-  width: 90px;
-  border: 1px solid #bdbdbd;
+  width: 80px;
+  border: 2px solid #292a2b;
   border-radius: 5px;
-  background: #555;
+  background: #1d1e1e;
   overflow: hidden;
   animation: fadeIn 0.5s;
   @keyframes fadeIn {
@@ -124,17 +124,16 @@ export const UserMenu = styled.ul`
 export const UserMenuLi = styled.li`
   transition: all 0.3s;
   :not(:last-child) {
-    border-bottom: 1px solid #fff;
+    border-bottom: 2px solid #292a2b;
   }
-
   :hover {
-    background-color: ${isMobile ? "" : "#739bfa"};
+    background-color: ${isMobile ? "" : "rgba(74,74,74)"};
   }
 `;
 
 export const UserMenuItemLink = styled(Link)`
-  padding: 15px 8px;
-  font-size: 16px;
+  padding: 10px 8px;
+  font-size: 14px;
   display: block;
   border: none;
   width: 100%;
@@ -143,14 +142,14 @@ export const UserMenuItemLink = styled(Link)`
 `;
 
 export const UserMenuItemBtn = styled.button`
-  padding: 11.5px 8px;
+  padding: 7px 8px;
   display: block;
   border: none;
   width: 100%;
   background: none;
   color: #fff;
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   cursor: pointer;
 `;

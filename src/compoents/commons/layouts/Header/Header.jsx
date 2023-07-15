@@ -21,8 +21,10 @@ import {
 } from "./header.style";
 import { UserContext } from "../../../../context/userContext";
 import { logout } from "../../../../firebase/auth";
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
+  const pathname = useLocation().pathname;
   const [isUserMenu, setIsUserMenu] = useState(false);
 
   const { user } = useContext(UserContext);
@@ -33,12 +35,12 @@ export default function Header() {
   return (
     <HeaderBar>
       <HeaderTitle>
-        <HeaderLogoLink to="/main" onClick={()=>setIsUserMenu(false)}>
+        <HeaderLogoLink to="/main" onClick={() => setIsUserMenu(false)}>
           <HeaderLogo src="assets/logo.png" alt="MovieWorld" />
         </HeaderLogoLink>
       </HeaderTitle>
       <HeaderRight>
-        <HeaderSearchLink to="/search">
+        <HeaderSearchLink to="/search" onClick={() => setIsUserMenu(false)}>
           <HeaderSearchIcon src="assets/icon-search.png" alt="검색" />
         </HeaderSearchLink>
         {user && (
@@ -86,8 +88,16 @@ export default function Header() {
             </UserNicknameWrapper>
           ) : (
             <>
-              <HeaderLink to="/login">로그인</HeaderLink>
-              <HeaderLink to="/signup">회원가입</HeaderLink>
+              {pathname === "/signup" ? (
+                <HeaderLink to="/login">로그인</HeaderLink>
+              ) : pathname === "/login" ? (
+                <HeaderLink to="/signup">회원가입</HeaderLink>
+              ) : (
+                <>
+                  <HeaderLink to="/login">로그인</HeaderLink>
+                  <HeaderLink to="/signup">회원가입</HeaderLink>
+                </>
+              )}
             </>
           )}
         </HeaderLinks>
