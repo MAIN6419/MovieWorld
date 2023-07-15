@@ -197,10 +197,8 @@ export const MovieLikeBtn = styled.button`
   transition: all 0.2s;
   background: ${(props) =>
     props.like
-      ? "url(assets/like.png) no-repeat center  / 20px"
-      : "url(assets/unlike.png) no-repeat center / 20px"};
-  border: 2px solid #bdbdbd;
-  border-radius: 50%;
+      ? "url(assets/icon-like.svg) no-repeat center  / cover"
+      : "url(assets/icon-unlike.svg) no-repeat center / cover"};
 `;
 
 export const CloseBtn = styled.button`
