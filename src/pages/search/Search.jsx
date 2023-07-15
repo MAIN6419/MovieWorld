@@ -27,7 +27,7 @@ export default function Search() {
   const [ref, inVeiw] = useInView(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-
+  const [isFirst, setIsFirst] = useState(true);
   const onChangeKeyword = (e) => {
     if (e.target.value.length === 1 && e.target.value === " ") {
       return;
@@ -40,12 +40,7 @@ export default function Search() {
   const searchDebounce = useCallback(
     debounce(async (value) => {
       if (!value) {
-        // 데이터 초기화
-        const data = await fetchTrending();
-        setMovieData(data);
-        setHasMore(true);
-        // 첫페이지가 불러와져있으므로 2페이지로 초기화
-        setPage(2);
+        fetchFirstData();
         return;
       }
       const data = await fetchSearchMovie(value);
@@ -69,7 +64,19 @@ export default function Search() {
     setHasMore(data.length === 20);
   };
 
+  const fetchFirstData = async () => {
+    const data = await fetchTrending();
+    setPage(2);
+    setMovieData(data);
+    setHasMore(data.length === 20);
+  };
+
   useEffect(() => {
+    if (isFirst) {
+      setIsFirst(false);
+      fetchFirstData();
+      return;
+    }
     if (hasMore && inVeiw && keyWord) {
       fetchAddMovie();
     } else if (hasMore && inVeiw && !keyWord) {
@@ -88,9 +95,9 @@ export default function Search() {
             onChange={onChangeKeyword}
           />
         </SearchForm>
-        {!movieData.length ?  (
-          <Blank text={`"${keyWord}"에 대한 검색결과가 없습니다.`}/>
-        ): (
+        {!movieData.length ? (
+          <Blank text={`"${keyWord}"에 대한 검색결과가 없습니다.`} />
+        ) : (
           <>
             <SearchMovieList>
               {movieData.map((data) => {
