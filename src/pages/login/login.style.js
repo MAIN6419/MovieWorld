@@ -25,9 +25,9 @@ export const LoginForm = styled.form`
   gap: 20px;
   max-width: 400px;
   width: calc(100% - 60px);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   padding: 30px 40px;
-  @media screen and (max-width:431px){
+  @media screen and (max-width: 431px) {
     width: calc(100% - 40px);
     padding: 30px 20px;
   }
@@ -35,13 +35,14 @@ export const LoginForm = styled.form`
 
 export const LoginBtn = styled.button`
   width: 100%;
-  background-color: #e50914;
+  background-color: ${(props) => (props.disabled ? "rgba(220,220,220, 0.5)" : "#e50914")};
   padding: 14px 0;
   border-radius: 4px;
   font-size: 16px;
   font-weight: 500;
   color: #fff;
   margin-top: 20px;
+  transition: all 0.5s;
 `;
 
 export const SignupText = styled.p`

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   LoginBtn,
   LoginForm,
@@ -15,6 +15,7 @@ import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { login } from "../../firebase/auth";
 
 export default function Login() {
+  const [disabled, setDisabled] = useState(true);
   const emailRef = useRef(null);
   const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
@@ -51,6 +52,14 @@ export default function Login() {
   useEffect(() => {
     emailRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (emailValid.valid && passwordValid.valid) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [emailValid, passwordValid]);
   return (
     <>
       <Title className="a11y-hidden">로그인 페이지</Title>
@@ -81,7 +90,9 @@ export default function Login() {
           <FindAccountLink to={"/findAccount"}>
             아이디 | 비밀번호 찾기
           </FindAccountLink>
-          <LoginBtn type="submit">로그인</LoginBtn>
+          <LoginBtn type="submit" disabled={disabled}>
+            로그인
+          </LoginBtn>
 
           <SignupText>
             아이디가 없으신가요?
