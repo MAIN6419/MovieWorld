@@ -60,12 +60,13 @@ export const ProfileMenuItem = styled.li``;
 
 export const ProfileMenuBtn = styled.button`
   background: #fff;
-  border: 1.5px solid #bdbdbd;
   border-radius: 20px;
-  padding: 5px 10px;
+  padding: 4px 10px 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   :hover {
-    background-color: rgba(225, 225, 225);
+    background-color: rgba(205, 205, 205);
   }
 `;
 
