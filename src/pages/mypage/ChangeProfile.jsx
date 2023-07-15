@@ -111,7 +111,7 @@ export default function ChangeProfile({
     setIsLoading(true);
     await updateUserProfile(uploadImg, displayNameValue);
     setIsLoading(false);
-    setIsProfileEdit(false);
+    onClickCancle();
     refreshUser();
   };
 
