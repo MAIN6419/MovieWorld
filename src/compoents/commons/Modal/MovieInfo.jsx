@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   CloseBtn,
   ModalCard,
@@ -24,17 +24,21 @@ import {
 } from "./movieInfo.style";
 import { fetchVideo } from "../../../api/movie";
 import { addLike, getUser, removeLike } from "../../../firebase/auth";
+import { UserContext } from "../../../context/userContext";
 
 export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
+  const { user } = useContext(UserContext);
   const [isPlay, setIsPlay] = useState(false);
   const [videoData, setVideoData] = useState({});
   const [like, setLike] = useState(false);
 
   const fetchLike = async () => {
-    const data = await getUser();
-    const isLike =
-      data && data.likeList.find((likeId) => likeId === videoData.id);
-    setLike(!!isLike);
+    if (user) {
+      const data = await getUser();
+      const isLike =
+        data && data.likeList.find((likeId) => likeId === videoData.id);
+      setLike(!!isLike);
+    }
   };
 
   const onClickClose = () => {
