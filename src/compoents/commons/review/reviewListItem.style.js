@@ -10,17 +10,17 @@ export const ReviewItem = styled.li`
 export const ReviewItemRateWrapper = styled.div``;
 
 export const ReviewItemRate = styled(Rate)`
-  margin-right: 10px;
+  margin-right: 5px;
   & .ant-rate-star-zero svg {
     fill: #fff !important;
   }
-  font-size: 18px;
+  font-size: 20px;
   &:where(.css-dev-only-do-not-override-14wwjjs).ant-rate
     .ant-rate-star:not(:last-child) {
     margin-inline-end: 3px;
   }
   @media screen and (max-width: 486px) {
-    font-size: 16px;
+    font-size: 18px;
   }
 `;
 
@@ -37,21 +37,21 @@ export const ReviewerWrapper = styled.div`
 `;
 
 export const ReviewerImg = styled.img`
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 2px solid #bdbdbd;
   @media screen and (max-width: 486px) {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
   }
 `;
 
 export const Reviewer = styled.span`
   color: #fff;
-  font-size: 20px;
+  font-size: 18px;
   @media screen and (max-width: 486px) {
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
 
