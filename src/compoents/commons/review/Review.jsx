@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ReviewListItem from "./ReviewListItem";
 import {
   Rating,
+  RatingCount,
   RatingWrapper,
   ReviewList,
   TextArea,
@@ -16,6 +17,7 @@ import {
   Wrapper,
 } from "./review.style";
 import { addReview, fetchReview } from "../../../firebase/auth";
+import { Timestamp } from "firebase/firestore";
 
 export default function Review({ movieData, user }) {
   const [reviewValue, setReivewValue] = useState("");
@@ -47,14 +49,16 @@ export default function Review({ movieData, user }) {
     );
     if (isReview) {
       alert("이미 리뷰한 영화 입니다!");
-    } else{
+    } else {
       const commentData = {
         id: uuidv4(),
         uid: user.uid,
         rating,
         contents: reviewValue,
+        createdAt: Timestamp.fromDate(new Date()),
       };
       addReview(movieData.id, commentData);
+      setReviewData(prev=>[...prev, {...commentData, reviewer:user.displayName}]);
     }
     setReivewValue("");
     setRating(0);
@@ -63,7 +67,8 @@ export default function Review({ movieData, user }) {
     <Wrapper>
       <Title>리뷰</Title>
       <RatingWrapper>
-        <Rating count={5} onChange={(value) => setRating(value)} />
+        <Rating count={5} value={rating} onChange={(value) => setRating(value)} />
+        <RatingCount>{!rating||rating * 2}</RatingCount>
       </RatingWrapper>
       <TextAreaForm onSubmit={onClickSubmit}>
         <TextAreaWrapper>
@@ -83,7 +88,15 @@ export default function Review({ movieData, user }) {
       </TextAreaForm>
       <ReviewList>
         {reviewData.map((item) => {
-          return <ReviewListItem key={item.id} reviewData={item} />;
+          return (
+            <ReviewListItem
+              key={item.id}
+              reviewData={item}
+              user={user}
+              movieId={movieData.id}
+              setReviewData={setReviewData}
+            />
+          );
         })}
       </ReviewList>
     </Wrapper>

@@ -26,6 +26,11 @@ export const Rating = styled(Rate)`
   }
 `;
 
+export const RatingCount = styled.span`
+font-size: 18px;
+font-weight: 500;
+`
+
 export const TextAreaForm = styled.form`
   display: flex;
   border: 1px solid #bdbdbd;
