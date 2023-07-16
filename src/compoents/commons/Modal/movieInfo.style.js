@@ -66,7 +66,7 @@ export const MovieContetns = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
 `;
 export const MovieTitle = styled.h3`
   display: flex;
@@ -156,7 +156,7 @@ export const MovieRating = styled.span`
 `;
 
 export const MovieRatingIcon = styled(StarFilled)`
-  color: yellow;
+  color: gold;
 `;
 
 export const MovieDesc = styled.p`
