@@ -289,7 +289,6 @@ export const updateUserProfile = async (file, displayName) => {
   }
 };
 
-
 // 유저 데이터 API
 export const getUser = async () => {
   try {
@@ -303,24 +302,27 @@ export const getUser = async () => {
   }
 };
 
-// 좋아요 추가 API
 export const addLike = async (movieData) => {
   try {
     if (auth.currentUser) {
-      const userLikeRef = collection(db, `${auth.currentUser.uid}_LikeList`);
-      await setDoc(doc(userLikeRef, String(movieData.id)), {
-        ...movieData,
-      });
+      const likeRef = collection(db, "likeList");
+      const userLikedoc = doc(likeRef, auth.currentUser.uid);
+      const userLikeRef = collection(userLikedoc, "like");
+
+      await setDoc(doc(userLikeRef, String(movieData.id)), movieData);
+
       const userRef = doc(db, `user/${auth.currentUser.uid}`);
       await updateDoc(userRef, {
         likeList: arrayUnion(movieData.id),
       });
+
       return true;
     } else {
-      return alert("로그인 후 이용 가능합니다!");
+      alert("로그인 후 이용 가능합니다!");
+      return false;
     }
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
     throw error;
   }
 };
@@ -329,8 +331,11 @@ export const addLike = async (movieData) => {
 export const removeLike = async (movieData) => {
   try {
     if (auth.currentUser) {
-      const userLikeRef = collection(db, `${auth.currentUser.uid}_LikeList`);
-      await deleteDoc(doc(userLikeRef, String(movieData.id)));
+      const likeRef = collection(db, "likeList");
+      const userLikedoc = doc(likeRef, auth.currentUser.uid);
+      const userLikeRef = collection(userLikedoc, "like");
+      const deleteReplyRef = doc(userLikeRef, String(movieData.id));
+      await deleteDoc(deleteReplyRef);
       const userRef = doc(db, `user/${auth.currentUser.uid}`);
       await updateDoc(userRef, {
         likeList: arrayRemove(movieData.id),
@@ -348,8 +353,10 @@ export const removeLike = async (movieData) => {
 // 좋아요 목록 API
 export const fetchFirstLikeList = async (limitPage) => {
   try {
-    const userRef = collection(db, `${userData.uid}_LikeList`);
-    const q = query(userRef, limit(limitPage));
+    const likeRef = collection(db, "likeList");
+    const userLikedoc = doc(likeRef, userData.uid);
+    const userLikeRef = collection(userLikedoc, "like");
+    const q = query(userLikeRef, limit(limitPage));
     const res = await getDocs(q);
     return res;
   } catch (error) {
@@ -361,8 +368,10 @@ export const fetchFirstLikeList = async (limitPage) => {
 // 좋아요 목록 페이징 API
 export const fetchLikeListPage = async (page, limitPage) => {
   try {
-    const userRef = collection(db, `${userData.uid}_LikeList`);
-    const q = query(userRef, startAfter(page), limit(limitPage));
+    const likeRef = collection(db, "likeList");
+    const userLikedoc = doc(likeRef, userData.uid);
+    const userLikeRef = collection(userLikedoc, "like");
+    const q = query(userLikeRef, startAfter(page), limit(limitPage));
     const res = await getDocs(q);
     return res;
   } catch (error) {
