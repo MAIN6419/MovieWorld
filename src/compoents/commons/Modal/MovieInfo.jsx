@@ -25,6 +25,7 @@ import {
 import { fetchVideo } from "../../../api/movie";
 import { addLike, getUser, removeLike } from "../../../firebase/auth";
 import { UserContext } from "../../../context/userContext";
+import Review from "../review/Review";
 
 export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
   const { user } = useContext(UserContext);
@@ -169,6 +170,8 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
                   : "영화에 대한 설명이 없습니다."}
               </MovieDesc>
             </MovieContetns>
+
+            <Review movieData={videoData} user={user} />
 
             <CloseBtn onClick={onClickClose}>
               <span className="a11y-hidden">닫기</span>
