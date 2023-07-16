@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState } from "react";
 import ReviewListItem from "./ReviewListItem";
 import {
   Rating,
@@ -13,26 +15,76 @@ import {
   Title,
   Wrapper,
 } from "./review.style";
+import { addReview, fetchReview } from "../../../firebase/auth";
 
-export default function Review() {
+export default function Review({ movieData, user }) {
+  const [reviewValue, setReivewValue] = useState("");
+  const [rating, setRating] = useState(0);
+  const [textCount, setTextCount] = useState(0);
+  const [reviewData, setReviewData] = useState([]);
+
+  const fetchReviewData = async () => {
+    const data = await fetchReview(movieData.id);
+    setReviewData(data);
+  };
+
+  useEffect(() => {
+    fetchReviewData();
+  }, []);
+
+  const onChangeReview = (e) => {
+    if (e.target.value.length === 1 && e.target.value === " ") {
+      return;
+    }
+    setReivewValue(e.target.value);
+    setTextCount(e.target.value.length);
+  };
+
+  const onClickSubmit = (e) => {
+    e.preventDefault();
+    const isReview = reviewData.find(
+      (data) => data.reviewer === user.displayName
+    );
+    if (isReview) {
+      alert("이미 리뷰한 영화 입니다!");
+    } else{
+      const commentData = {
+        id: uuidv4(),
+        uid: user.uid,
+        rating,
+        contents: reviewValue,
+      };
+      addReview(movieData.id, commentData);
+    }
+    setReivewValue("");
+    setRating(0);
+  };
   return (
     <Wrapper>
       <Title>리뷰</Title>
       <RatingWrapper>
-        <Rating count={5} />
+        <Rating count={5} onChange={(value) => setRating(value)} />
       </RatingWrapper>
-      <TextAreaForm>
+      <TextAreaForm onSubmit={onClickSubmit}>
         <TextAreaWrapper>
           <TextAreaLabel className="a11y-hidden">리뷰 등록창</TextAreaLabel>
-          <TextArea placeholder="개인정보를 공용 및 요청하거나 명예훼손, 무단 광고, 불법 정보 유포시 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다."></TextArea>
+          <TextArea
+            onChange={onChangeReview}
+            value={reviewValue}
+            placeholder="개인정보를 공용 및 요청하거나 명예훼손, 무단 광고, 불법 정보 유포시 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다."
+          ></TextArea>
           <TextCountWrapper>
-            <TextCount>0/500</TextCount>
-            <TextAreaBtn>등록하기</TextAreaBtn>
+            <TextCount>{textCount}/500</TextCount>
+            <TextAreaBtn type="submit" disabled={!reviewValue || !rating}>
+              작성하기
+            </TextAreaBtn>
           </TextCountWrapper>
         </TextAreaWrapper>
       </TextAreaForm>
       <ReviewList>
-        <ReviewListItem/>
+        {reviewData.map((item) => {
+          return <ReviewListItem key={item.id} reviewData={item} />;
+        })}
       </ReviewList>
     </Wrapper>
   );

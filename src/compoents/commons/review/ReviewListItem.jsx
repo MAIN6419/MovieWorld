@@ -12,21 +12,23 @@ import {
   ReviewerImg,
   ReviewerWrapper,
 } from "./reviewListItem.style";
+import { setDateFormate } from "../../../libray/setDateFormate";
 
-export default function ReviewListItem() {
+export default function ReviewListItem({reviewData}) {
+  console.log(reviewData)
   return (
     <ReviewItem>
       <ReviewerWrapper>
         <ReviewerImg src="assets/defaultProfile.png" />
-        <Reviewer>test</Reviewer>
+        <Reviewer>{reviewData.reviewer}</Reviewer>
         <ReviewItemRateWrapper>
-          <ReviewItemRate defaultValue={3} disabled />
-          <ReviewItemRateCount>7</ReviewItemRateCount>
+          <ReviewItemRate defaultValue={reviewData.rating} disabled />
+          <ReviewItemRateCount>{reviewData.rating}</ReviewItemRateCount>
         </ReviewItemRateWrapper>
       </ReviewerWrapper>
-      <ReviewContents>안녕하세요.</ReviewContents>
+      <ReviewContents>{reviewData.contents}</ReviewContents>
       <ReviewItemBottom>
-        <ReviewCreatedAt>2023-05-06</ReviewCreatedAt>
+        <ReviewCreatedAt>{setDateFormate(reviewData.createdAt.seconds * 1000)}</ReviewCreatedAt>
         <ReviewItemBtn>신고</ReviewItemBtn>
       </ReviewItemBottom>
     </ReviewItem>

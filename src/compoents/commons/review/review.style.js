@@ -70,11 +70,13 @@ export const TextCount = styled.span`
 `;
 
 export const TextAreaBtn = styled.button`
-  background: #fff;
+  background: ${(props) => (props.disabled ? "##292a2b" : "gold")};
   float: right;
   padding: 8px 10px;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
+  transition: all 0.5s;
+  color: ${(props) => (props.disabled ? "rgba(245, 245, 245, 0.8)" : "#000")};
   @media screen and (max-width: 486px) {
     font-size: 14px;
   }
@@ -85,5 +87,3 @@ export const ReviewList = styled.ul`
   flex-direction: column;
   gap: 20px;
 `;
-
-
