@@ -381,32 +381,56 @@ export const fetchLikeListPage = async (page, limitPage) => {
   }
 };
 
-// 리뷰 작성 API
-export const addReview = async (movieId, commentData) => {
-  const reviewListRef = collection(db, "reviewList");
-  const reviewDoc = doc(reviewListRef, String(movieId));
-  const reviewRef = collection(reviewDoc, "review");
-
-  const userRef = doc(db, `user/${commentData.uid}`);
-  const res = await getDoc(userRef);
-  const user = res.data();
-
-  await setDoc(doc(reviewRef, commentData.id), {
-    id: commentData.id,
-    reviewer: user.displayName,
-    reviewerImg: user.photoURL,
-    rating: commentData.rating,
-    contents: commentData.contents,
-    createdAt: Timestamp.fromDate(new Date()),
-  });
-};
-
 // 리뷰 목록 API
 export const fetchReview = async (movieId) => {
-  const reviewListRef = collection(db, "reviewList");
-  const reviewDoc = doc(reviewListRef, String(movieId));
-  const reviewRef = collection(reviewDoc, "review");
-  const res = await getDocs(reviewRef);
-  const data = res.docs.map((el) => el.data());
-  return data;
+  try {
+    const reviewListRef = collection(db, "reviewList");
+    const reviewDoc = doc(reviewListRef, String(movieId));
+    const reviewRef = collection(reviewDoc, "review");
+    const res = await getDocs(reviewRef);
+    const data = res.docs.map((el) => el.data());
+    return data;
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 리뷰 작성 API
+export const addReview = async (movieId, commentData) => {
+  try {
+    const reviewListRef = collection(db, "reviewList");
+    const reviewDoc = doc(reviewListRef, String(movieId));
+    const reviewRef = collection(reviewDoc, "review");
+
+    const userRef = doc(db, `user/${commentData.uid}`);
+    const res = await getDoc(userRef);
+    const user = res.data();
+
+    await setDoc(doc(reviewRef, commentData.id), {
+      id: commentData.id,
+      reviewer: user.displayName,
+      reviewerImg: user.photoURL,
+      rating: commentData.rating,
+      contents: commentData.contents,
+      createdAt: commentData.createdAt
+    });
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 리뷰 삭제 API
+export const removeReview = async (movieId, commentId) => {
+  try {
+    const reviewListRef = collection(db, "reviewList");
+    const reviewDoc = doc(reviewListRef, String(movieId));
+    const reviewRef = collection(reviewDoc, "review");
+    const deleteReviewRef = doc(reviewRef, commentId);
+    await deleteDoc(deleteReviewRef);
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
 };
