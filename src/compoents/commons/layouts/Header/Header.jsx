@@ -45,8 +45,8 @@ export default function Header() {
         </HeaderSearchLink>
         {user && (
           <UserProfileImg
-            src={user.photoURL || "assets/defultProfile.png"}
-            onError={(e) => (e.target.src = "assets/defultProfile.png")}
+            src={user.photoURL || "assets/defaultProfile.png"}
+            onError={(e) => (e.target.src = "assets/defaultProfile.png")}
             alt="유저 프로필 이미지"
           />
         )}

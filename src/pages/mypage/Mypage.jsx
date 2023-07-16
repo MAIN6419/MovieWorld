@@ -97,9 +97,9 @@ export default function Mypage() {
               <ProfileTitle>내 정보</ProfileTitle>
               <ProfileInfo>
                 <ProfileImg
-                  src={user.photoURL || "assets/defultProfile.png"}
+                  src={user.photoURL || "assets/defaultProfile.png"}
                   alt="프로필 이미지"
-                  onError={(e) => (e.target.src = "assets/defultProfile.png")}
+                  onError={(e) => (e.target.src = "assets/defaultProfile.png")}
                 />
                 <ProfileNameWrapper>
                   <ProfileNickname>

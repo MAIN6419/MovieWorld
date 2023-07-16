@@ -126,8 +126,8 @@ export default function ChangeProfile({
           <ProfileImgWrapper>
             <ImgInput type="file" ref={imgInputRef} onChange={onChangeImg} />
             <ProfileImg
-              src={previewImg || "assets/defultProfile.png"}
-              onError={(e) => (e.target.src = "assets/defultProfile.png")}
+              src={previewImg || "assets/defaultProfile.png"}
+              onError={(e) => (e.target.src = "assets/defaultProfile.png")}
               alt="프로필 이미지"
             />
             <ChangeImgBtn type="button" onClick={onClickChangeImg}>
