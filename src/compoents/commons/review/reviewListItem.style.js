@@ -95,3 +95,59 @@ export const ReviewItemBtn = styled.button`
   color: #bdbdbd;
   font-size: 12px;
 `;
+
+export const EditTextAreaForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #bdbdbd;
+`;
+export const EditTextAreaLabel = styled.label``;
+
+export const EditTextArea = styled.textarea`
+  padding: 8px 10px;
+  width: 100%;
+  height: 100px;
+  resize: none;
+  background: none;
+  border-bottom: 1px solid #bdbdbd;
+  font-size: 16px;
+  color: #fff;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  @media screen and (max-width: 486px) {
+    font-size: 14px;
+  }
+`;
+
+export const EditTextAreaBottom = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const EditTextCount = styled.span`
+  margin-left: 10px;
+  color: #bdbdbd;
+  @media screen and (max-width: 486px) {
+    font-size: 14px;
+  }
+`;
+
+export const EditBtns = styled.div``;
+
+export const EditBtn = styled.button`
+  background: ${(props) => (props.disabled ? "#292a2b" : "gold")};
+  padding: 8px 10px;
+  font-weight: 400;
+  font-size: 16px;
+  transition: all 0.5s;
+  color: ${(props) => (props.disabled ? "rgba(245, 245, 245, 0.8)" : "#000")};
+  &.cancel {
+    background-color: #eee;
+    color: #000;
+  }
+  @media screen and (max-width: 486px) {
+    font-size: 14px;
+  }
+`;
