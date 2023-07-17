@@ -2,7 +2,9 @@ import { Rate } from "antd";
 import styled from "styled-components";
 
 export const Wrapper = styled.section`
-  padding: 0 20px 20px 20px;
+  width: calc(100% - 40px);
+  margin:0 auto 20px auto;
+
 `;
 
 export const Title = styled.h2`
@@ -27,9 +29,9 @@ export const Rating = styled(Rate)`
 `;
 
 export const RatingCount = styled.span`
-font-size: 18px;
-font-weight: 500;
-`
+  font-size: 18px;
+  font-weight: 500;
+`;
 
 export const TextAreaForm = styled.form`
   display: flex;
@@ -88,7 +90,9 @@ export const TextAreaBtn = styled.button`
 `;
 
 export const ReviewList = styled.ul`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-height: 300px;
 `;
