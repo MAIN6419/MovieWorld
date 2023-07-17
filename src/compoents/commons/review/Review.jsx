@@ -18,6 +18,7 @@ import {
 } from "./review.style";
 import { addReview, fetchReview } from "../../../firebase/auth";
 import { Timestamp } from "firebase/firestore";
+import Blank from "../blank/Blank";
 
 export default function Review({ movieData, user }) {
   const [reviewValue, setReivewValue] = useState("");
@@ -58,17 +59,22 @@ export default function Review({ movieData, user }) {
         createdAt: Timestamp.fromDate(new Date()),
       };
       addReview(movieData.id, commentData);
-      setReviewData(prev=>[...prev, {...commentData, reviewer:user.displayName}]);
+      fetchReviewData();
     }
     setReivewValue("");
+    setTextCount(0);
     setRating(0);
   };
   return (
     <Wrapper>
       <Title>리뷰</Title>
       <RatingWrapper>
-        <Rating count={5} value={rating} onChange={(value) => setRating(value)} />
-        <RatingCount>{!rating||rating * 2}</RatingCount>
+        <Rating
+          count={5}
+          value={rating}
+          onChange={(value) => setRating(value)}
+        />
+        <RatingCount>{!rating || rating * 2}</RatingCount>
       </RatingWrapper>
       <TextAreaForm onSubmit={onClickSubmit}>
         <TextAreaWrapper>
@@ -87,17 +93,23 @@ export default function Review({ movieData, user }) {
         </TextAreaWrapper>
       </TextAreaForm>
       <ReviewList>
-        {reviewData.map((item) => {
-          return (
-            <ReviewListItem
-              key={item.id}
-              reviewData={item}
-              user={user}
-              movieId={movieData.id}
-              setReviewData={setReviewData}
-            />
-          );
-        })}
+        {reviewData.length ? (
+          reviewData.map((item) => {
+            return (
+              <ReviewListItem
+                key={item.id}
+                reviewData={item}
+                reviewDataList={reviewData}
+                user={user}
+                movieId={movieData.id}
+                refetchReviewData={fetchReviewData}
+                setReviewData={setReviewData}
+              />
+            );
+          })
+        ) : (
+          <Blank text={"작성된 리뷰가 없어요."} />
+        )}
       </ReviewList>
     </Wrapper>
   );
