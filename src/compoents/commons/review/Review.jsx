@@ -1,11 +1,16 @@
 import { v4 as uuidv4 } from "uuid";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReviewListItem from "./ReviewListItem";
 import {
   Rating,
   RatingCount,
   RatingWrapper,
   ReviewList,
+  SelectWrapper,
+  Select,
+  OpectionList,
+  Opection,
+  OpectionBtn,
   TextArea,
   TextAreaBtn,
   TextAreaForm,
@@ -25,6 +30,8 @@ export default function Review({ movieData, user }) {
   const [rating, setRating] = useState(0);
   const [textCount, setTextCount] = useState(0);
   const [reviewData, setReviewData] = useState([]);
+  const [isOpenSelect, setIsOpenSelect] = useState(false);
+  const [selectValue, setSelectValue] = useState("최신순");
 
   const fetchReviewData = async () => {
     const data = await fetchReview(movieData.id);
@@ -41,6 +48,38 @@ export default function Review({ movieData, user }) {
     }
     setReivewValue(e.target.value);
     setTextCount(e.target.value.length);
+  };
+
+  const onClickSelect = () => {
+    setIsOpenSelect(!isOpenSelect);
+  };
+
+  const onClickOpction = (e) => {
+    if (e.target.id === "new") {
+      setReviewData(
+        [...reviewData].sort((a, b) => {
+          return b.createdAt - a.createdAt;
+        })
+      );
+      setSelectValue("최신순");
+      onClickSelect();
+    } else if (e.target.id === "old") {
+      setReviewData(
+        [...reviewData].sort((a, b) => {
+          return a.createdAt - b.createdAt;
+        })
+      );
+      setSelectValue("등록순");
+      onClickSelect();
+    } else {
+      setReviewData(
+        [...reviewData].sort((a, b) => {
+          return b.rating - a.rating;
+        })
+      );
+      setSelectValue("평점순");
+      onClickSelect();
+    }
   };
 
   const onClickSubmit = (e) => {
@@ -65,6 +104,7 @@ export default function Review({ movieData, user }) {
     setTextCount(0);
     setRating(0);
   };
+
   return (
     <Wrapper>
       <Title>리뷰</Title>
@@ -92,6 +132,40 @@ export default function Review({ movieData, user }) {
           </TextCountWrapper>
         </TextAreaWrapper>
       </TextAreaForm>
+      {reviewData.length!==0 && (
+        <SelectWrapper>
+          <Select
+            type="button"
+            onClick={onClickSelect}
+            active={isOpenSelect}
+          >
+            {selectValue}
+          </Select>
+          {isOpenSelect && (
+            <OpectionList>
+              <Opection>
+                <OpectionBtn type="button" id="new" onClick={onClickOpction}>
+                  최신순
+                </OpectionBtn>
+              </Opection>
+              <Opection>
+                <OpectionBtn type="button" id="old" onClick={onClickOpction}>
+                  등록순
+                </OpectionBtn>
+              </Opection>
+              <Opection>
+                <OpectionBtn
+                  type="button"
+                  id="rating"
+                  onClick={onClickOpction}
+                >
+                  평점순
+                </OpectionBtn>
+              </Opection>
+            </OpectionList>
+          )}
+        </SelectWrapper>
+      )}
       <ReviewList>
         {reviewData.length ? (
           reviewData.map((item) => {

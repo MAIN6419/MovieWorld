@@ -1,10 +1,10 @@
 import { Rate } from "antd";
+import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 
 export const Wrapper = styled.section`
   width: calc(100% - 40px);
-  margin:0 auto 20px auto;
-
+  margin: 0 auto 20px auto;
 `;
 
 export const Title = styled.h2`
@@ -95,4 +95,91 @@ export const ReviewList = styled.ul`
   flex-direction: column;
   gap: 20px;
   min-height: 300px;
+`;
+
+export const SelectWrapper = styled.div`
+  position: relative;
+  text-align: right;
+  margin-bottom: 20px;
+`;
+
+export const Select = styled.button`
+  width: 90px;
+  text-align: left;
+  margin-bottom: 1px;
+  border: 0;
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 10px 0 10px 20px;
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #1d1e1e;
+  color: #fff;
+  cursor: pointer;
+  ::after {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    display: inline-block;
+    content: "";
+    width: 15px;
+    height: 15px;
+    background: url("assets/icon-downArrow.png") no-repeat center right 0px /
+      15px;
+    transform: ${(props) =>
+      props.active ? "rotate(-180deg)" : "rotate(0deg)"};
+    transition: all 0.5s;
+  }
+`;
+
+export const OpectionList = styled.ul`
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 90px;
+  border: 1px solid #bdbdbd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  z-index: 99;
+  overflow: hidden;
+  animation: open 0.5s;
+  @keyframes open {
+    from{
+      height: 0;
+    } to{
+      height: 109px;
+    }
+  }
+  
+  @keyframes close {
+    from{
+      height: 109px;
+    } to{
+      height: 0;
+    }
+  }
+`;
+
+export const Opection = styled.li`
+  color: #fff;
+  :not(:last-child) {
+    border-bottom: 1px solid #fff;
+  }
+ 
+`;
+
+export const OpectionBtn = styled.button`
+  padding: 8px;
+  display: block;
+  border: none;
+  width: 100%;
+  margin: 0 auto;
+  cursor: pointer;
+  background-color: #1d1e1e;
+  color: #fff;
+  font-size: 14px;
+  :hover {
+    background-color: ${isMobile ? "" : "rgba(74,74,74)"};
+  }
 `;
