@@ -12,14 +12,13 @@ import {
   getDoc,
   startAfter,
   limit,
-  Timestamp,
+  orderBy
 } from "firebase/firestore";
 
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   updateProfile,
   sendPasswordResetEmail,
   signOut,
@@ -387,8 +386,25 @@ export const fetchReview = async (movieId) => {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    const res = await getDocs(reviewRef);
-    const data = res.docs.map((el) => el.data());
+    const q = query(reviewRef, orderBy("createdAt", "desc"));
+    const res = await getDocs(q);
+
+    let data = res.docs.map((el) => el.data());
+
+    const userListRef = collection(db, `user`);
+    const userListRes = await getDocs(userListRef);
+    const userListUid = userListRes.docs.map((doc) => doc.id);
+    const userList = userListRes.docs.map((el) => el.data());
+
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < userListUid.length; j++) {
+        if (data[i].uid === userListUid[j]) {
+          data[i].reviewer = userList[j].displayName;
+          data[i].reviewerImg = userList[j].photoURL;
+        }
+      }
+    }
+
     return data;
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
@@ -403,17 +419,12 @@ export const addReview = async (movieId, commentData) => {
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
 
-    const userRef = doc(db, `user/${commentData.uid}`);
-    const res = await getDoc(userRef);
-    const user = res.data();
-
     await setDoc(doc(reviewRef, commentData.id), {
       id: commentData.id,
-      reviewer: user.displayName,
-      reviewerImg: user.photoURL,
+      uid: commentData.uid,
       rating: commentData.rating,
       contents: commentData.contents,
-      createdAt: commentData.createdAt
+      createdAt: commentData.createdAt,
     });
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
@@ -429,6 +440,24 @@ export const removeReview = async (movieId, commentId) => {
     const reviewRef = collection(reviewDoc, "review");
     const deleteReviewRef = doc(reviewRef, commentId);
     await deleteDoc(deleteReviewRef);
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 리뷰 수정 API
+export const editReview = async (movieId, editData) => {
+  try {
+    const reviewListRef = collection(db, "reviewList");
+    const reviewDoc = doc(reviewListRef, String(movieId));
+    const reviewRef = collection(reviewDoc, "review");
+    const updateReviewRef = doc(reviewRef, editData.id);
+
+    await updateDoc(updateReviewRef, {
+      rating: editData.rating,
+      contents: editData.contents,
+    });
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
