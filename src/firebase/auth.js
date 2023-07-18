@@ -12,7 +12,8 @@ import {
   getDoc,
   startAfter,
   limit,
-  orderBy
+  orderBy,
+  endAt,
 } from "firebase/firestore";
 
 import {
@@ -380,13 +381,17 @@ export const fetchLikeListPage = async (page, limitPage) => {
   }
 };
 
-// 리뷰 목록 API
-export const fetchReview = async (movieId) => {
+// 리뷰 첫번째 목록 API
+export const fetchFirstReview = async (movieId, limitPage, filter) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    const q = query(reviewRef, orderBy("createdAt", "desc"));
+    const q = query(
+      reviewRef,
+      orderBy(filter.target, filter.order),
+      limit(limitPage)
+    );
     const res = await getDocs(q);
 
     let data = res.docs.map((el) => el.data());
@@ -405,7 +410,43 @@ export const fetchReview = async (movieId) => {
       }
     }
 
-    return data;
+    return { res, data };
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 리뷰 목록 페이징 API
+export const fetchReviewPage = async (movieId, page, limitPage, filter) => {
+  try {
+    const reviewListRef = collection(db, "reviewList");
+    const reviewDoc = doc(reviewListRef, String(movieId));
+    const reviewRef = collection(reviewDoc, "review");
+    const q = query(
+      reviewRef,
+      orderBy(filter.target, filter.order),
+      startAfter(page),
+      limit(limitPage)
+    );
+    const res = await getDocs(q);
+    let data = res.docs.map((el) => el.data());
+
+    const userListRef = collection(db, `user`);
+    const userListRes = await getDocs(userListRef);
+    const userListUid = userListRes.docs.map((doc) => doc.id);
+    const userList = userListRes.docs.map((el) => el.data());
+
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < userListUid.length; j++) {
+        if (data[i].uid === userListUid[j]) {
+          data[i].reviewer = userList[j].displayName;
+          data[i].reviewerImg = userList[j].photoURL;
+        }
+      }
+    }
+
+    return { res, data };
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
@@ -419,13 +460,58 @@ export const addReview = async (movieId, commentData) => {
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
 
-    await setDoc(doc(reviewRef, commentData.id), {
-      id: commentData.id,
-      uid: commentData.uid,
-      rating: commentData.rating,
-      contents: commentData.contents,
-      createdAt: commentData.createdAt,
-    });
+    const addReviewPromise = new Promise(
+      setDoc(doc(reviewRef, commentData.id), {
+        id: commentData.id,
+        uid: commentData.uid,
+        rating: commentData.rating,
+        contents: commentData.contents,
+        createdAt: commentData.createdAt,
+      })
+    );
+    const userRef = doc(db, `user/${auth.currentUser.uid}`);
+    const addUserReivewPromise = new Promise(
+      updateDoc(userRef, {
+        reviewList: arrayUnion(movieId),
+      })
+    );
+
+    await Promise.all([addReviewPromise, addUserReivewPromise]);
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 리뷰 작성 후 스크롤 내린 만큼의 이전 데이터도 같이 불러오는 API
+export const fetchAddReviewData = async (movieId, limitPage, filter) => {
+  try {
+    const reviewListRef = collection(db, "reviewList");
+    const reviewDoc = doc(reviewListRef, String(movieId));
+    const reviewRef = collection(reviewDoc, "review");
+    const q = query(
+      reviewRef,
+      orderBy(filter.target, filter.order),
+      endAt(limitPage)
+    );
+    const res = await getDocs(q);
+    let data = res.docs.map((el) => el.data());
+
+    const userListRef = collection(db, `user`);
+    const userListRes = await getDocs(userListRef);
+    const userListUid = userListRes.docs.map((doc) => doc.id);
+    const userList = userListRes.docs.map((el) => el.data());
+
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < userListUid.length; j++) {
+        if (data[i].uid === userListUid[j]) {
+          data[i].reviewer = userList[j].displayName;
+          data[i].reviewerImg = userList[j].photoURL;
+        }
+      }
+    }
+
+    return { res, data };
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
@@ -439,7 +525,13 @@ export const removeReview = async (movieId, commentId) => {
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
     const deleteReviewRef = doc(reviewRef, commentId);
-    await deleteDoc(deleteReviewRef);
+    const deleteReviewPromise = deleteDoc(deleteReviewRef);
+
+    const userRef = doc(db, `user/${auth.currentUser.uid}`);
+    const updateUserPromise = updateDoc(userRef, {
+      reviewList: arrayRemove(movieId),
+    });
+    await Promise.all([deleteReviewPromise, updateUserPromise]);
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
