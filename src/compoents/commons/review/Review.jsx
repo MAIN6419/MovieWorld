@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ReviewListItem from "./ReviewListItem";
 import {
   Rating,
@@ -21,26 +21,32 @@ import {
   Title,
   Wrapper,
 } from "./review.style";
-import { addReview, fetchReview } from "../../../firebase/auth";
+import {
+  addReview,
+  fetchAddReviewData,
+  fetchFirstReview,
+  fetchReviewPage,
+  getUser,
+} from "../../../firebase/auth";
 import { Timestamp } from "firebase/firestore";
 import Blank from "../blank/Blank";
+import { useInView } from "react-intersection-observer";
 
 export default function Review({ movieData, user }) {
   const [reviewValue, setReivewValue] = useState("");
   const [rating, setRating] = useState(0);
   const [textCount, setTextCount] = useState(0);
   const [reviewData, setReviewData] = useState([]);
+  const [userReivewList, setUserReviewList] = useState([]);
   const [isOpenSelect, setIsOpenSelect] = useState(false);
   const [selectValue, setSelectValue] = useState("최신순");
+  const [filter, setFilter] = useState({ target: "createdAt", order: "desc" });
 
-  const fetchReviewData = async () => {
-    const data = await fetchReview(movieData.id);
-    setReviewData(data);
-  };
+  const [page, setPage] = useState("");
+  const [hasMore, setHasMore] = useState(false);
+  const limitPage = 5;
 
-  useEffect(() => {
-    fetchReviewData();
-  }, []);
+  const [ref, inview] = useInView();
 
   const onChangeReview = (e) => {
     if (e.target.value.length === 1 && e.target.value === " ") {
@@ -56,39 +62,26 @@ export default function Review({ movieData, user }) {
 
   const onClickOpction = (e) => {
     if (e.target.id === "new") {
-      setReviewData(
-        [...reviewData].sort((a, b) => {
-          return b.createdAt - a.createdAt;
-        })
-      );
+      setFilter({ target: "createdAt", order: "desc" });
       setSelectValue("최신순");
       onClickSelect();
     } else if (e.target.id === "old") {
-      setReviewData(
-        [...reviewData].sort((a, b) => {
-          return a.createdAt - b.createdAt;
-        })
-      );
+      setFilter({ target: "createdAt", order: "asc" });
       setSelectValue("등록순");
       onClickSelect();
     } else {
-      setReviewData(
-        [...reviewData].sort((a, b) => {
-          return b.rating - a.rating;
-        })
-      );
+      setFilter({ target: "rating", order: "desc" });
       setSelectValue("평점순");
       onClickSelect();
     }
   };
 
-  const onClickSubmit = (e) => {
+  const onClickSubmit = async (e) => {
     e.preventDefault();
-    const isReview = reviewData.find(
-      (data) => data.reviewer === user.displayName
-    );
+    const isReview = userReivewList.find((data) => data === movieData.id);
     if (isReview) {
       alert("이미 리뷰한 영화 입니다!");
+      return;
     } else {
       const commentData = {
         id: uuidv4(),
@@ -97,13 +90,64 @@ export default function Review({ movieData, user }) {
         contents: reviewValue,
         createdAt: Timestamp.fromDate(new Date()),
       };
-      addReview(movieData.id, commentData);
-      fetchReviewData();
+      await addReview(movieData.id, commentData);
+      // 댓글 추가후 이전 데이터들도 같이 불러오기 위해서 사용(스크롤 유지)
+      const { res, data } = await fetchAddReviewData(
+        movieData.id,
+        page,
+        filter
+      );
+      setPage(res.docs[res.docs.length - 1]);
+      setHasMore(res.docs.length / limitPage >= 0);
+      setReviewData(data);
     }
     setReivewValue("");
     setTextCount(0);
     setRating(0);
   };
+
+  const fecthUserData = async () => {
+    const data = await getUser();
+    setUserReviewList(data.reviewList);
+  };
+
+  const fetchFirstPage = async () => {
+    const { res, data } = await fetchFirstReview(
+      movieData.id,
+      limitPage,
+      filter
+    );
+    setReviewData(data);
+    setPage(res.docs[res.docs.length - 1]);
+    setHasMore(res.docs.length === limitPage);
+  };
+
+  const fetchAddData = async () => {
+    const { res, data } = await fetchReviewPage(
+      movieData.id,
+      page,
+      limitPage,
+      filter
+    );
+    setReviewData((prev) => [...prev, ...data]);
+    setPage(res.docs[res.docs.length - 1]);
+    setHasMore(res.docs.length === limitPage);
+  };
+
+  useEffect(() => {
+    fecthUserData();
+  }, []);
+
+  // 정렬이 바뀔때 마다 데이터를 새로 받아옴
+  useEffect(() => {
+    fetchFirstPage();
+  }, [filter]);
+
+  useEffect(() => {
+    if (hasMore && inview) {
+      fetchAddData();
+    }
+  }, [inview]);
 
   return (
     <Wrapper>
@@ -132,13 +176,9 @@ export default function Review({ movieData, user }) {
           </TextCountWrapper>
         </TextAreaWrapper>
       </TextAreaForm>
-      {reviewData.length!==0 && (
+      {reviewData.length !== 0 && (
         <SelectWrapper>
-          <Select
-            type="button"
-            onClick={onClickSelect}
-            active={isOpenSelect}
-          >
+          <Select type="button" onClick={onClickSelect} active={isOpenSelect}>
             {selectValue}
           </Select>
           {isOpenSelect && (
@@ -154,11 +194,7 @@ export default function Review({ movieData, user }) {
                 </OpectionBtn>
               </Opection>
               <Opection>
-                <OpectionBtn
-                  type="button"
-                  id="rating"
-                  onClick={onClickOpction}
-                >
+                <OpectionBtn type="button" id="rating" onClick={onClickOpction}>
                   평점순
                 </OpectionBtn>
               </Opection>
@@ -176,14 +212,16 @@ export default function Review({ movieData, user }) {
                 reviewDataList={reviewData}
                 user={user}
                 movieId={movieData.id}
-                refetchReviewData={fetchReviewData}
                 setReviewData={setReviewData}
+                userReviewList={userReivewList}
+                setUserReviewList={setUserReviewList}
               />
             );
           })
         ) : (
           <Blank text={"작성된 리뷰가 없어요."} />
         )}
+        <div ref={ref}></div>
       </ReviewList>
     </Wrapper>
   );

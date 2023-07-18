@@ -26,9 +26,10 @@ export default function ReviewListItem({
   reviewData,
   user,
   movieId,
-  refetchReviewData,
   setReviewData,
   reviewDataList,
+  userReviewList,
+  setUserReviewList,
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const [editValue, setEditValue] = useState(reviewData.contents);
@@ -82,7 +83,10 @@ export default function ReviewListItem({
     const answer = window.confirm("정말 삭제하시겠습니까?");
     if (answer) {
       removeReview(movieId, reviewData.id);
-      refetchReviewData();
+      setReviewData((prev) => prev.filter((item) => item.id !== reviewData.id));
+      let newUserReviewList = [...userReviewList];
+      newUserReviewList = userReviewList.filter((review) => review !== movieId);
+      setUserReviewList(newUserReviewList);
     }
   };
 
