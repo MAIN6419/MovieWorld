@@ -454,27 +454,23 @@ export const fetchReviewPage = async (movieId, page, limitPage, filter) => {
 };
 
 // 리뷰 작성 API
-export const addReview = async (movieId, commentData) => {
+export const addReview = async (movieId, reviewData) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
 
-    const addReviewPromise = new Promise(
-      setDoc(doc(reviewRef, commentData.id), {
-        id: commentData.id,
-        uid: commentData.uid,
-        rating: commentData.rating,
-        contents: commentData.contents,
-        createdAt: commentData.createdAt,
-      })
-    );
+    const addReviewPromise = setDoc(doc(reviewRef, reviewData.id), {
+      id: reviewData.id,
+      uid: reviewData.uid,
+      rating: reviewData.rating,
+      contents: reviewData.contents,
+      createdAt: reviewData.createdAt,
+    });
     const userRef = doc(db, `user/${auth.currentUser.uid}`);
-    const addUserReivewPromise = new Promise(
-      updateDoc(userRef, {
-        reviewList: arrayUnion(movieId),
-      })
-    );
+    const addUserReivewPromise = updateDoc(userRef, {
+      reviewList: arrayUnion(movieId),
+    });
 
     await Promise.all([addReviewPromise, addUserReivewPromise]);
   } catch (error) {
@@ -519,12 +515,12 @@ export const fetchAddReviewData = async (movieId, limitPage, filter) => {
 };
 
 // 리뷰 삭제 API
-export const removeReview = async (movieId, commentId) => {
+export const removeReview = async (movieId, reviewId) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    const deleteReviewRef = doc(reviewRef, commentId);
+    const deleteReviewRef = doc(reviewRef, reviewId);
     const deleteReviewPromise = deleteDoc(deleteReviewRef);
 
     const userRef = doc(db, `user/${auth.currentUser.uid}`);
