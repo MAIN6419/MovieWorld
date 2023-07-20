@@ -23,7 +23,12 @@ import {
   ProfileWrapper,
   Wrapper,
 } from "./mypage.style";
-import { fetchFirstLikeList, fetchLikeListPage } from "../../firebase/auth";
+import {
+  fetchFirstLikeList,
+  fetchFirstReviewMovieList,
+  fetchLikeListPage,
+  fetchReviewMovieListPage,
+} from "../../firebase/auth";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
@@ -48,9 +53,13 @@ export default function Mypage() {
   const [hasMore, setHasMore] = useState(false);
   const limitPage = 20;
   const [ref, inview] = useInView();
+  const [menu, setMenu] = useState("like");
 
   const fetchFirstPage = async () => {
-    const res = await fetchFirstLikeList(limitPage);
+    const res =
+      menu === "like"
+        ? await fetchFirstLikeList(limitPage)
+        : await fetchFirstReviewMovieList(limitPage);
     const data = res.docs.map((el) => el.data());
     setData((prev) => [...prev, ...data]);
     setPage(res.docs[res.docs.length - 1]);
@@ -59,7 +68,10 @@ export default function Mypage() {
   };
 
   const fetchAddData = async () => {
-    const res = await fetchLikeListPage(page, limitPage);
+    const res =
+      menu === "like"
+        ? await fetchLikeListPage(page, limitPage)
+        : await fetchReviewMovieListPage(page, limitPage);
     const data = res.docs.map((el) => el.data());
     setData((prev) => [...prev, ...data]);
     setPage(res.docs[res.docs.length - 1]);
@@ -78,7 +90,7 @@ export default function Mypage() {
 
   useEffect(() => {
     fetchFirstPage();
-  }, []);
+  }, [menu]);
 
   useEffect(() => {
     if (hasMore && inview) {
@@ -122,22 +134,45 @@ export default function Mypage() {
               </ProfileMenu>
             </ProfileWrapper>
             <MovieMenuWrapper>
-              <MovieMenuTitle className="a11y-hidden">찜 목록</MovieMenuTitle>
+              <MovieMenuTitle className="a11y-hidden">{menu}</MovieMenuTitle>
               <MovieMenuNav>
                 <MovieMenuUl>
                   <MovieMenuItem>
-                    <MovieMenuBtn className="active">찜 목록</MovieMenuBtn>
+                    <MovieMenuBtn
+                      onClick={() => {
+                        setMenu("like");
+                        setData([]);
+                      }}
+                      className={menu === "like" ? "active" : ""}
+                    >
+                      찜 목록
+                    </MovieMenuBtn>
                   </MovieMenuItem>
                   <MovieMenuItem>
-                    <MovieMenuBtn>최근 본 영화</MovieMenuBtn>
-                  </MovieMenuItem>
-                  <MovieMenuItem>
-                    <MovieMenuBtn>다시보기</MovieMenuBtn>
+                    <MovieMenuBtn
+                      className={menu === "review" ? "active" : ""}
+                      onClick={() => {
+                        setMenu("review");
+                        setData([]);
+                      }}
+                    >
+                      리뷰한 영화
+                    </MovieMenuBtn>
                   </MovieMenuItem>
                 </MovieMenuUl>
               </MovieMenuNav>
-              <MoiveListWrapper style={{height: !data.length ? "calc(100vh - 325px)":""}}>
-                {!data.length ? <Blank text={"현재 찜 목록이 존재하지 않습니다."}/>:
+              <MoiveListWrapper
+                style={{ height: !data.length ? "calc(100vh - 325px)" : "" }}
+              >
+                {!data.length ? (
+                  <Blank
+                    text={
+                      menu === "like"
+                        ? "찜 목록이 존재하지 않습니다."
+                        : "리뷰한 영화가 존재하지 않습니다."
+                    }
+                  />
+                ) : (
                   data.map((item, idx) => {
                     return (
                       <MovieItem key={item.id + idx}>
@@ -165,7 +200,8 @@ export default function Mypage() {
                         </MovieTitle>
                       </MovieItem>
                     );
-                  })}
+                  })
+                )}
               </MoiveListWrapper>
               <InfiniteScrollTarget ref={ref}></InfiniteScrollTarget>
             </MovieMenuWrapper>

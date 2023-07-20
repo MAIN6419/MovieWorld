@@ -96,6 +96,7 @@ export const MovieMenuBtn = styled.button`
   font-size: 16px;
   padding-bottom: 5px;
   position: relative;
+  transition: all 0.5s;
   :hover {
     color: #bdbdbd;
   }
@@ -111,6 +112,14 @@ export const MovieMenuBtn = styled.button`
     border-radius: 10px;
     background-color: #e50914;
     bottom: -3px;
+    animation: fadeIn 0.5s;
+    @keyframes fadeIn {
+      from{
+        width: 0;
+      } to {
+        width: 90px;
+      }
+    }
   }
 `;
 
