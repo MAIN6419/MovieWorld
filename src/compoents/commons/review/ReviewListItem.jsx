@@ -24,16 +24,17 @@ import { editReview, removeReview, reviewReport } from "../../../firebase/auth";
 
 export default function ReviewListItem({
   reviewData,
+  reviewItem,
   movieId,
   setReviewData,
   userData,
   setUserData,
 }) {
   const [isEdit, setIsEdit] = useState(false);
-  const [editValue, setEditValue] = useState(reviewData.contents);
-  const [editRating, setEditRating] = useState(reviewData.rating);
+  const [editValue, setEditValue] = useState(reviewItem.contents);
+  const [editRating, setEditRating] = useState(reviewItem.rating);
   const [editTextCount, setEditTextCount] = useState(
-    reviewData.contents.length
+    reviewItem.contents.length
   );
 
   const onChangeEditValue = (e) => {
@@ -45,9 +46,9 @@ export default function ReviewListItem({
   };
 
   const onClickCancelEdit = () => {
-    setEditRating(reviewData.rating);
-    setEditTextCount(reviewData.contents.length);
-    setEditValue(reviewData.contents);
+    setEditRating(reviewItem.rating);
+    setEditTextCount(reviewItem.contents.length);
+    setEditValue(reviewItem.contents);
     setIsEdit(false);
   };
 
@@ -56,23 +57,22 @@ export default function ReviewListItem({
     const answer = window.confirm("정말 수정하시겠습니까?");
     if (answer) {
       const editData = {
-        id: reviewData.id,
+        id: reviewItem.id,
         uid: userData.uid,
         rating: editRating,
         contents: editValue,
       };
       editReview(movieId, editData);
-
-      let newData = [...userData];
-      newData.userData.forEach((item) => {
-        if (item.id === reviewData.id) {
+      let newReviewData = [...reviewData];
+      newReviewData.forEach((item)=>{
+        if(item.id===reviewItem.id) {
           item.reviewer = userData.displayName;
           item.reviewerImg = userData.photoURL;
           item.rating = editRating;
           item.contents = editValue;
         }
-      });
-      setReviewData(newData);
+      })
+      setReviewData(newReviewData);
       setIsEdit(false);
     }
   };
@@ -80,9 +80,9 @@ export default function ReviewListItem({
   const onClickRemove = () => {
     const answer = window.confirm("정말 삭제하시겠습니까?");
     if (answer) {
-      removeReview(movieId, reviewData.id);
-      setReviewData((prev) => prev.filter((item) => item.id !== reviewData.id));
-      let newUserData = {...userData};
+      removeReview(movieId, reviewItem.id);
+      setReviewData((prev) => prev.filter((item) => item.id !== reviewItem.id));
+      let newUserData = { ...userData };
       newUserData = userData.reviewList.filter((review) => review !== movieId);
       setUserData(newUserData);
     }
@@ -91,27 +91,29 @@ export default function ReviewListItem({
   const onClickReport = async () => {
     const answer = window.confirm("정말 신고하시겠습니까?");
     if (answer) {
-      const isReport = userData.reportList.find((report)=>report===reviewData.id);
-      if(isReport){
+      const isReport = userData.reportList.find(
+        (report) => report === reviewItem.id
+      );
+      if (isReport) {
         alert("이미 신고한 리뷰입니다.");
         return;
       }
-      await reviewReport(movieId, reviewData);
-      const newUserData = {...userData}
-      newUserData.reportList.push(reviewData.id);
+      await reviewReport(movieId, reviewItem);
+      const newUserData = { ...userData };
+      newUserData.reportList.push(reviewItem.id);
       setUserData(newUserData);
       alert("신고가 완료되었습니다.");
     }
-  }
+  };
 
   return (
     <ReviewItem>
       <ReviewerWrapper>
         <ReviewerImg
-          src={reviewData.reviewerImg || "assets/defaultProfile.png"}
+          src={reviewItem.reviewerImg || "assets/defaultProfile.png"}
           onError={(e) => (e.target.src = "assets/defaultProfile.png")}
         />
-        <Reviewer>{reviewData.reviewer}</Reviewer>
+        <Reviewer>{reviewItem.reviewer}</Reviewer>
         <ReviewItemRateWrapper>
           <ReviewItemRate
             value={editRating}
@@ -147,12 +149,12 @@ export default function ReviewListItem({
         </EditTextAreaForm>
       ) : (
         <>
-          <ReviewContents>{reviewData.contents}</ReviewContents>
+          <ReviewContents>{reviewItem.contents}</ReviewContents>
           <ReviewItemBottom>
             <ReviewCreatedAt>
-              {setDateFormate(reviewData.createdAt.seconds * 1000)}
+              {setDateFormate(reviewItem.createdAt.seconds * 1000)}
             </ReviewCreatedAt>
-            {userData.displayName === reviewData.reviewer ? (
+            {userData.displayName === reviewItem.reviewer ? (
               <>
                 <ReviewItemBtn type="button" onClick={() => setIsEdit(true)}>
                   수정
