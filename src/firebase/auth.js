@@ -297,7 +297,7 @@ export const updateUserProfile = async (file, displayName) => {
 // 유저 데이터 API
 export const getUser = async () => {
   try {
-    const userRef = doc(db, `user/${auth.currentUser.uid}`);
+    const userRef = doc(db, `user/${(userData&&userData.uid)||auth.currentUser.uid}`);
     const res = await getDoc(userRef);
     const data = res.data();
     return data;
@@ -341,7 +341,7 @@ export const removeLike = async (movieData) => {
       const userLikeRef = collection(userLikedoc, "like");
       const deleteReplyRef = doc(userLikeRef, String(movieData.id));
       await deleteDoc(deleteReplyRef);
-      const userRef = doc(db, `user/${userData.uid}`);
+      const userRef = doc(db, `user/${auth.currentUser.uid}`);
       await updateDoc(userRef, {
         likeList: arrayRemove(movieData.id),
       });
@@ -359,7 +359,7 @@ export const removeLike = async (movieData) => {
 export const fetchFirstLikeList = async (limitPage) => {
   try {
     const likeRef = collection(db, "likeList");
-    const userLikedoc = doc(likeRef, userData.uid);
+    const userLikedoc = doc(likeRef, (userData&&userData.uid)||auth.currentUser.uid);
     const userLikeRef = collection(userLikedoc, "like");
     const q = query(userLikeRef, limit(limitPage));
     const res = await getDocs(q);
@@ -614,7 +614,7 @@ export const reviewReport = async (movieId, reviewData) => {
 export const fetchFirstReviewMovieList = async (limitPage) => {
   try {
     const reviewListRef = collection(db, "userReviewList");
-    const reviewDoc = doc(reviewListRef, userData.uid);
+    const reviewDoc = doc(reviewListRef, auth.currentUser.uid);
     const reviewRef = collection(reviewDoc, "reviewMovie");
     const q = query(reviewRef, limit(limitPage));
     const res = await getDocs(q);
@@ -629,7 +629,7 @@ export const fetchFirstReviewMovieList = async (limitPage) => {
 export const fetchReviewMovieListPage = async (page, limitPage) => {
   try {
     const reviewListRef = collection(db, "userReviewList");
-    const reviewDoc = doc(reviewListRef, userData.uid);
+    const reviewDoc = doc(reviewListRef, auth.currentUser.uid);
     const reviewRef = collection(reviewDoc, "reviewMovie");
     const q = query(reviewRef, startAfter(page), limit(limitPage));
     const res = await getDocs(q);
