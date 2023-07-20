@@ -14,6 +14,7 @@ import {
   limit,
   orderBy,
   endAt,
+  increment,
 } from "firebase/firestore";
 
 import {
@@ -110,6 +111,8 @@ export const signup = async (displayName, email, password, phone) => {
       displayName: res.user.displayName,
       phone,
       likeList: [],
+      reviewList: [],
+      reportList: [],
       photoFileName: "",
       photoURL: "",
     });
@@ -293,7 +296,7 @@ export const updateUserProfile = async (file, displayName) => {
 // 유저 데이터 API
 export const getUser = async () => {
   try {
-    const userRef = doc(db, `user/${userData.uid}`);
+    const userRef = doc(db, `user/${auth.currentUser.uid}`);
     const res = await getDoc(userRef);
     const data = res.data();
     return data;
@@ -337,7 +340,7 @@ export const removeLike = async (movieData) => {
       const userLikeRef = collection(userLikedoc, "like");
       const deleteReplyRef = doc(userLikeRef, String(movieData.id));
       await deleteDoc(deleteReplyRef);
-      const userRef = doc(db, `user/${auth.currentUser.uid}`);
+      const userRef = doc(db, `user/${userData.uid}`);
       await updateDoc(userRef, {
         likeList: arrayRemove(movieData.id),
       });
@@ -390,6 +393,7 @@ export const fetchFirstReview = async (movieId, limitPage, filter) => {
     const q = query(
       reviewRef,
       orderBy(filter.target, filter.order),
+      where("isBlock", "==", false),
       limit(limitPage)
     );
     const res = await getDocs(q);
@@ -426,6 +430,7 @@ export const fetchReviewPage = async (movieId, page, limitPage, filter) => {
     const q = query(
       reviewRef,
       orderBy(filter.target, filter.order),
+      where("isBlock", "==", false),
       startAfter(page),
       limit(limitPage)
     );
@@ -454,10 +459,10 @@ export const fetchReviewPage = async (movieId, page, limitPage, filter) => {
 };
 
 // 리뷰 작성 API
-export const addReview = async (movieId, reviewData) => {
+export const addReview = async (movieData, reviewData) => {
   try {
     const reviewListRef = collection(db, "reviewList");
-    const reviewDoc = doc(reviewListRef, String(movieId));
+    const reviewDoc = doc(reviewListRef, String(movieData.id));
     const reviewRef = collection(reviewDoc, "review");
 
     const addReviewPromise = setDoc(doc(reviewRef, reviewData.id), {
@@ -466,13 +471,29 @@ export const addReview = async (movieId, reviewData) => {
       rating: reviewData.rating,
       contents: reviewData.contents,
       createdAt: reviewData.createdAt,
-    });
-    const userRef = doc(db, `user/${auth.currentUser.uid}`);
-    const addUserReivewPromise = updateDoc(userRef, {
-      reviewList: arrayUnion(movieId),
+      isBlock: false,
+      reportCount: 0,
     });
 
-    await Promise.all([addReviewPromise, addUserReivewPromise]);
+    const UserReviewListRef = collection(db, "userReviewList");
+    const UserReviewListDoc = doc(UserReviewListRef, auth.currentUser.uid);
+    const UserReviewRef = collection(UserReviewListDoc, "reviewMovie");
+
+    const addUserReviewListPromise = setDoc(
+      doc(UserReviewRef, reviewData.id),
+      movieData
+    );
+
+    const userRef = doc(db, `user/${auth.currentUser.uid}`);
+    const addUserReivewPromise = updateDoc(userRef, {
+      reviewList: arrayUnion(movieData.id),
+    });
+
+    await Promise.all([
+      addReviewPromise,
+      addUserReviewListPromise,
+      addUserReivewPromise,
+    ]);
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
@@ -488,6 +509,7 @@ export const fetchAddReviewData = async (movieId, limitPage, filter) => {
     const q = query(
       reviewRef,
       orderBy(filter.target, filter.order),
+      where("isBlock", "==", false),
       endAt(limitPage)
     );
     const res = await getDocs(q);
@@ -523,11 +545,22 @@ export const removeReview = async (movieId, reviewId) => {
     const deleteReviewRef = doc(reviewRef, reviewId);
     const deleteReviewPromise = deleteDoc(deleteReviewRef);
 
+    const UserReviewListRef = collection(db, "userReviewList");
+    const UserReviewListDoc = doc(UserReviewListRef, auth.currentUser.uid);
+    const UserReviewRef = collection(UserReviewListDoc, "reviewMovie");
+    const deleteUserReviewListRef = doc(UserReviewRef, reviewId);
+    const deleteUserReviewListPromise = deleteDoc(deleteUserReviewListRef);
+
     const userRef = doc(db, `user/${auth.currentUser.uid}`);
-    const updateUserPromise = updateDoc(userRef, {
+    const deleteUserReviewPromise = updateDoc(userRef, {
       reviewList: arrayRemove(movieId),
     });
-    await Promise.all([deleteReviewPromise, updateUserPromise]);
+
+    await Promise.all([
+      deleteReviewPromise,
+      deleteUserReviewListPromise,
+      deleteUserReviewPromise,
+    ]);
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
@@ -546,6 +579,60 @@ export const editReview = async (movieId, editData) => {
       rating: editData.rating,
       contents: editData.contents,
     });
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 리뷰 신고 API
+export const reviewReport = async (movieId, reviewData) => {
+  try {
+    const reviewListRef = collection(db, "reviewList");
+    const reviewDoc = doc(reviewListRef, String(movieId));
+    const reviewRef = collection(reviewDoc, "review");
+    const updateReviewRef = doc(reviewRef, reviewData.id);
+
+    const reportReviewPromise = updateDoc(updateReviewRef, {
+      isBlock: reviewData.reportCount >= 4 ? true : false,
+      reportCount: increment(1),
+    });
+
+    const userRef = doc(db, `user/${auth.currentUser.uid}`);
+    const addReportListPromise = updateDoc(userRef, {
+      reportList: arrayUnion(reviewData.id),
+    });
+    await Promise.all[(reportReviewPromise, addReportListPromise)];
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 리뷰 영화 목록 API
+export const fetchFirstReviewMovieList = async (limitPage) => {
+  try {
+    const reviewListRef = collection(db, "userReviewList");
+    const reviewDoc = doc(reviewListRef, userData.uid);
+    const reviewRef = collection(reviewDoc, "reviewMovie");
+    const q = query(reviewRef, limit(limitPage));
+    const res = await getDocs(q);
+    return res;
+  } catch (error) {
+    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    throw error;
+  }
+};
+
+// 리뷰 영화 목록 페이징 API
+export const fetchReviewMovieListPage = async (page, limitPage) => {
+  try {
+    const reviewListRef = collection(db, "userReviewList");
+    const reviewDoc = doc(reviewListRef, userData.uid);
+    const reviewRef = collection(reviewDoc, "reviewMovie");
+    const q = query(reviewRef, startAfter(page), limit(limitPage));
+    const res = await getDocs(q);
+    return res;
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
     throw error;
