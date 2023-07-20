@@ -107,6 +107,7 @@ export const signup = async (displayName, email, password, phone) => {
 
     const user = collection(db, "user");
     await setDoc(doc(user, `${res.user.uid}`), {
+      uid: res.user.uid,
       email: res.user.email,
       displayName: res.user.displayName,
       phone,
