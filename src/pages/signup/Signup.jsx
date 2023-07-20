@@ -11,12 +11,10 @@ import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { duplication, signup } from "../../firebase/auth";
 import Loading from "../../compoents/commons/loading/Loading";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
 
 export default function Signup() {
   const { refreshUser } = useContext(UserContext);
-  const navigate = useNavigate();
   const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   const displayNameReg = /^[a-zA-z0-9]{4,10}$/;
   const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
@@ -132,7 +130,6 @@ export default function Signup() {
     );
     setIsLoading(false);
     refreshUser();
-    navigate("/main", { replace: true });
   };
 
   // 전체 input이 유효하다면 버튼 활성화
