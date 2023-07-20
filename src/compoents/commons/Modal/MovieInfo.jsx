@@ -171,7 +171,7 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
               </MovieDesc>
             </MovieContetns>
 
-            <Review movieData={videoData} user={user} />
+            <Review movieData={videoData} />
 
             <CloseBtn onClick={onClickClose}>
               <span className="a11y-hidden">닫기</span>
