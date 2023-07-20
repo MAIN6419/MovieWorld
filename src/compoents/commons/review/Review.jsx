@@ -32,12 +32,12 @@ import { Timestamp } from "firebase/firestore";
 import Blank from "../blank/Blank";
 import { useInView } from "react-intersection-observer";
 
-export default function Review({ movieData, user }) {
+export default function Review({ movieData }) {
   const [reviewValue, setReivewValue] = useState("");
   const [rating, setRating] = useState(0);
   const [textCount, setTextCount] = useState(0);
   const [reviewData, setReviewData] = useState([]);
-  const [userReivewList, setUserReviewList] = useState([]);
+  const [userData, setUserData] = useState({});
   const [isOpenSelect, setIsOpenSelect] = useState(false);
   const [selectValue, setSelectValue] = useState("최신순");
   const [filter, setFilter] = useState({ target: "createdAt", order: "desc" });
@@ -78,28 +78,41 @@ export default function Review({ movieData, user }) {
 
   const onClickSubmit = async (e) => {
     e.preventDefault();
-    const isReview = userReivewList.find((data) => data === movieData.id);
+    const isReview = userData.reviewList.find((data) => data === movieData.id);
     if (isReview) {
       alert("이미 리뷰한 영화 입니다!");
+      setReivewValue("");
+      setTextCount(0);
+      setRating(0);
       return;
     } else {
-      const commentData = {
+      const newReviewData = {
         id: uuidv4(),
-        uid: user.uid,
+        uid: userData.uid,
         rating,
         contents: reviewValue,
         createdAt: Timestamp.fromDate(new Date()),
       };
-      await addReview(movieData.id, commentData);
-      // 댓글 추가후 이전 데이터들도 같이 불러오기 위해서 사용(스크롤 유지)
-      const { res, data } = await fetchAddReviewData(
-        movieData.id,
-        page,
-        filter
-      );
-      setPage(res.docs[res.docs.length - 1]);
-      setHasMore(res.docs.length / limitPage >= 0);
-      setReviewData(data);
+      await addReview(movieData, newReviewData);
+      if (reviewData.length) {
+        // 댓글 추가후 이전 데이터들도 같이 불러오기 위해서 사용(스크롤 유지)
+        const { res, data } = await fetchAddReviewData(
+          movieData.id,
+          page,
+          filter
+        );
+        setPage(res.docs[res.docs.length - 1]);
+        setHasMore(res.docs.length / limitPage >= 0);
+        setReviewData(data);
+      } else {
+        setReviewData([
+          {
+            ...newReviewData,
+            reviewer: userData.displayName,
+            reviewerImg: userData.photoURL,
+          },
+        ]);
+      }
     }
     setReivewValue("");
     setTextCount(0);
@@ -108,7 +121,7 @@ export default function Review({ movieData, user }) {
 
   const fecthUserData = async () => {
     const data = await getUser();
-    setUserReviewList(data.reviewList);
+    setUserData(data);
   };
 
   const fetchFirstPage = async () => {
@@ -136,7 +149,7 @@ export default function Review({ movieData, user }) {
 
   useEffect(() => {
     fecthUserData();
-  }, []);
+  }, [reviewData]);
 
   // 정렬이 바뀔때 마다 데이터를 새로 받아옴
   useEffect(() => {
@@ -210,11 +223,10 @@ export default function Review({ movieData, user }) {
                 key={item.id}
                 reviewData={item}
                 reviewDataList={reviewData}
-                user={user}
                 movieId={movieData.id}
                 setReviewData={setReviewData}
-                userReviewList={userReivewList}
-                setUserReviewList={setUserReviewList}
+                userData={userData}
+                setUserData={setUserData}
               />
             );
           })
