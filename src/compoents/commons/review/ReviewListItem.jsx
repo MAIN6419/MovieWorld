@@ -20,16 +20,14 @@ import {
   ReviewerWrapper,
 } from "./reviewListItem.style";
 import { setDateFormate } from "../../../libray/setDateFormate";
-import { editReview, removeReview } from "../../../firebase/auth";
+import { editReview, removeReview, reviewReport } from "../../../firebase/auth";
 
 export default function ReviewListItem({
   reviewData,
-  user,
   movieId,
   setReviewData,
-  reviewDataList,
-  userReviewList,
-  setUserReviewList,
+  userData,
+  setUserData,
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const [editValue, setEditValue] = useState(reviewData.contents);
@@ -59,17 +57,17 @@ export default function ReviewListItem({
     if (answer) {
       const editData = {
         id: reviewData.id,
-        uid: user.uid,
+        uid: userData.uid,
         rating: editRating,
         contents: editValue,
       };
       editReview(movieId, editData);
 
-      let newData = [...reviewDataList];
-      newData.forEach((item) => {
+      let newData = [...userData];
+      newData.userData.forEach((item) => {
         if (item.id === reviewData.id) {
-          item.reviewer = user.displayName;
-          item.reviewerImg = user.photoURL;
+          item.reviewer = userData.displayName;
+          item.reviewerImg = userData.photoURL;
           item.rating = editRating;
           item.contents = editValue;
         }
@@ -84,11 +82,27 @@ export default function ReviewListItem({
     if (answer) {
       removeReview(movieId, reviewData.id);
       setReviewData((prev) => prev.filter((item) => item.id !== reviewData.id));
-      let newUserReviewList = [...userReviewList];
-      newUserReviewList = userReviewList.filter((review) => review !== movieId);
-      setUserReviewList(newUserReviewList);
+      let newUserData = {...userData};
+      newUserData = userData.reviewList.filter((review) => review !== movieId);
+      setUserData(newUserData);
     }
   };
+
+  const onClickReport = async () => {
+    const answer = window.confirm("정말 신고하시겠습니까?");
+    if (answer) {
+      const isReport = userData.reportList.find((report)=>report===reviewData.id);
+      if(isReport){
+        alert("이미 신고한 리뷰입니다.");
+        return;
+      }
+      await reviewReport(movieId, reviewData);
+      const newUserData = {...userData}
+      newUserData.reportList.push(reviewData.id);
+      setUserData(newUserData);
+      alert("신고가 완료되었습니다.");
+    }
+  }
 
   return (
     <ReviewItem>
@@ -138,7 +152,7 @@ export default function ReviewListItem({
             <ReviewCreatedAt>
               {setDateFormate(reviewData.createdAt.seconds * 1000)}
             </ReviewCreatedAt>
-            {user.displayName === reviewData.reviewer ? (
+            {userData.displayName === reviewData.reviewer ? (
               <>
                 <ReviewItemBtn type="button" onClick={() => setIsEdit(true)}>
                   수정
@@ -148,7 +162,7 @@ export default function ReviewListItem({
                 </ReviewItemBtn>
               </>
             ) : (
-              <ReviewItemBtn>신고</ReviewItemBtn>
+              <ReviewItemBtn onClick={onClickReport}>신고</ReviewItemBtn>
             )}
           </ReviewItemBottom>
         </>
