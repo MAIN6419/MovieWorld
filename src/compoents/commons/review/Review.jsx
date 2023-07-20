@@ -221,7 +221,8 @@ export default function Review({ movieData }) {
             return (
               <ReviewListItem
                 key={item.id}
-                reviewData={item}
+                reviewItem={item}
+                reviewData={reviewData}
                 reviewDataList={reviewData}
                 movieId={movieData.id}
                 setReviewData={setReviewData}
