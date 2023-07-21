@@ -39,6 +39,7 @@ import { UserContext } from "../../context/userContext";
 import ChangePassword from "./ChangePassword";
 import TopButton from "../../compoents/commons/topButton/TopButton";
 import Blank from "../../compoents/commons/blank/Blank";
+import { useMediaQuery } from "react-responsive";
 
 export default function Mypage() {
   const { user } = useContext(UserContext);
@@ -54,8 +55,13 @@ export default function Mypage() {
   const limitPage = 20;
   const [ref, inview] = useInView();
   const [menu, setMenu] = useState("like");
+  // 초기 렌더링 시 Blank 컴포넌트가 잠깐 나오는 현상을 방지하기 위해 사용
+  // isLoading으로 처리하려 했지만 로딩시간이 짧을 경우 깜빡거림 현상으로 인해 UX적으로 안좋아 이 방식 사용
+  const [notData, setNotData] = useState(true);
+  const isMoblie = useMediaQuery({ query: "(max-width:486px)" });
 
   const fetchFirstPage = async () => {
+    setNotData(true);
     const res =
       menu === "like"
         ? await fetchFirstLikeList(limitPage)
@@ -65,6 +71,7 @@ export default function Mypage() {
     setPage(res.docs[res.docs.length - 1]);
     setHasMore(res.docs.length === limitPage);
     setIsLoading(false);
+    setNotData(false);
   };
 
   const fetchAddData = async () => {
@@ -164,8 +171,9 @@ export default function Mypage() {
               <MoiveListWrapper
                 style={{ height: !data.length ? "calc(100vh - 325px)" : "" }}
               >
-                {!data.length ? (
+                {!data.length && !notData ? (
                   <Blank
+                    size={isMoblie ? "small" : ""}
                     text={
                       menu === "like"
                         ? "찜 목록이 존재하지 않습니다."
