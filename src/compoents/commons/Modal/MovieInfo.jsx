@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   CloseBtn,
   ModalCard,
@@ -26,12 +26,15 @@ import { fetchVideo } from "../../../api/movie";
 import { addLike, getUser, removeLike } from "../../../firebase/auth";
 import { UserContext } from "../../../context/userContext";
 import Review from "../review/Review";
+import { history } from "../../../history/history";
+import { isMobile } from "react-device-detect";
 
 export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
   const { user } = useContext(UserContext);
   const [isPlay, setIsPlay] = useState(false);
   const [videoData, setVideoData] = useState({});
   const [like, setLike] = useState(false);
+  const modalRef = useRef();
 
   const fetchLike = async () => {
     if (user) {
@@ -43,8 +46,11 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
   };
 
   const onClickClose = () => {
-    setIsOpenMovieInfo(false);
-    document.body.style.overflow = "auto";
+    modalRef.current.style.animation= 'fadeOut 800ms';
+    setTimeout(() => {
+      setIsOpenMovieInfo(false);
+      document.body.style.overflow = 'auto';
+    }, 500);
   };
 
   const fetchData = async () => {
@@ -76,6 +82,10 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
   };
 
   const onClickLike = async () => {
+    if (!user) {
+      alert("로그인 후 이용가능합니다!");
+      return;
+    }
     if (!like) {
       const res = await addLike(videoData);
       if (res) {
@@ -99,13 +109,27 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
     }
   }, [videoData]);
 
+  useEffect(() => {
+    if (isMobile) {
+      window.history.pushState(null, "", window.location.href);
+
+      window.onpopstate = () => {
+        history.go(1);
+        this.handleGoback();
+      };
+      window.onpopstate = () => {
+        onClickClose();
+      };
+    }
+  }, []);
+
   return (
     <>
       {videoData.id && (
         <ModalWrapper>
           <ModalTitle className="a11y-hidden">영화정보</ModalTitle>
           <ModalDim onClick={onClickClose}></ModalDim>
-          <ModalCard>
+          <ModalCard ref={modalRef}>
             <MovieImgWrapper>
               {isPlay ? (
                 <>

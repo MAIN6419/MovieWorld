@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dim,
   ModalCard,
@@ -17,6 +17,8 @@ import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { useMediaQuery } from "react-responsive";
 import { changeUserPassword } from "../../firebase/auth";
+import { isMobile } from "react-device-detect";
+import { history } from "../../history/history";
 
 export default function ChangePassword({ setIsChangePassword }) {
   const isMoblie = useMediaQuery({
@@ -61,7 +63,7 @@ export default function ChangePassword({ setIsChangePassword }) {
     }
   };
 
-  const onClickCancle = () => {
+  const onClickcancel = () => {
     setIsChangePassword(false);
     document.body.style.overflow = "auto";
   };
@@ -71,9 +73,23 @@ export default function ChangePassword({ setIsChangePassword }) {
     changeUserPassword(currentPw, newPw);
   };
 
+  useEffect(() => {
+    if (isMobile) {
+      window.history.pushState(null, "", window.location.href);
+
+      window.onpopstate = () => {
+        history.go(1);
+        this.handleGoback();
+      };
+      window.onpopstate = () => {
+        onClickcancel();
+      };
+    }
+  }, []);
+
   return (
     <ModalWrapper>
-      <Dim onClick={onClickCancle}>
+      <Dim onClick={onClickcancel}>
         <span className="a11y-hidden">dim</span>
       </Dim>
       <ModalCard>
@@ -143,7 +159,7 @@ export default function ChangePassword({ setIsChangePassword }) {
           </InputDescList>
           <PasswordChangeBtns>
             <PasswordChangeBtn type="submit">확인</PasswordChangeBtn>
-            <PasswordChangeBtn type="button" onClick={onClickCancle}>
+            <PasswordChangeBtn type="button" onClick={onClickcancel}>
               취소
             </PasswordChangeBtn>
           </PasswordChangeBtns>

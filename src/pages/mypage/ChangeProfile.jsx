@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   ChangeImgBtn,
   Dim,
@@ -22,6 +22,8 @@ import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { duplication, updateUserProfile } from "../../firebase/auth";
 import { useMediaQuery } from "react-responsive";
 import { UserContext } from "../../context/userContext";
+import { isMobile } from "react-device-detect";
+import { history } from "../../history/history";
 export default function ChangeProfile({
   user,
   setIsProfileEdit,
@@ -98,7 +100,7 @@ export default function ChangeProfile({
     setUploadImg(file);
   };
 
-  const onClickCancle = () => {
+  const onClickCancel = () => {
     setIsProfileEdit(false);
     document.body.style.overflow = "auto";
   };
@@ -111,13 +113,27 @@ export default function ChangeProfile({
     setIsLoading(true);
     await updateUserProfile(uploadImg, displayNameValue);
     setIsLoading(false);
-    onClickCancle();
+    onClickCancel();
     refreshUser();
   };
 
+  useEffect(() => {
+    if (isMobile) {
+      window.history.pushState(null, "", window.location.href);
+
+      window.onpopstate = () => {
+        history.go(1);
+        this.handleGoback();
+      };
+      window.onpopstate = () => {
+        onClickCancel();
+      };
+    }
+  }, []);
+
   return (
     <ModalWrapper>
-      <Dim onClick={onClickCancle}>
+      <Dim onClick={onClickCancel}>
         <span>dim</span>
       </Dim>
       <ModalCard>
@@ -165,7 +181,7 @@ export default function ChangeProfile({
           <ProfileEditBtn type="button" onClick={onClickSubmit}>
             확인
           </ProfileEditBtn>
-          <ProfileEditBtn type="button" onClick={onClickCancle}>
+          <ProfileEditBtn type="button" onClick={onClickCancel}>
             취소
           </ProfileEditBtn>
         </ProfileEditBtns>
