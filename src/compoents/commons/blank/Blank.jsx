@@ -1,11 +1,11 @@
-import React from 'react'
-import { BlankImg, BlankText, Wrapper } from './blank.style'
+import React from "react";
+import { BlankImg, BlankText, Wrapper } from "./blank.style";
 
-export default function Blank({size, text}) {
+export default function Blank({ size, text }) {
   return (
     <Wrapper>
-      <BlankImg src='assets/icon-blank.png' className={size}/>
-      <BlankText>{text}</BlankText>
+      <BlankImg src="assets/icon-blank.png" className={size} />
+      <BlankText className={size}>{text}</BlankText>
     </Wrapper>
-  )
+  );
 }
