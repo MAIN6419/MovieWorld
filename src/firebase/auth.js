@@ -309,7 +309,6 @@ export const getUser = async () => {
 
 export const addLike = async (movieData) => {
   try {
-    if (auth.currentUser) {
       const likeRef = collection(db, "likeList");
       const userLikedoc = doc(likeRef, auth.currentUser.uid);
       const userLikeRef = collection(userLikedoc, "like");
@@ -322,10 +321,7 @@ export const addLike = async (movieData) => {
       });
 
       return true;
-    } else {
-      alert("로그인 후 이용 가능합니다!");
-      return false;
-    }
+    
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
     throw error;
