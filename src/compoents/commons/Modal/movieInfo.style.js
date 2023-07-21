@@ -44,6 +44,16 @@ export const ModalCard = styled.div`
       transform: translate(-50%, -50%) scale(1);
     }
   }
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, 50%);
+    }
+  }
 `;
 
 export const ModalTitle = styled.h2``;
