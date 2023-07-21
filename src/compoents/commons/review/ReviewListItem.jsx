@@ -64,14 +64,14 @@ export default function ReviewListItem({
       };
       editReview(movieId, editData);
       let newReviewData = [...reviewData];
-      newReviewData.forEach((item)=>{
-        if(item.id===reviewItem.id) {
+      newReviewData.forEach((item) => {
+        if (item.id === reviewItem.id) {
           item.reviewer = userData.displayName;
           item.reviewerImg = userData.photoURL;
           item.rating = editRating;
           item.contents = editValue;
         }
-      })
+      });
       setReviewData(newReviewData);
       setIsEdit(false);
     }
@@ -89,6 +89,10 @@ export default function ReviewListItem({
   };
 
   const onClickReport = async () => {
+    if (!userData.uid) {
+      alert("로그인 후 이용가능합니다!");
+      return;
+    }
     const answer = window.confirm("정말 신고하시겠습니까?");
     if (answer) {
       const isReport = userData.reportList.find(

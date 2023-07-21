@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ReviewListItem from "./ReviewListItem";
 import {
   Rating,
@@ -31,8 +31,10 @@ import {
 import { Timestamp } from "firebase/firestore";
 import Blank from "../blank/Blank";
 import { useInView } from "react-intersection-observer";
+import { UserContext } from "../../../context/userContext";
 
 export default function Review({ movieData }) {
+  const { user } = useContext(UserContext);
   const [reviewValue, setReivewValue] = useState("");
   const [rating, setRating] = useState(0);
   const [textCount, setTextCount] = useState(0);
@@ -78,41 +80,47 @@ export default function Review({ movieData }) {
 
   const onClickSubmit = async (e) => {
     e.preventDefault();
-    const isReview = userData.reviewList.find((data) => data === movieData.id);
-    if (isReview) {
-      alert("이미 리뷰한 영화 입니다!");
-      setReivewValue("");
-      setTextCount(0);
-      setRating(0);
-      return;
-    } else {
-      const newReviewData = {
-        id: uuidv4(),
-        uid: userData.uid,
-        rating,
-        contents: reviewValue,
-        createdAt: Timestamp.fromDate(new Date()),
-      };
-      await addReview(movieData, newReviewData);
-      if (reviewData.length) {
-        // 댓글 추가후 이전 데이터들도 같이 불러오기 위해서 사용(스크롤 유지)
-        const { res, data } = await fetchAddReviewData(
-          movieData.id,
-          page,
-          filter
-        );
-        setPage(res.docs[res.docs.length - 1]);
-        setHasMore(res.docs.length / limitPage >= 0);
-        setReviewData(data);
+    if (user) {
+      const isReview = userData.reviewList.find(
+        (data) => data === movieData.id
+      );
+      if (isReview) {
+        alert("이미 리뷰한 영화 입니다!");
+        setReivewValue("");
+        setTextCount(0);
+        setRating(0);
+        return;
       } else {
-        setReviewData([
-          {
-            ...newReviewData,
-            reviewer: userData.displayName,
-            reviewerImg: userData.photoURL,
-          },
-        ]);
+        const newReviewData = {
+          id: uuidv4(),
+          uid: userData.uid,
+          rating,
+          contents: reviewValue,
+          createdAt: Timestamp.fromDate(new Date()),
+        };
+        await addReview(movieData, newReviewData);
+        if (reviewData.length) {
+          // 댓글 추가후 이전 데이터들도 같이 불러오기 위해서 사용(스크롤 유지)
+          const { res, data } = await fetchAddReviewData(
+            movieData.id,
+            page,
+            filter
+          );
+          setPage(res.docs[res.docs.length - 1]);
+          setHasMore(res.docs.length / limitPage >= 0);
+          setReviewData(data);
+        } else {
+          setReviewData([
+            {
+              ...newReviewData,
+              reviewer: userData.displayName,
+              reviewerImg: userData.photoURL,
+            },
+          ]);
+        }
       }
+    } else {
+      alert("로그인 후 이용가능합니다!");
     }
     setReivewValue("");
     setTextCount(0);
@@ -120,8 +128,10 @@ export default function Review({ movieData }) {
   };
 
   const fecthUserData = async () => {
-    const data = await getUser();
-    setUserData(data);
+    if (user) {
+      const data = await getUser();
+      setUserData(data);
+    }
   };
 
   const fetchFirstPage = async () => {
