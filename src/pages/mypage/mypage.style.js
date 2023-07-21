@@ -66,7 +66,7 @@ export const ProfileMenuBtn = styled.button`
   font-weight: 500;
   cursor: pointer;
   :hover {
-    background-color: rgba(205, 205, 205);
+    background-color: ${isMobile ? "" : " rgba(205, 205, 205)"};
   }
 `;
 
@@ -98,7 +98,7 @@ export const MovieMenuBtn = styled.button`
   position: relative;
   transition: all 0.5s;
   :hover {
-    color: #bdbdbd;
+    color: ${isMobile ? "" : "#bdbdbd"};
   }
   &.active {
     color: #fff;
@@ -114,9 +114,10 @@ export const MovieMenuBtn = styled.button`
     bottom: -3px;
     animation: fadeIn 0.5s;
     @keyframes fadeIn {
-      from{
+      from {
         width: 0;
-      } to {
+      }
+      to {
         width: 90px;
       }
     }
@@ -134,9 +135,7 @@ export const MoiveListWrapper = styled.ul`
   }
 `;
 
-export const MovieItem = styled.li`
-
-`;
+export const MovieItem = styled.li``;
 
 export const MovieImgWrapper = styled.div`
   position: relative;
