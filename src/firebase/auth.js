@@ -98,11 +98,20 @@ export const duplication = async (duplicationValue, duplicationTarget) => {
 };
 
 // 회원가입 API
-export const signup = async (displayName, email, password, phone) => {
+export const signup = async (displayName, file, email, password, phone) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
+    const fileName = file && `${uuidv4()}_${file.name}`;
+    const uploadImgURLRes =
+    file &&
+      (await uploadBytes(
+        storageRef(storage, `images/profile/${fileName}`),
+        file
+      ));
+    const photoURL = file && (await getDownloadURL(uploadImgURLRes.ref));
     await updateProfile(res.user, {
       displayName,
+      photoURL,
     });
 
     const user = collection(db, "user");
@@ -110,20 +119,20 @@ export const signup = async (displayName, email, password, phone) => {
       uid: res.user.uid,
       email: res.user.email,
       displayName: res.user.displayName,
+      photoURL: res.user.photoURL || "",
       phone,
       likeList: [],
       reviewList: [],
       reportList: [],
-      photoFileName: "",
-      photoURL: "",
+      photoFileName: fileName || "",
     });
     localStorage.setItem(
       "user",
       JSON.stringify({
-        uid: user.uid,
-        displayName: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
+        uid: res.user.uid,
+        displayName,
+        email: res.user.email,
+        photoURL,
       })
     );
   } catch (error) {
@@ -254,8 +263,6 @@ export const updateUserProfile = async (file, displayName) => {
           photoURL: uploadfileUrl,
         })
       );
-      userData.displayName = displayName;
-      userData.photoURL = uploadfileUrl;
     }
 
     // 2. 닉네임만 변경된 경우
@@ -264,7 +271,6 @@ export const updateUserProfile = async (file, displayName) => {
         updateProfile(auth.currentUser, { displayName }),
         updateDoc(updateUser, { displayName })
       );
-      userData.displayName = displayName;
     }
 
     // 3. 이미지만 변경된 경우
@@ -283,11 +289,15 @@ export const updateUserProfile = async (file, displayName) => {
           photoURL: uploadfileUrl,
         })
       );
-      userData.photoURL = uploadfileUrl;
     }
 
     await Promise.all(promises);
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify({
+      uid: auth.currentUser.uid,
+      displayName,
+      photoURL:uploadfileUrl,
+      email: auth.currentUser.email,
+    }));
   } catch (error) {
     alert("알 수 없는 오류가 발생하였습니다. 잠시 후 다시 시도해주세요.");
     throw error;
@@ -297,7 +307,10 @@ export const updateUserProfile = async (file, displayName) => {
 // 유저 데이터 API
 export const getUser = async () => {
   try {
-    const userRef = doc(db, `user/${(userData&&userData.uid)||auth.currentUser.uid}`);
+    const userRef = doc(
+      db,
+      `user/${(userData && userData.uid) || auth.currentUser.uid}`
+    );
     const res = await getDoc(userRef);
     const data = res.data();
     return data;
@@ -309,19 +322,18 @@ export const getUser = async () => {
 
 export const addLike = async (movieData) => {
   try {
-      const likeRef = collection(db, "likeList");
-      const userLikedoc = doc(likeRef, auth.currentUser.uid);
-      const userLikeRef = collection(userLikedoc, "like");
+    const likeRef = collection(db, "likeList");
+    const userLikedoc = doc(likeRef, auth.currentUser.uid);
+    const userLikeRef = collection(userLikedoc, "like");
 
-      await setDoc(doc(userLikeRef, String(movieData.id)), movieData);
+    await setDoc(doc(userLikeRef, String(movieData.id)), movieData);
 
-      const userRef = doc(db, `user/${auth.currentUser.uid}`);
-      await updateDoc(userRef, {
-        likeList: arrayUnion(movieData.id),
-      });
+    const userRef = doc(db, `user/${auth.currentUser.uid}`);
+    await updateDoc(userRef, {
+      likeList: arrayUnion(movieData.id),
+    });
 
-      return true;
-    
+    return true;
   } catch (error) {
     alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
     throw error;
@@ -355,7 +367,10 @@ export const removeLike = async (movieData) => {
 export const fetchFirstLikeList = async (limitPage) => {
   try {
     const likeRef = collection(db, "likeList");
-    const userLikedoc = doc(likeRef, (userData&&userData.uid)||auth.currentUser.uid);
+    const userLikedoc = doc(
+      likeRef,
+      (userData && userData.uid) || auth.currentUser.uid
+    );
     const userLikeRef = collection(userLikedoc, "like");
     const q = query(userLikeRef, limit(limitPage));
     const res = await getDocs(q);
