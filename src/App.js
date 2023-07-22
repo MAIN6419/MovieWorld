@@ -77,7 +77,7 @@ function App() {
             />
             <Route
               path="/signup"
-              element={user ? <Navigate to="/main" /> : <Signup />}
+              element={user.displayName ? <Navigate to="/main" /> : <Signup />}
             />
             <Route
               path="/findAccount"
