@@ -1,64 +1,54 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  FormTitle,
+  InputWrapper,
+  ProgressBar,
+  ProgressCheck,
+  ProgressCheckText,
+  ProgressCheckWrapper,
+  ProgressTitle,
+  ProgressWrapper,
   SignupBtn,
   SignupForm,
-  SignupTitle,
   Title,
   Wrapper,
 } from "./signup.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-import { duplication, signup } from "../../firebase/auth";
 import Loading from "../../compoents/commons/loading/Loading";
-import { UserContext } from "../../context/userContext";
+import ProfileSetting from "./ProfileSetting";
 
 export default function Signup() {
-  const { refreshUser } = useContext(UserContext);
-  const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-  const displayNameReg = /^[a-zA-z0-9]{4,10}$/;
-  const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
-  const phoneReg = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
-
-  // 닉네임 유효성 input
-  const [
-    displayNameValue,
-    setDisplayNameValue,
-    displayNameValid,
-    setDisplayNameValid,
-    onChangeNickName,
-  ] = useValidationInput(
-    "",
-    displayNameReg,
-    "4-10자 영문, 영문+숫자를 입력해주세요."
-  );
+  const [defaultInfo, setDefaultInfo] = useState(false);
+  const [profile, setProfile] = useState(false);
+  const [percentage, setPercentage] = useState("0%");
+  const [next, setNext] = useState(false);
 
   // 이메일 유효성 input
-  const [emailValue, setEmailValue, emailValid, setEmailValid, onChangeEmail] =
-    useValidationInput("", emailReg, "유효한 이메일을 입력해주세요.");
+  const [emailValue, emailValid, onChangeEmail] =
+    useValidationInput("", "email", true);
   const [
     passwordValue,
-    setpasswordValue,
     passowrdValid,
-    setPassowrdValid,
     onChangePassowrd,
   ] = useValidationInput(
     "",
-    passwordReg,
-    "8-16자 특수문자, 숫자, 영문을 포함해야합니다."
+    "password",
   );
 
   // 비밀번호 유효성 input
   const [
     passowrdChkValue,
-    setPasswordChkValue,
     passwordChkValid,
+    _,
+    setPasswordChkValue,
     setPasswordChkValid,
-  ] = useValidationInput("", passwordReg, "비밀번호가 일치하지 않습니다.");
+  ] = useValidationInput("", "password");
 
   // 휴대폰 유효성 input
-  const [phoneValue, setPhoneValue, phoneValid, setPhoneValid, onChangePhone] =
-    useValidationInput("", phoneReg, "유효한 휴대폰 번호를 입력하세요.");
+  const [phoneValue, phoneValid, onChangePhone] =
+    useValidationInput("", "phone", true);
 
   // 회원가입 버튼 활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
@@ -77,161 +67,122 @@ export default function Signup() {
     }
   };
 
-  const onBlurNickname = async () => {
-    if (displayNameValid.valid) {
-      const isDulplcation = await duplication(displayNameValue, "displayName");
-      if (isDulplcation) {
-        setDisplayNameValid({
-          errorMsg: "중복된 닉네임 입니다!",
-          valid: false,
-        });
-      } else {
-        setDisplayNameValid({ errorMsg: "", valid: true });
-      }
-    }
-  };
-
-  const onBlurEmail = async () => {
-    if (emailValid.valid) {
-      const isDulplcation = await duplication(emailValue, "email");
-      if (isDulplcation) {
-        setEmailValid({ errorMsg: "중복된 이메일 입니다!", valid: false });
-      } else {
-        setEmailValid({ errorMsg: "", valid: true });
-      }
-    }
-  };
-
-  const onBlurPhone = async () => {
-    if (phoneValid.valid) {
-      const isDulplcation = await duplication(
-        phoneValue.replace(/-/g, ""),
-        "phone"
-      );
-      if (isDulplcation) {
-        setPhoneValid({
-          errorMsg: "이미 사용중인 휴대폰 번호 입니다!",
-          valid: false,
-        });
-      } else {
-        setPhoneValid({ errorMsg: "", valid: true });
-      }
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    await signup(
-      displayNameValue,
-      emailValue,
-      passwordValue,
-      phoneValue.replace(/-/g, "")
-    );
-    setIsLoading(false);
-    refreshUser();
-  };
-
   // 전체 input이 유효하다면 버튼 활성화
   useEffect(() => {
     if (
-      displayNameValid.valid &&
       emailValid.valid &&
       passowrdValid.valid &&
       passwordChkValid.valid &&
       phoneValid.valid
     ) {
       setDisabled(false);
+      setDefaultInfo(true);
+      setPercentage("50%");
     } else {
       setDisabled(true);
+      setDefaultInfo(false);
+      setPercentage("0");
     }
-  }, [
-    displayNameValid,
-    emailValid,
-    passowrdValid,
-    passwordChkValid,
-    phoneValid,
-  ]);
+  }, [emailValid, passowrdValid, passwordChkValid, phoneValid]);
 
   return (
+    <>
     <Wrapper>
-      <Title className="a11y-hidden">회원가입 페이지</Title>
-      <SignupForm onSubmit={(e) => handleSubmit(e)}>
-        <SignupTitle>회원가입</SignupTitle>
-        <UserInput
-          type="text"
-          label={"닉네임"}
-          id={"input-nickname"}
-          placeholder={"Nickname"}
-          value={displayNameValue}
-          onChange={onChangeNickName}
-          onBlur={onBlurNickname}
-          minLength={4}
-          maxLength={10}
+      <Title>회원가입</Title>
+      <ProgressWrapper>
+        <ProgressTitle className="a11y-hidden">회원가입 진행바</ProgressTitle>
+        <ProgressCheckWrapper>
+          <ProgressCheck
+            className="defalut"
+            active={defaultInfo}
+          ></ProgressCheck>
+          <ProgressCheckText>기본정보 입력</ProgressCheckText>
+        </ProgressCheckWrapper>
+        <ProgressBar percentage={percentage}></ProgressBar>
+        <ProgressCheckWrapper>
+          <ProgressCheck className="profile" active={profile}></ProgressCheck>
+          <ProgressCheckText>프로필 설정</ProgressCheckText>
+        </ProgressCheckWrapper>
+      </ProgressWrapper>
+      {!next ? (
+        <SignupForm>
+          <InputWrapper>
+            <UserInput
+              type="text"
+              label={"이메일"}
+              id={"input-email"}
+              placeholder={"이메일 주소를 입력해주세요."}
+              value={emailValue}
+              onChange={onChangeEmail}
+
+            />
+            {emailValid.errorMsg && <ErrorMsg message={emailValid.errorMsg} />}
+          </InputWrapper>
+          <InputWrapper>
+            <UserInput
+              type="password"
+              label={"비밀번호"}
+              id={"input-password"}
+              placeholder={"8-16자 특수문자, 숫자, 영문 포함"}
+              value={passwordValue}
+              onChange={onChangePassowrd}
+              minLength={8}
+              maxLength={16}
+            />
+            {passowrdValid.errorMsg && (
+              <ErrorMsg message={passowrdValid.errorMsg} />
+            )}
+          </InputWrapper>
+          <InputWrapper>
+            <UserInput
+              type="password"
+              label={"비밀번호 확인"}
+              id={"input-passwordChk"}
+              placeholder={"비밀번호 확인을 입력해주세요."}
+              value={passowrdChkValue}
+              onChange={onChangePasswordChk}
+              minLength={8}
+              maxLength={16}
+            />
+            {passwordChkValid.errorMsg && (
+              <ErrorMsg message={passwordChkValid.errorMsg} />
+            )}
+          </InputWrapper>
+          <InputWrapper>
+            <UserInput
+              type="text"
+              label={"휴대폰"}
+              id={"input-phone"}
+              placeholder={"휴대폰 번호를 입력해주세요. ( - 제외 )"}
+              value={phoneValue
+                .replace(/[^0-9]/g, "")
+                .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}
+              onChange={onChangePhone}
+              maxLength={13}
+            />
+            {phoneValid.errorMsg && <ErrorMsg message={phoneValid.errorMsg} />}
+          </InputWrapper>
+          <SignupBtn
+            type="button"
+            disabled={disabled}
+            onClick={() => setNext(true)}
+          >
+            다음
+          </SignupBtn>
+        </SignupForm>
+      ) : (
+        <ProfileSetting
+          setIsLoading={setIsLoading}
+          setProfile={setProfile}
+          emailValue={emailValue}
+          passwordValue={passwordValue}
+          phoneValue={phoneValue}
+          setPercentage={setPercentage}
+          setNext={setNext}
         />
-        {displayNameValid.errorMsg && (
-          <ErrorMsg message={displayNameValid.errorMsg} />
-        )}
-        <UserInput
-          type="text"
-          label={"이메일"}
-          id={"input-email"}
-          placeholder={"Email"}
-          value={emailValue}
-          onChange={onChangeEmail}
-          onBlur={onBlurEmail}
-        />
-        {emailValid.errorMsg && <ErrorMsg message={emailValid.errorMsg} />}
-        <UserInput
-          type="password"
-          label={"비밀번호"}
-          id={"input-password"}
-          placeholder={"Password"}
-          value={passwordValue}
-          onChange={onChangePassowrd}
-          minLength={8}
-          maxLength={16}
-        />
-        {passowrdValid.errorMsg && (
-          <ErrorMsg message={passowrdValid.errorMsg} />
-        )}
-        <UserInput
-          type="password"
-          label={"비밀번호 확인"}
-          id={"input-passwordChk"}
-          placeholder={"Password check"}
-          value={passowrdChkValue}
-          onChange={onChangePasswordChk}
-          minLength={8}
-          maxLength={16}
-        />
-        {passwordChkValid.errorMsg && (
-          <ErrorMsg message={passwordChkValid.errorMsg} />
-        )}
-        <UserInput
-          type="text"
-          label={"휴대폰"}
-          id={"input-phone"}
-          placeholder={"Phone ( - 제외 )"}
-          value={phoneValue
-            .replace(/[^0-9]/g, "")
-            .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}
-          onChange={onChangePhone}
-          onBlur={onBlurPhone}
-          maxLength={13}
-        />
-        {phoneValid.errorMsg && <ErrorMsg message={phoneValid.errorMsg} />}
-        <SignupBtn
-          type="submit"
-          disabled={disabled}
-          onMouseOver={(e) => {
-            e.target.focus();
-          }}
-        >
-          회원가입
-        </SignupBtn>
-      </SignupForm>
-      {isLoading && <Loading />}
+      )}
     </Wrapper>
+    {isLoading && <Loading />}
+    </>
   );
 }
