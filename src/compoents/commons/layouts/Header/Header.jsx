@@ -43,7 +43,7 @@ export default function Header() {
         <HeaderSearchLink to="/search" onClick={() => setIsUserMenu(false)}>
           <HeaderSearchIcon src="assets/icon-search.png" alt="검색" />
         </HeaderSearchLink>
-        {user && (
+        {user&&user.displayName && (
           <UserProfileImg
             src={user.photoURL || "assets/defaultProfile.png"}
             onError={(e) => (e.target.src = "assets/defaultProfile.png")}
@@ -51,7 +51,7 @@ export default function Header() {
           />
         )}
         <HeaderLinks>
-          {user ? (
+          {user&&user.displayName ? (
             <UserNicknameWrapper>
               <UserNickname>
                 {user.displayName} 님
