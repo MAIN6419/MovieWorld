@@ -35,9 +35,7 @@ export const HeaderRight = styled.div`
 
 export const HeaderSearchLink = styled(Link)`
   margin-right: 5px;
-  @media screen and (max-width: 440px) {
-    margin-right: 0px;
-  }
+
 `;
 
 export const HeaderSearchIcon = styled.img`
