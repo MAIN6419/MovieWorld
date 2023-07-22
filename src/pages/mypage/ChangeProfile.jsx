@@ -34,31 +34,18 @@ export default function ChangeProfile({
     query: "(max-width:486px)",
   });
   const imgInputRef = useRef(null);
-  const nicknameReg = /^[a-zA-z0-9]{4,10}$/;
   const [previewImg, setPreviewImg] = useState(user.photoURL);
   const [uploadImg, setUploadImg] = useState("");
   const [
     displayNameValue,
-    setDisplayNameValue,
     nicknameValid,
-    setNicknameValid,
     onChnageNickname,
   ] = useValidationInput(
     user.displayName,
-    nicknameReg,
-    "4-10자 영문, 영문+숫자를 입력해주세요."
+    "displayName",
+    true
   );
 
-  const onBlurNickname = async () => {
-    if (nicknameValid.valid) {
-      const isDulplcation = await duplication(displayNameValue, "displayName");
-      if (isDulplcation && user.displayName !== displayNameValue) {
-        setNicknameValid({ errorMsg: "중복된 닉네임 입니다!", valid: false });
-      } else {
-        setNicknameValid({ errorMsg: "", valid: true });
-      }
-    }
-  };
 
   const onClickChangeImg = () => {
     imgInputRef.current.click();
@@ -156,7 +143,6 @@ export default function ChangeProfile({
               type="text"
               value={displayNameValue}
               onChange={onChnageNickname}
-              onBlur={onBlurNickname}
             />
             {nicknameValid.errorMsg && (
               <ErrorMsg

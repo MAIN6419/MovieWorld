@@ -17,31 +17,13 @@ import { login } from "../../firebase/auth";
 export default function Login() {
   const [disabled, setDisabled] = useState(true);
   const emailRef = useRef(null);
-  const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-  const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
-  const [emailValue, setEmailValue, emailValid, setEmailValid, onChangeEmail] =
-    useValidationInput("", emailReg, "이메일 형식을 확인해주세요.");
-  const [
-    passowordValue,
-    setPasswordValue,
-    passwordValid,
-    setPasswordValid,
-    onChangePassword,
-  ] = useValidationInput(
-    "",
-    passwordReg,
-    "8-16자 특수문자, 숫자, 영문을 포함해야합니다."
-  );
+  const [emailValue, emailValid, onChangeEmail, setEmailValue] =
+    useValidationInput("", "email", false);
+  const [passowordValue, passwordValid, onChangePassword, setPasswordValue] =
+    useValidationInput("", "password");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!emailValue) {
-      setEmailValid({ errorMsg: "이메일을 입력해주세요.", valid: false });
-    }
-    if (!passowordValue) {
-      setPasswordValid({ errorMsg: "비밀번호를 입력해주세요.", valid: false });
-      return;
-    }
     if (emailValid.valid && passwordValid.valid) {
       await login(emailValue, passowordValue);
       setEmailValue("");

@@ -24,30 +24,23 @@ export default function ChangePassword({ setIsChangePassword }) {
   const isMoblie = useMediaQuery({
     query: "(max-width:486px)",
   });
-
-  const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
   const [
     currentPw,
-    setCurrentPw,
     currentPwValid,
-    setCurrentPwValid,
     onChangeCurrentPW,
   ] = useValidationInput(
     "",
-    passwordReg,
-    "8-16자 특수문자, 숫자, 영문을 포함해야합니다."
+    "password",
   );
-  const [newPw, setNewPw, newPwValid, setNewPwValid, onChangeNewPW] =
+  const [newPw,  newPwValid, onChangeNewPW] =
     useValidationInput(
       "",
-      passwordReg,
-      "8-16자 특수문자, 숫자, 영문을 포함해야합니다."
+      "password"
     );
-  const [newPWchk, setNewPwChk, newPwChkValid, setNewPwChkValid] =
+  const [newPWchk, newPwChkValid, _, setNewPwChk, setNewPwChkValid] =
     useValidationInput(
       "",
-      passwordReg,
-      "8-16자 특수문자, 숫자, 영문을 포함해야합니다."
+      "password"
     );
 
   // 비밀번호 확인 onChange 별도 생성 => useValidInput에서 처리하지 못하기 때문
