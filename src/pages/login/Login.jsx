@@ -8,11 +8,16 @@ import {
   SignupLink,
   FindAccountLink,
   SignupText,
+  SocialLoginWrapper,
+  SocialLoginList,
+  SocialLoginBtn,
+  SocialLoginTitle,
+  InputWrapper,
 } from "./login.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-import { login } from "../../firebase/auth";
+import { login, socialLogin } from "../../firebase/auth";
 
 export default function Login() {
   const [disabled, setDisabled] = useState(true);
@@ -48,29 +53,38 @@ export default function Login() {
       <Wrapper>
         <LoginForm onSubmit={handleSubmit}>
           <LoginFormTitle>로그인</LoginFormTitle>
-          <UserInput
-            label={"이메일"}
-            id={"input-email"}
-            placeholder={"Email"}
-            type={"text"}
-            value={emailValue}
-            onChange={onChangeEmail}
-            InputRef={emailRef}
-          />
-          {emailValid.errorMsg && <ErrorMsg message={emailValid.errorMsg} />}
-          <UserInput
-            label={"비밀번호"}
-            id={"input-password"}
-            placeholder={"Password"}
-            type={"password"}
-            onChange={onChangePassword}
-            value={passowordValue}
-          />
-          {passwordValid.errorMsg && (
-            <ErrorMsg message={passwordValid.errorMsg} />
-          )}
+          <InputWrapper>
+            <UserInput
+              label_hidden={true}
+              label={"이메일"}
+              id={"input-email"}
+              placeholder={"Email"}
+              type={"text"}
+              value={emailValue}
+              onChange={onChangeEmail}
+              InputRef={emailRef}
+            />
+            {emailValid.errorMsg && <ErrorMsg message={emailValid.errorMsg} />}
+          </InputWrapper>
+          <InputWrapper>
+            <UserInput
+              label_hidden={true}
+              label={"비밀번호"}
+              id={"input-password"}
+              placeholder={"Password"}
+              type={"password"}
+              onChange={onChangePassword}
+              value={passowordValue}
+            />
+            {passwordValid.errorMsg && (
+              <ErrorMsg message={passwordValid.errorMsg} />
+            )}
+          </InputWrapper>
+
           <FindAccountLink to={"/findAccount"}>
-            아이디 | 비밀번호 찾기
+            아이디{" "}
+            <span style={{ fontSize: "10px", verticalAlign: "top" }}>|</span>{" "}
+            비밀번호 찾기
           </FindAccountLink>
           <LoginBtn type="submit" disabled={disabled}>
             로그인
@@ -80,6 +94,19 @@ export default function Login() {
             아이디가 없으신가요?
             <SignupLink to={"/signup"}>회원가입</SignupLink>
           </SignupText>
+          <SocialLoginWrapper>
+            <SocialLoginTitle>소셜 로그인</SocialLoginTitle>
+            <SocialLoginList>
+              <SocialLoginBtn
+                className="google"
+                type="button"
+                onClick={()=>socialLogin("google")}
+              >구글 계정으로 로그인</SocialLoginBtn>
+            </SocialLoginList>
+            <SocialLoginList>
+              <SocialLoginBtn className="github" type="button" onClick={()=>socialLogin("github")}>깃 허브 계정으로 로그인</SocialLoginBtn>
+            </SocialLoginList>
+          </SocialLoginWrapper>
         </LoginForm>
       </Wrapper>
     </>
