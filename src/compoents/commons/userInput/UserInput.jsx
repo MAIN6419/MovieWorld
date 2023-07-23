@@ -3,6 +3,7 @@ import { Input, Label, Wrapper } from "./userInput.style";
 
 export default function UserInput({
   value,
+  label_hidden,
   label,
   inputId,
   onChange,
@@ -15,7 +16,7 @@ export default function UserInput({
 }) {
   return (
     <Wrapper>
-      <Label htmlFor={inputId} >{label}</Label>
+      <Label className={label_hidden ? "a11y-hidden" : ""}htmlFor={inputId} >{label}</Label>
       <Input
         type={type}
         placeholder={placeholder}
