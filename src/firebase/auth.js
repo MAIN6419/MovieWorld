@@ -27,6 +27,11 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  TwitterAuthProvider,
+  FacebookAuthProvider,
 } from "firebase/auth";
 import { db, storage } from "./setting";
 import {
@@ -35,10 +40,13 @@ import {
   ref as storageRef,
   deleteObject,
 } from "firebase/storage";
-
 import { v4 as uuidv4 } from "uuid";
 
 const auth = getAuth();
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+const twitterProvider = new TwitterAuthProvider();
+const githubProvider = new GithubAuthProvider();
 const userData = JSON.parse(localStorage.getItem("user"));
 
 // 로그인 API
@@ -65,6 +73,57 @@ export const login = async (email, password) => {
     }
   }
 };
+
+export const socialLogin = async (type) => {
+  try {
+    let provider;
+    if(type==="google") {
+      provider = googleProvider;
+    } else if(type==="facebook") {
+      provider = facebookProvider;
+    } else if(type==="twitter") {
+      provider = twitterProvider;
+    } else if(type==="github") {
+      provider = githubProvider
+    }
+    const result = await signInWithPopup(auth, provider);
+    if (result) {
+      const user = result.user;
+      const displayName = user.displayName;
+      const photoURL = user.photoURL;
+      console.log(user);
+      const isUserRes = await getDoc(doc(db, `user/${user.uid}`));
+      const isUser = isUserRes.data();
+      if (!isUser) {
+        await updateProfile(result.user, {
+          displayName,
+          photoURL,
+        });
+
+        const userRef = collection(db, "user");
+        await setDoc(doc(userRef, `${user.uid}`), {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL || "",
+          phone: user.phoneNumber,
+          likeList: [],
+          reviewList: [],
+          reportList: [],
+          photoFileName: "",
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (
+      error.message.includes("auth/account-exists-with-different-credential")
+    ) {
+      alert("이미 가입된 이메일 계정입니다!");
+    }
+  }
+};
+
 
 // 로그아웃 API
 export const logout = async () => {
@@ -103,7 +162,7 @@ export const signup = async (displayName, file, email, password, phone) => {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const fileName = file && `${uuidv4()}_${file.name}`;
     const uploadImgURLRes =
-    file &&
+      file &&
       (await uploadBytes(
         storageRef(storage, `images/profile/${fileName}`),
         file
@@ -126,15 +185,6 @@ export const signup = async (displayName, file, email, password, phone) => {
       reportList: [],
       photoFileName: fileName || "",
     });
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        uid: res.user.uid,
-        displayName,
-        email: res.user.email,
-        photoURL,
-      })
-    );
   } catch (error) {
     if (error.message.includes("email-already-in-use")) {
       alert("이미 사용중인 이메일 입니다!");
@@ -292,12 +342,15 @@ export const updateUserProfile = async (file, displayName) => {
     }
 
     await Promise.all(promises);
-    localStorage.setItem("user", JSON.stringify({
-      uid: auth.currentUser.uid,
-      displayName,
-      photoURL:uploadfileUrl,
-      email: auth.currentUser.email,
-    }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        uid: auth.currentUser.uid,
+        displayName,
+        photoURL: uploadfileUrl,
+        email: auth.currentUser.email,
+      })
+    );
   } catch (error) {
     alert("알 수 없는 오류가 발생하였습니다. 잠시 후 다시 시도해주세요.");
     throw error;
