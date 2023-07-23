@@ -2,27 +2,26 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Wrapper = styled.main`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: #eee;
 `;
 export const Title = styled.h1``;
 export const FormMenu = styled.ul`
   width: calc(100% - 60px);
-  max-width: 400px;
+  max-width: 360px;
   display: flex;
   height: 50px;
   box-sizing: border-box;
-  border-radius: 10px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-  background-color: #bdbdbd;
-  border-bottom: 1px solid #fff;
-  overflow: hidden;
+  border-bottom: 4px solid #fff;
+  background: none;
   @media screen and (max-width: 431px) {
     width: calc(100% - 40px);
   }
@@ -32,19 +31,16 @@ export const FormMenuLi = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => (props.active ? "#111" : "none")};
-  :first-child {
-    border-right: 1px solid #fff;
-  }
+  background-color: ${(props) => (props.active ? "#fff" : "#292a2b")};
 `;
 export const FormMenuBtn = styled.button`
   width: 100%;
   height: 100%;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   border: none;
   background: none;
-  color: #fff;
+  color: ${(props) => (props.active ? "#292a2b" : "#fff")};
   cursor: pointer;
   @media screen and (max-width: 431px) {
     font-size: 16px;
@@ -53,7 +49,6 @@ export const FormMenuBtn = styled.button`
 export const FindAccountForm = styled.form`
   display: flex;
   flex-direction: column;
-  background-color: #111;
   border-radius: 10px;
   border-top-right-radius: 0;
   border-top-left-radius: 0;

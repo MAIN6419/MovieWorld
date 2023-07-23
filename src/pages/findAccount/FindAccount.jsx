@@ -16,27 +16,23 @@ import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { useValidationInput } from "../../hook/useValidationInput";
 import { changePassword, findEmail } from "../../firebase/auth";
 export default function FindAccount() {
-  const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-  const nicknameReg = /^[a-zA-z0-9]{4,10}$/;
-  const phoneReg = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
-
   const [
-    nicknameValue,
-    setNicknameValue,
-    nicknameValid,
-    setNicknameValid,
-    onChangeNickname,
+    displayNameValue,
+    displayNameValid,
+    onChangeDisplayName,
+    setDisplayNameValue,
+    setDisplayNameValid,
   ] = useValidationInput(
     "",
-    nicknameReg,
-    "4-10자 영문, 영문+숫자를 입력해주세요."
+    "displayName",
+    false
   );
 
-  const [emailValue, setEmailValue, emailValid, setEmailValid, onChangeEmail] =
-    useValidationInput("", emailReg, "유효한 이메일을 입력해주세요.");
+  const [emailValue, emailValid, onChangeEmail, setEmailValue, setEmailValid] =
+    useValidationInput("", "email", false);
 
-  const [phoneValue, setPhoneValue, phoneValid, setPhoneValid, onChangePhone] =
-    useValidationInput("", phoneReg, "유효한 휴대폰 번호를 입력해주세요.");
+  const [phoneValue, phoneValid, onChangePhone, setPhoneValue, setPhoneValid] =
+    useValidationInput("", "phone", false);
 
   const [disabled, setDisabled] = useState(false);
   const [findPasswordMenu, setFindPasswordMenu] = useState(false);
@@ -57,19 +53,19 @@ export default function FindAccount() {
     setFindPasswordMenu(true);
     setDisabled(false);
     setFindEmailValue("");
-    setNicknameValue("");
-    setNicknameValid({ errorMsg: "", valid: false });
+    setDisplayNameValue("");
+    setDisplayNameValid({ errorMsg: "", valid: false });
     setPhoneValue("");
     setPhoneValid({ errorMsg: "", valid: false });
   };
 
   const onClickFindEmail = async (e) => {
     e.preventDefault();
-    const res = await findEmail(nicknameValue, phoneValue);
+    const res = await findEmail(displayNameValue, phoneValue);
     if (res) {
       setFindEmailValue(res);
     }
-    setNicknameValue("");
+    setDisplayNameValue("");
     setPhoneValue("");
   };
 
@@ -92,25 +88,25 @@ export default function FindAccount() {
         setDisabled(true);
       }
     } else {
-      if (nicknameValid.valid && phoneValid.valid) {
+      if (displayNameValid.valid && phoneValid.valid) {
         setDisabled(false);
       } else {
         setDisabled(true);
       }
     }
-  }, [nicknameValid, emailValid, phoneValid]);
+  }, [displayNameValid, emailValid, phoneValid]);
 
   return (
     <Wrapper>
       <Title className="a11y-hidden">이메일 비밀번호 찾기</Title>
       <FormMenu>
         <FormMenuLi active={!findPasswordMenu}>
-          <FormMenuBtn type="button" onClick={onClickFindEmailMenu}>
+          <FormMenuBtn active={!findPasswordMenu} type="button" onClick={onClickFindEmailMenu}>
             이메일 찾기
           </FormMenuBtn>
         </FormMenuLi>
         <FormMenuLi active={findPasswordMenu}>
-          <FormMenuBtn type="button" onClick={onClickFindPwMenu}>
+          <FormMenuBtn active={findPasswordMenu} type="button" onClick={onClickFindPwMenu}>
             비밀번호 찾기
           </FormMenuBtn>
         </FormMenuLi>
@@ -134,7 +130,7 @@ export default function FindAccount() {
                   type="text"
                   label={"이메일"}
                   id={"input-email"}
-                  placeholder={"Email"}
+                  placeholder={"이메일을 입력해주세요."}
                   value={emailValue}
                   onChange={onChangeEmail}
                 />
@@ -146,21 +142,21 @@ export default function FindAccount() {
               <>
                 <UserInput
                   label={"닉네임"}
-                  placeholder={"Nickname"}
+                  placeholder={"4-10자 영문, 영문+숫자 포함"}
                   type={"text"}
-                  value={nicknameValue}
-                  onChange={onChangeNickname}
+                  value={displayNameValue}
+                  onChange={onChangeDisplayName}
                   minLength={4}
                   maxLength={10}
                 />
-                {nicknameValid.errorMsg && (
-                  <ErrorMsg message={nicknameValid.errorMsg} />
+                {displayNameValid.errorMsg && (
+                  <ErrorMsg message={displayNameValid.errorMsg} />
                 )}
               </>
             )}
             <UserInput
               label={"휴대폰"}
-              placeholder={"Phone ( - 제외 )"}
+              placeholder={"휴대폰 번호 ( - 제외 )"}
               type={"text"}
               value={phoneValue
                 .replace(/[^0-9]/g, "")
