@@ -7,6 +7,10 @@ export const BannerWrapper = styled.section`
   width: 100%;
   height: 0;
   padding-bottom: calc(9 / 16 * 100%);
+  @media screen and (min-width: 1500px) {
+    height: 600px;
+    padding: 0;
+  }
 `;
 export const BannerBox = styled.div`
   position: absolute;
@@ -41,7 +45,7 @@ export const BannerBackdrop = styled.div`
     max-width: 500px;
     height: 300px;
   }
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 630px) {
     max-width: 500px;
     height: 250px;
   }
@@ -110,6 +114,9 @@ export const BannerDesc = styled.p`
   @media screen and (max-width: 768px) {
     -webkit-line-clamp: 4;
   }
+  @media screen and (max-width: 620px) {
+    -webkit-line-clamp: 3;
+  }
 `;
 export const BannerFadeBottom = styled.div`
   position: absolute;
@@ -139,6 +146,10 @@ export const IframeWrapper = styled.div`
     9 / 16 * 100%
   ); /* calc (이미지 높이 ÷ 이미지 가로 × 100 %) */
   background-color: #000;
+  @media screen and (min-width: 1500px) {
+    padding: 0;
+    height: calc(100vh - 94px);
+  }
 `;
 
 export const Container = styled.div`
@@ -170,6 +181,12 @@ export const CloseBtn = styled.button`
   right: 20px;
   z-index: 999;
   background: url("assets/icon-close.png") no-repeat center / 24px;
+  @media screen and (max-width:486px){
+    width: 18px;
+    height: 18px;
+    right: 15px;
+    background-size: 18px;
+  }
 `;
 export const MobileTitleWrapper = styled.div`
   text-align: center;
