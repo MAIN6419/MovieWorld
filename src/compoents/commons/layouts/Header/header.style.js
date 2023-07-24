@@ -8,11 +8,15 @@ export const HeaderBar = styled.header`
   left: 0;
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   background-color: #000;
-  padding: 20px;
+  padding: 15px;
   color: #fff;
   z-index: 999;
+  @media screen and (max-width: 486px) {
+    padding: 15px;
+  }
 `;
 
 export const HeaderTitle = styled.h1``;
@@ -20,9 +24,10 @@ export const HeaderTitle = styled.h1``;
 export const HeaderLogoLink = styled(Link)``;
 
 export const HeaderLogo = styled.img`
-  width: 110px;
-  @media screen and (max-width: 440px) {
-    width: 90px;
+  width: 105px;
+  margin-left: 10px;
+  @media screen and (max-width: 486px) {
+    width: 80px;
   }
 `;
 
@@ -31,17 +36,19 @@ export const HeaderRight = styled.div`
   align-items: center;
   margin-right: 10px;
   font-size: 14px;
+  @media screen and (max-width: 486px) {
+    font-size: 12px;
+  }
 `;
 
 export const HeaderSearchLink = styled(Link)`
   margin-right: 5px;
-
 `;
 
 export const HeaderSearchIcon = styled.img`
   width: 28px;
   height: 28px;
-  @media screen and (max-width: 440px) {
+  @media screen and (max-width: 486px) {
     width: 20px;
     height: 20px;
   }
@@ -59,6 +66,9 @@ export const HeaderLink = styled(Link)`
     background-color: #fff;
     display: inline-block;
     margin-right: 8px;
+    @media screen and (max-width: 486px) {
+      height: 10px;
+    }
   }
 `;
 
@@ -72,18 +82,21 @@ export const UserNicknameWrapper = styled.div`
 export const UserNickname = styled.strong`
   color: #fff;
   font-weight: 500;
+  @media screen and (max-width: 486px) {
+    font-size: 14px;
+  }
 `;
 
 export const UserProfileImg = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   object-position: center;
   overflow: hidden;
   border: 1px solid #bdbdbd;
   margin: 0 10px;
-  @media screen and (max-width: 440px) {
-    width: 30px;
-    height: 30px;
+  @media screen and (max-width: 486px) {
+    width: 28px;
+    height: 28px;
   }
 `;
 
@@ -98,6 +111,11 @@ export const UserMenuBtnIcon = styled.img`
   height: 20px;
   transform: ${(props) => (props.active ? "rotate(-180deg)" : "rotate(0deg)")};
   transition: all 0.5s;
+  @media screen and (max-width: 486px) {
+    width: 14px;
+    height: 14px;
+    margin-top: 3px;
+  }
 `;
 
 export const UserMenu = styled.ul`
@@ -108,13 +126,12 @@ export const UserMenu = styled.ul`
   border-radius: 5px;
   background: #1d1e1e;
   overflow: hidden;
-  animation: fadeIn 0.5s;
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
+  animation: open 0.5s;
+  @keyframes open {
+    from{
+      height: 0;
+    } to{
+      height: 74px;
     }
   }
 `;
