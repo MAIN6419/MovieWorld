@@ -43,7 +43,7 @@ export default function Header() {
         <HeaderSearchLink to="/search" onClick={() => setIsUserMenu(false)}>
           <HeaderSearchIcon src="assets/icon-search.png" alt="검색" />
         </HeaderSearchLink>
-        {user&&user.displayName && (
+        {user && user.displayName && (
           <UserProfileImg
             src={user.photoURL || "assets/defaultProfile.png"}
             onError={(e) => (e.target.src = "assets/defaultProfile.png")}
@@ -51,33 +51,31 @@ export default function Header() {
           />
         )}
         <HeaderLinks>
-          {user&&user.displayName ? (
+          {user && user.displayName ? (
             <UserNicknameWrapper>
-              <UserNickname>
-                {user.displayName} 님
-                {isUserMenu && (
-                  <UserMenu>
-                    <UserMenuLi>
-                      <UserMenuItemLink
-                        to="/mypage"
-                        onClick={() => setIsUserMenu(false)}
-                      >
-                        내 정보
-                      </UserMenuItemLink>
-                    </UserMenuLi>
-                    <UserMenuLi>
-                      <UserMenuItemBtn
-                        onClick={() => {
-                          setIsUserMenu(false);
-                          logout();
-                        }}
-                      >
-                        로그아웃
-                      </UserMenuItemBtn>
-                    </UserMenuLi>
-                  </UserMenu>
-                )}
-              </UserNickname>
+              <UserNickname>{user.displayName} 님</UserNickname>
+              {isUserMenu && (
+                <UserMenu>
+                  <UserMenuLi>
+                    <UserMenuItemLink
+                      to="/mypage"
+                      onClick={() => setIsUserMenu(false)}
+                    >
+                      내 정보
+                    </UserMenuItemLink>
+                  </UserMenuLi>
+                  <UserMenuLi>
+                    <UserMenuItemBtn
+                      onClick={() => {
+                        setIsUserMenu(false);
+                        logout();
+                      }}
+                    >
+                      로그아웃
+                    </UserMenuItemBtn>
+                  </UserMenuLi>
+                </UserMenu>
+              )}
               <UserMenuBtn onClick={onClickUserMenu}>
                 <UserMenuBtnIcon
                   src={"assets/icon-downArrow.png"}
