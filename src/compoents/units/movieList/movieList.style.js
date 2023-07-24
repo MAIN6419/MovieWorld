@@ -1,9 +1,8 @@
-import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 import { Swiper } from "swiper/react";
 
 export const Wrapper = styled.section`
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 `;
 
 export const Title = styled.h2`
