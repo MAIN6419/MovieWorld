@@ -8,10 +8,13 @@ const GlobalStyles = createGlobalStyle`
     min-height: 100vh;
     position: relative;
     background-color: #111;
-    padding-top: 80px;
+    padding-top: 67px;
     ::-webkit-scrollbar{
       display: none;
     }
+    @media screen and (max-width: 486px) {
+      padding-top: 58px;
+  }
   }
   :root{
     font-family: 'Noto Sans KR', sans-serif;
