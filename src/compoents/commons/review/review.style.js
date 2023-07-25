@@ -15,9 +15,17 @@ export const Title = styled.h2`
   margin-bottom: 10px;
 `;
 
-export const RatingWrapper = styled.div`
+export const ReviewCheckList = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
   margin-bottom: 20px;
-  display: inline-block;
+`
+
+export const RatingWrapper = styled.div`
+
 `;
 
 export const Rating = styled(Rate)`
@@ -31,6 +39,40 @@ export const Rating = styled(Rate)`
 export const RatingCount = styled.span`
   font-size: 18px;
   font-weight: 500;
+`;
+
+export const ToggleCheckbox = styled.input``;
+
+export const ToggleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+`;
+
+export const ToggleSwitch = styled.label`
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  border-radius: 30px;
+  background-color: ${(props) => (props.toggle ? "#f03d3d" : "#fff")};
+  box-shadow: 0 0 16px 3px rgba(0 0 0 / 15%);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+`;
+
+/* 토글 버튼 */
+export const ToggleButton = styled.span`
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 50%;
+  left: ${(props) => (props.toggle ? "calc(100% - 19px)" : "4px")};
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: ${(props) => (props.toggle ? "#fff" : "#f03d3d")};
+  transition: all 0.3s;
 `;
 
 export const TextAreaForm = styled.form`
@@ -98,6 +140,8 @@ export const ReviewList = styled.ul`
 `;
 
 export const SelectWrapper = styled.div`
+  display: flex;
+  gap: 20px;
   position: relative;
   text-align: right;
   margin-bottom: 20px;
@@ -106,7 +150,6 @@ export const SelectWrapper = styled.div`
 export const Select = styled.button`
   width: 90px;
   text-align: left;
-  margin-bottom: 1px;
   border: 0;
   box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.4);
   border-radius: 5px;
@@ -116,6 +159,8 @@ export const Select = styled.button`
   font-weight: 500;
   background-color: #1d1e1e;
   color: #fff;
+  display: block;
+  margin-left: auto;
   cursor: pointer;
   ::after {
     position: absolute;
@@ -145,17 +190,19 @@ export const OpectionList = styled.ul`
   overflow: hidden;
   animation: open 0.5s;
   @keyframes open {
-    from{
+    from {
       height: 0;
-    } to{
+    }
+    to {
       height: 109px;
     }
   }
-  
+
   @keyframes close {
-    from{
+    from {
       height: 109px;
-    } to{
+    }
+    to {
       height: 0;
     }
   }
@@ -166,7 +213,6 @@ export const Opection = styled.li`
   :not(:last-child) {
     border-bottom: 1px solid #fff;
   }
- 
 `;
 
 export const OpectionBtn = styled.button`

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ReviewListItem from "./ReviewListItem";
 import {
   Rating,
@@ -20,6 +20,11 @@ import {
   TextCountWrapper,
   Title,
   Wrapper,
+  ToggleSwitch,
+  ToggleButton,
+  ToggleCheckbox,
+  ToggleWrapper,
+  ReviewCheckList,
 } from "./review.style";
 import {
   addReview,
@@ -38,12 +43,14 @@ export default function Review({ movieData }) {
   const [reviewValue, setReivewValue] = useState("");
   const [rating, setRating] = useState(0);
   const [textCount, setTextCount] = useState(0);
+  const [spoiler, setSpoiler] = useState(false);
   const [reviewData, setReviewData] = useState([]);
   const [userData, setUserData] = useState({});
+  const [showSpoilerData, setShowSpoilerData] = useState(false);
   const [isOpenSelect, setIsOpenSelect] = useState(false);
   const [selectValue, setSelectValue] = useState("최신순");
   const [filter, setFilter] = useState({ target: "createdAt", order: "desc" });
-
+  const [isSpoiler, setIsSpoiler] = useState(false);
   const [page, setPage] = useState("");
   const [hasMore, setHasMore] = useState(false);
   const limitPage = 5;
@@ -97,6 +104,7 @@ export default function Review({ movieData }) {
           rating,
           contents: reviewValue,
           createdAt: Timestamp.fromDate(new Date()),
+          spoiler,
         };
         await addReview(movieData, newReviewData);
         if (reviewData.length) {
@@ -104,7 +112,8 @@ export default function Review({ movieData }) {
           const { res, data } = await fetchAddReviewData(
             movieData.id,
             page,
-            filter
+            filter,
+            showSpoilerData
           );
           setPage(res.docs[res.docs.length - 1]);
           setHasMore(res.docs.length / limitPage >= 0);
@@ -138,7 +147,8 @@ export default function Review({ movieData }) {
     const { res, data } = await fetchFirstReview(
       movieData.id,
       limitPage,
-      filter
+      filter,
+      showSpoilerData
     );
     setReviewData(data);
     setPage(res.docs[res.docs.length - 1]);
@@ -150,7 +160,8 @@ export default function Review({ movieData }) {
       movieData.id,
       page,
       limitPage,
-      filter
+      filter,
+      showSpoilerData
     );
     setReviewData((prev) => [...prev, ...data]);
     setPage(res.docs[res.docs.length - 1]);
@@ -164,7 +175,7 @@ export default function Review({ movieData }) {
   // 정렬이 바뀔때 마다 데이터를 새로 받아옴
   useEffect(() => {
     fetchFirstPage();
-  }, [filter]);
+  }, [filter, showSpoilerData]);
 
   useEffect(() => {
     if (hasMore && inview) {
@@ -175,14 +186,37 @@ export default function Review({ movieData }) {
   return (
     <Wrapper>
       <Title>리뷰</Title>
-      <RatingWrapper>
-        <Rating
-          count={5}
-          value={rating}
-          onChange={(value) => setRating(value)}
-        />
-        <RatingCount>{!rating || rating * 2}</RatingCount>
-      </RatingWrapper>
+      <ReviewCheckList>
+        <RatingWrapper>
+          <Rating
+            count={5}
+            value={rating}
+            onChange={(value) => setRating(value)}
+          />
+          <RatingCount>{!rating || rating * 2}</RatingCount>
+        </RatingWrapper>
+
+        <ToggleWrapper>
+          <ToggleCheckbox
+            type="checkbox"
+            id="toggle"
+            className="a11y-hidden"
+            onClick={() => setSpoiler(!spoiler)}
+          />
+          <span>스포일러 체크</span>
+          <ToggleSwitch
+            htmlFor="toggle"
+            className="toggleSwitch"
+            toggle={spoiler}
+          >
+            <ToggleButton
+              className="toggleButton"
+              toggle={spoiler}
+              aria-label="스포일러 체크"
+            ></ToggleButton>
+          </ToggleSwitch>
+        </ToggleWrapper>
+      </ReviewCheckList>
       <TextAreaForm onSubmit={onClickSubmit}>
         <TextAreaWrapper>
           <TextAreaLabel className="a11y-hidden">리뷰 등록창</TextAreaLabel>
@@ -199,32 +233,52 @@ export default function Review({ movieData }) {
           </TextCountWrapper>
         </TextAreaWrapper>
       </TextAreaForm>
-      {reviewData.length !== 0 && (
-        <SelectWrapper>
-          <Select type="button" onClick={onClickSelect} active={isOpenSelect}>
-            {selectValue}
-          </Select>
-          {isOpenSelect && (
-            <OpectionList>
-              <Opection>
-                <OpectionBtn type="button" id="new" onClick={onClickOpction}>
-                  최신순
-                </OpectionBtn>
-              </Opection>
-              <Opection>
-                <OpectionBtn type="button" id="old" onClick={onClickOpction}>
-                  등록순
-                </OpectionBtn>
-              </Opection>
-              <Opection>
-                <OpectionBtn type="button" id="rating" onClick={onClickOpction}>
-                  평점순
-                </OpectionBtn>
-              </Opection>
-            </OpectionList>
-          )}
-        </SelectWrapper>
-      )}
+
+      <SelectWrapper>
+        <ToggleWrapper>
+          <ToggleCheckbox
+            type="checkbox"
+            id="toggle-showSpoiler"
+            className="a11y-hidden"
+            onClick={() => setShowSpoilerData(!showSpoilerData)}
+          />
+          <span>스포일러 리뷰 포함</span>
+          <ToggleSwitch
+            htmlFor="toggle-showSpoiler"
+            className="toggleSwitch"
+            toggle={showSpoilerData}
+          >
+            <ToggleButton
+              className="toggleButton"
+              toggle={showSpoilerData}
+              aria-label="스포일러 리뷰 포함"
+            ></ToggleButton>
+          </ToggleSwitch>
+        </ToggleWrapper>
+        <Select type="button" onClick={onClickSelect} active={isOpenSelect}>
+          {selectValue}
+        </Select>
+        {isOpenSelect && (
+          <OpectionList>
+            <Opection>
+              <OpectionBtn type="button" id="new" onClick={onClickOpction}>
+                최신순
+              </OpectionBtn>
+            </Opection>
+            <Opection>
+              <OpectionBtn type="button" id="old" onClick={onClickOpction}>
+                등록순
+              </OpectionBtn>
+            </Opection>
+            <Opection>
+              <OpectionBtn type="button" id="rating" onClick={onClickOpction}>
+                평점순
+              </OpectionBtn>
+            </Opection>
+          </OpectionList>
+        )}
+      </SelectWrapper>
+
       <ReviewList>
         {reviewData.length ? (
           reviewData.map((item) => {
