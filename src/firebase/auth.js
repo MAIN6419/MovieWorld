@@ -77,21 +77,20 @@ export const login = async (email, password) => {
 export const socialLogin = async (type) => {
   try {
     let provider;
-    if(type==="google") {
+    if (type === "google") {
       provider = googleProvider;
-    } else if(type==="facebook") {
+    } else if (type === "facebook") {
       provider = facebookProvider;
-    } else if(type==="twitter") {
+    } else if (type === "twitter") {
       provider = twitterProvider;
-    } else if(type==="github") {
-      provider = githubProvider
+    } else if (type === "github") {
+      provider = githubProvider;
     }
     const result = await signInWithPopup(auth, provider);
     if (result) {
       const user = result.user;
       const displayName = user.displayName;
       const photoURL = user.photoURL;
-      console.log(user);
       const isUserRes = await getDoc(doc(db, `user/${user.uid}`));
       const isUser = isUserRes.data();
       if (!isUser) {
@@ -123,7 +122,6 @@ export const socialLogin = async (type) => {
     }
   }
 };
-
 
 // 로그아웃 API
 export const logout = async () => {
@@ -450,21 +448,36 @@ export const fetchLikeListPage = async (page, limitPage) => {
 };
 
 // 리뷰 첫번째 목록 API
-export const fetchFirstReview = async (movieId, limitPage, filter) => {
+export const fetchFirstReview = async (
+  movieId,
+  limitPage,
+  filter,
+  isSpoiler
+) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    const q = query(
-      reviewRef,
-      orderBy(filter.target, filter.order),
-      where("isBlock", "==", false),
-      limit(limitPage)
-    );
+    let q;
+    if (isSpoiler) {
+      q = query(
+        reviewRef,
+        orderBy(filter.target, filter.order),
+        where("isBlock", "==", false),
+        limit(limitPage)
+      );
+    } else {
+      q = query(
+        reviewRef,
+        orderBy(filter.target, filter.order),
+        where("isBlock", "==", false),
+        where("spoiler", "==", false),
+        limit(limitPage)
+      );
+    }
     const res = await getDocs(q);
 
     let data = res.docs.map((el) => el.data());
-
     const userListRef = collection(db, `user`);
     const userListRes = await getDocs(userListRef);
     const userListUid = userListRes.docs.map((doc) => doc.id);
@@ -487,18 +500,33 @@ export const fetchFirstReview = async (movieId, limitPage, filter) => {
 };
 
 // 리뷰 목록 페이징 API
-export const fetchReviewPage = async (movieId, page, limitPage, filter) => {
+export const fetchReviewPage = async (
+  movieId,
+  limitPage,
+  filter,
+  isSpoiler
+) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    const q = query(
-      reviewRef,
-      orderBy(filter.target, filter.order),
-      where("isBlock", "==", false),
-      startAfter(page),
-      limit(limitPage)
-    );
+    let q;
+    if (isSpoiler) {
+      q = query(
+        reviewRef,
+        orderBy(filter.target, filter.order),
+        where("isBlock", "==", false),
+        startAfter(limitPage)
+      );
+    } else {
+      q = query(
+        reviewRef,
+        orderBy(filter.target, filter.order),
+        where("isBlock", "==", false),
+        where("spoiler", "==", false),
+        startAfter(limitPage)
+      );
+    }
     const res = await getDocs(q);
     let data = res.docs.map((el) => el.data());
 
@@ -536,6 +564,7 @@ export const addReview = async (movieData, reviewData) => {
       rating: reviewData.rating,
       contents: reviewData.contents,
       createdAt: reviewData.createdAt,
+      spoiler: reviewData.spoiler,
       isBlock: false,
       reportCount: 0,
     });
@@ -566,20 +595,36 @@ export const addReview = async (movieData, reviewData) => {
 };
 
 // 리뷰 작성 후 스크롤 내린 만큼의 이전 데이터도 같이 불러오는 API
-export const fetchAddReviewData = async (movieId, limitPage, filter) => {
+export const fetchAddReviewData = async (
+  movieId,
+  limitPage,
+  filter,
+  isSpoiler
+) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    const q = query(
-      reviewRef,
-      orderBy(filter.target, filter.order),
-      where("isBlock", "==", false),
-      endAt(limitPage)
-    );
+    let q;
+    if (isSpoiler) {
+      q = query(
+        reviewRef,
+        orderBy(filter.target, filter.order),
+        where("isBlock", "==", false),
+        endAt(limitPage)
+      );
+    } else {
+      q = query(
+        reviewRef,
+        orderBy(filter.target, filter.order),
+        where("isBlock", "==", false),
+        where("spoiler", "==", false),
+        endAt(limitPage)
+      );
+    }
+
     const res = await getDocs(q);
     let data = res.docs.map((el) => el.data());
-
     const userListRef = collection(db, `user`);
     const userListRes = await getDocs(userListRef);
     const userListUid = userListRes.docs.map((doc) => doc.id);
