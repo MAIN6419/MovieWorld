@@ -11,7 +11,7 @@ import {
 } from "./search.style";
 import { debounce } from "lodash";
 import { fetchSearchMovie, fetchTrending } from "../../api/movie";
-import MovieInfo from "../../compoents/commons/Modal/MovieInfo";
+import MovieInfo from "../../compoents/commons/Modal/MovieInfo.container";
 import { useInView } from "react-intersection-observer";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
 import TopButton from "../../compoents/commons/topButton/TopButton";

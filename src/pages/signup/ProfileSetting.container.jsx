@@ -1,0 +1,108 @@
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { signup } from "../../firebase/auth";
+import { useValidationInput } from "../../hook/useValidationInput";
+import { UserContext } from "../../context/userContext";
+import ProfileSettingUI from "./ProfileSetting.presenter";
+
+export default function ProfileSetting({
+  setIsLoading,
+  emailValue,
+  passwordValue,
+  phoneValue,
+  setProfile,
+  setPercentage,
+  setNext,
+}) {
+  const { refreshUser } = useContext(UserContext);
+  const imgInputRef = useRef();
+  // 회원가입 버튼 활성화 상태 관리
+  const [disabled, setDisabled] = useState(true);
+  const [previewImg, setPreviewImg] = useState("assets/defaultProfile.png");
+  const [uploadImg, setUploadImg] = useState("");
+  const [displayNameValue, displayNameValid, onChangeDislayName] =
+    useValidationInput("", "displayName", true);
+
+  const imgValidation = (file) => {
+    // 파일 확인
+    if (!file) {
+      return false;
+    }
+    // 파일 사이즈 확인
+    if (file.size > 1024 * 1024 * 10) {
+      alert("이미지 파일의 크기를 초과하였습니다.(최대 10MB)");
+      return false;
+    }
+    // 이미지 지원 형식 확인
+    if (
+      !file.name.includes("png") &&
+      !file.name.includes("jpg") &&
+      !file.name.includes("jpeg") &&
+      !file.name.includes("bmp") &&
+      !file.name.includes("tif") &&
+      !file.name.includes("heic")
+    ) {
+      alert(
+        "이미지 형식을 확인해 주세요!\n(지원형식 : .jpg, .png, .jpeg,.bmp, .tif, *.heic)"
+      );
+      return false;
+    }
+    // 모두 만족 한다면 true 반환
+    return true;
+  };
+
+  const onChangeImg = (e) => {
+    const file = e.target.files[0];
+    const isValid = imgValidation(file);
+    if (!isValid) return;
+    setPreviewImg(URL.createObjectURL(file));
+    setUploadImg(file);
+  };
+
+  const onClickImgReset = () => {
+    setPreviewImg("assets/defaultProfile.png");
+    setUploadImg("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    await signup(
+      displayNameValue,
+      uploadImg,
+      emailValue,
+      passwordValue,
+      phoneValue.replace(/-/g, "")
+    );
+    refreshUser();
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (displayNameValid.valid) {
+      setDisabled(false);
+      setProfile(true);
+      setPercentage("100%");
+    } else {
+      setDisabled(true);
+      setPercentage("50%");
+      setProfile(false);
+    }
+  }, [displayNameValid]);
+
+  return (
+    <ProfileSettingUI
+      handleSubmit={handleSubmit}
+      imgInputRef={imgInputRef}
+      onChangeImg={onChangeImg}
+      previewImg={previewImg}
+      onClickImgReset={onClickImgReset}
+      displayNameValue={displayNameValue}
+      onChangeDislayName={onChangeDislayName}
+      displayNameValid={displayNameValid}
+      disabled={disabled}
+      setProfile={setProfile}
+      setPercentage={setPercentage}
+      setNext={setNext}
+    />
+  );
+}

@@ -18,7 +18,7 @@ import {
   MobilePlayBtn,
   MobileInfoBtn,
 } from "./banner.style";
-import MovieInfo from "../../Modal/MovieInfo";
+import MovieInfo from "../../Modal/MovieInfo.container";
 import { useMediaQuery } from "react-responsive";
 
 export default function Banner() {

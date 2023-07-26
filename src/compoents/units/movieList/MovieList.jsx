@@ -11,7 +11,7 @@ import {
   Wrapper,
 } from "./movieList.style";
 
-import MovieInfo from "../../commons/Modal/MovieInfo";
+import MovieInfo from "../../commons/Modal/MovieInfo.container";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { SwiperSlide } from "swiper/react";
 import ProgressiveImg from "../../commons/progressiveImg/ProgressiveImg";

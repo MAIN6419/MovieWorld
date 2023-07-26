@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   FindAccountBtn,
   FindAccountForm,
@@ -13,100 +13,45 @@ import {
 } from "./findAccount.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-import { useValidationInput } from "../../hook/useValidationInput";
-import { changePassword, findEmail } from "../../firebase/auth";
-export default function FindAccount() {
-  const [
-    displayNameValue,
-    displayNameValid,
-    onChangeDisplayName,
-    setDisplayNameValue,
-    setDisplayNameValid,
-  ] = useValidationInput(
-    "",
-    "displayName",
-    false
-  );
 
-  const [emailValue, emailValid, onChangeEmail, setEmailValue, setEmailValid] =
-    useValidationInput("", "email", false);
-
-  const [phoneValue, phoneValid, onChangePhone, setPhoneValue, setPhoneValid] =
-    useValidationInput("", "phone", false);
-
-  const [disabled, setDisabled] = useState(false);
-  const [findPasswordMenu, setFindPasswordMenu] = useState(false);
-  const [findEmailValue, setFindEmailValue] = useState("");
-  const [findPasswordValue, setFindPasswordValue] = useState("");
-
-  const onClickFindEmailMenu = () => {
-    setFindPasswordMenu(false);
-    setDisabled(false);
-    setFindPasswordValue("");
-    setEmailValue("");
-    setEmailValid({ errorMsg: "", valid: false });
-    setPhoneValue("");
-    setPhoneValid({ errorMsg: "", valid: false });
-  };
-
-  const onClickFindPwMenu = () => {
-    setFindPasswordMenu(true);
-    setDisabled(false);
-    setFindEmailValue("");
-    setDisplayNameValue("");
-    setDisplayNameValid({ errorMsg: "", valid: false });
-    setPhoneValue("");
-    setPhoneValid({ errorMsg: "", valid: false });
-  };
-
-  const onClickFindEmail = async (e) => {
-    e.preventDefault();
-    const res = await findEmail(displayNameValue, phoneValue);
-    if (res) {
-      setFindEmailValue(res);
-    }
-    setDisplayNameValue("");
-    setPhoneValue("");
-  };
-
-  const onClickFindPassword = async (e) => {
-    e.preventDefault();
-    const res = await changePassword(emailValue, phoneValue);
-    if (res) {
-      setFindPasswordValue(res);
-    }
-    setEmailValue("");
-    setPhoneValue("");
-  };
-
-  // 전체 input이 유효하다면 버튼 활성화
-  useEffect(() => {
-    if (findPasswordMenu) {
-      if (emailValid.valid && phoneValid.valid) {
-        setDisabled(false);
-      } else {
-        setDisabled(true);
-      }
-    } else {
-      if (displayNameValid.valid && phoneValid.valid) {
-        setDisabled(false);
-      } else {
-        setDisabled(true);
-      }
-    }
-  }, [displayNameValid, emailValid, phoneValid]);
-
+export default function FindAccountUI({
+  findPasswordMenu,
+  onClickFindEmailMenu,
+  onClickFindPwMenu,
+  onClickFindPassword,
+  onClickFindEmail,
+  findEmailValue,
+  emailValue,
+  onChangeEmail,
+  emailValid,
+  displayNameValue,
+  onChangeDisplayName,
+  displayNameValid,
+  phoneValue,
+  onChangePhone,
+  phoneValid,
+  findPasswordValue,
+  disabled,
+}) {
   return (
     <Wrapper>
       <Title className="a11y-hidden">이메일 비밀번호 찾기</Title>
       <FormMenu>
         <FormMenuLi active={!findPasswordMenu}>
-          <FormMenuBtn active={!findPasswordMenu} type="button" onClick={onClickFindEmailMenu}>
+          <FormMenuBtn
+            active={!findPasswordMenu}
+            type="button"
+            onClick={onClickFindEmailMenu}
+          >
             이메일 찾기
           </FormMenuBtn>
         </FormMenuLi>
         <FormMenuLi active={findPasswordMenu}>
-          <FormMenuBtn active={findPasswordMenu} type="button" onClick={onClickFindPwMenu}>
+          <FormMenuBtn
+            active={findPasswordMenu}
+            type="button"
+            onClick={onClickFindPwMenu}
+          >
             비밀번호 찾기
           </FormMenuBtn>
         </FormMenuLi>

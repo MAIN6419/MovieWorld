@@ -2,10 +2,10 @@ import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import Splash from "./pages/splash/Splash";
 import Login from "./pages/login/Login";
-import Signup from "./pages/signup/Signup";
-import FindAccount from "./pages/findAccount/FindAccount";
+import Signup from "./pages/signup/Signup.container";
+import FindAccount from "./pages/findAccount/FindAccount.container";
 import Search from "./pages/search/Search";
-import Mypage from "./pages/mypage/Mypage";
+import Mypage from "./pages/mypage/Mypage.container";
 import Header from "./compoents/commons/layouts/Header/Header";
 import Banner from "./compoents/commons/layouts/Banner/Banner";
 import Footer from "./compoents/commons/layouts/Footer/Footer";

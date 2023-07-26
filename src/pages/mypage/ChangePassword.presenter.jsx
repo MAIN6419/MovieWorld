@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Dim,
   ModalCard,
@@ -13,73 +13,20 @@ import {
   InputDesc,
   InputDescList,
 } from "./changePassword.style";
-import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-import { useMediaQuery } from "react-responsive";
-import { changeUserPassword } from "../../firebase/auth";
-import { isMobile } from "react-device-detect";
-import { history } from "../../history/history";
 
-export default function ChangePassword({ setIsChangePassword }) {
-  const isMoblie = useMediaQuery({
-    query: "(max-width:486px)",
-  });
-  const [
-    currentPw,
-    currentPwValid,
-    onChangeCurrentPW,
-  ] = useValidationInput(
-    "",
-    "password",
-  );
-  const [newPw,  newPwValid, onChangeNewPW] =
-    useValidationInput(
-      "",
-      "password"
-    );
-  const [newPWchk, newPwChkValid, _, setNewPwChk, setNewPwChkValid] =
-    useValidationInput(
-      "",
-      "password"
-    );
 
-  // 비밀번호 확인 onChange 별도 생성 => useValidInput에서 처리하지 못하기 때문
-  const onChangePasswordChk = (e) => {
-    setNewPwChk(e.target.value.trim());
-    if (newPw !== e.target.value) {
-      setNewPwChkValid({
-        errorMsg: "비밀번호가 일치하지 않습니다.",
-        valid: false,
-      });
-    } else {
-      setNewPwChkValid({ errorMsg: "", valid: true });
-    }
-  };
-
-  const onClickcancel = () => {
-    setIsChangePassword(false);
-    document.body.style.overflow = "auto";
-  };
-
-  const onClickSubmit = (e) => {
-    e.preventDefault();
-    changeUserPassword(currentPw, newPw);
-  };
-
-  useEffect(() => {
-    if (isMobile) {
-      window.history.pushState(null, "", window.location.href);
-
-      window.onpopstate = () => {
-        history.go(1);
-        this.handleGoback();
-      };
-      window.onpopstate = () => {
-        onClickcancel();
-      };
-    }
-  }, []);
-
+export default function ChangePasswordUI({
+  onClickcancel,
+  onClickSubmit,
+  onChangeCurrentPW,
+  currentPwValid,
+  isMoblie,
+  onChangeNewPW,
+  newPwValid,
+  onChangePasswordChk,
+  newPwChkValid,
+}) {
   return (
     <ModalWrapper>
       <Dim onClick={onClickcancel}>
@@ -144,7 +91,8 @@ export default function ChangePassword({ setIsChangePassword }) {
               비밀번호는 8-16자로 영문+숫자+특수문자가 포함되어야 합니다.
             </InputDesc>
             <InputDesc>
-              현재 비밀번호가 5회 이상 불일치 할 경우 비밀번호 변경과 로그인이 일시적으로 제한됩니다.
+              현재 비밀번호가 5회 이상 불일치 할 경우 비밀번호 변경과 로그인이
+              일시적으로 제한됩니다.
             </InputDesc>
             <InputDesc>
               비밀번호 변경 후 변경사항 확인을 위해 자동으로 로그아웃 됩니다.

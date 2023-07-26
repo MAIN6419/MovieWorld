@@ -1,29 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  ChangeImgBtn,
-  Dim,
-  ImgInput,
-  InputDesc,
-  InputDescList,
-  ModalCard,
-  ModalWrapper,
-  NicknameInput,
-  NicknameLabel,
-  NicknameWrapper,
-  ProfileEditBtn,
-  ProfileEditBtns,
-  ProfileForm,
-  ProfileImg,
-  ProfileImgWrapper,
-  Title,
-} from "./changeProfile.style";
 import { useValidationInput } from "../../hook/useValidationInput";
-import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-import { duplication, updateUserProfile } from "../../firebase/auth";
+import { updateUserProfile } from "../../firebase/auth";
 import { useMediaQuery } from "react-responsive";
 import { UserContext } from "../../context/userContext";
 import { isMobile } from "react-device-detect";
 import { history } from "../../history/history";
+import ChangeProfileUI from "./ChangeProfile.presenter";
+
 export default function ChangeProfile({
   user,
   setIsProfileEdit,
@@ -36,16 +19,8 @@ export default function ChangeProfile({
   const imgInputRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(user.photoURL);
   const [uploadImg, setUploadImg] = useState("");
-  const [
-    displayNameValue,
-    nicknameValid,
-    onChnageNickname,
-  ] = useValidationInput(
-    user.displayName,
-    "displayName",
-    true
-  );
-
+  const [displayNameValue, displayNameValid, onChnageDisplayName] =
+    useValidationInput(user.displayName, "displayName", true);
 
   const onClickChangeImg = () => {
     imgInputRef.current.click();
@@ -119,59 +94,17 @@ export default function ChangeProfile({
   }, []);
 
   return (
-    <ModalWrapper>
-      <Dim onClick={onClickCancel}>
-        <span>dim</span>
-      </Dim>
-      <ModalCard>
-        <Title>프로필 수정</Title>
-        <ProfileForm>
-          <ProfileImgWrapper>
-            <ImgInput type="file" ref={imgInputRef} onChange={onChangeImg} />
-            <ProfileImg
-              src={previewImg || "assets/defaultProfile.png"}
-              onError={(e) => (e.target.src = "assets/defaultProfile.png")}
-              alt="프로필 이미지"
-            />
-            <ChangeImgBtn type="button" onClick={onClickChangeImg}>
-              이미지 변경
-            </ChangeImgBtn>
-          </ProfileImgWrapper>
-          <NicknameWrapper>
-            <NicknameLabel>닉네임</NicknameLabel>
-            <NicknameInput
-              type="text"
-              value={displayNameValue}
-              onChange={onChnageNickname}
-            />
-            {nicknameValid.errorMsg && (
-              <ErrorMsg
-                className={isMoblie ? "small" : ""}
-                message={nicknameValid.errorMsg}
-              />
-            )}
-            <InputDescList>
-              <InputDesc>
-                닉네임은 영문, 영문+숫자 조합 4-10자로 입력해야합니다.
-              </InputDesc>
-              <InputDesc>
-                업로드 가능한 최대 이미지 용량은 10MB 입니다.
-              </InputDesc>
-              <InputDesc>
-                .jpg, .png, .jpeg,.bmp, .tif, *.heic 형식의 이미지를 지원합니다.
-              </InputDesc>
-            </InputDescList>
-          </NicknameWrapper>
-        </ProfileForm>
-        <ProfileEditBtns>
-          <ProfileEditBtn type="button" onClick={onClickSubmit}>
-            확인
-          </ProfileEditBtn>
-          <ProfileEditBtn type="button" onClick={onClickCancel}>
-            취소
-          </ProfileEditBtn>
-        </ProfileEditBtns>
-      </ModalCard>
-    </ModalWrapper>
+    <ChangeProfileUI
+      onClickCancel={onClickCancel}
+      imgInputRef={imgInputRef}
+      onChangeImg={onChangeImg}
+      previewImg={previewImg}
+      onClickChangeImg={onClickChangeImg}
+      displayNameValue={displayNameValue}
+      onChnageDisplayName={onChnageDisplayName}
+      displayNameValid={displayNameValid}
+      isMoblie={isMoblie}
+      onClickSubmit={onClickSubmit}
+    />
   );
 }

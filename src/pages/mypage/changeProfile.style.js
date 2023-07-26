@@ -71,14 +71,14 @@ export const ChangeImgBtn = styled.button`
   font-size: 12px;
 `;
 
-export const NicknameWrapper = styled.div`
+export const DisplayNameWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 15px;
 `;
 
-export const NicknameInput = styled.input`
+export const DisplayNameInput = styled.input`
   width: 100%;
   border: 2px solid #292a2b;
   background-color: #1d1e1e;
@@ -86,7 +86,7 @@ export const NicknameInput = styled.input`
   color: #bdbdbd;
 `;
 
-export const NicknameLabel = styled.label`
+export const DisplayNameLabel = styled.label`
   color: #fff;
 `;
 
