@@ -40,6 +40,7 @@ export default function ReviewListItemUI({
       <ReviewerWrapper>
         <ReviewerImg
           src={reviewItem.reviewerImg || "assets/defaultProfile.png"}
+          alt="유저 프로필 이미지"
           onError={(e) => (e.target.src = "assets/defaultProfile.png")}
         />
         <Reviewer>{reviewItem.reviewer}</Reviewer>
@@ -80,7 +81,7 @@ export default function ReviewListItemUI({
         <>
           <ReviewContents>{reviewItem.contents}</ReviewContents>
           <ReviewItemBottom>
-            <ReviewCreatedAt>
+            <ReviewCreatedAt dateTime={new Date(reviewItem.createdAt.seconds * 1000).toISOString()}>
               {setDateFormate(reviewItem.createdAt.seconds * 1000)}
             </ReviewCreatedAt>
             {userData.displayName === reviewItem.reviewer ? (

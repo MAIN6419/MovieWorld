@@ -45,7 +45,7 @@ export default function ProfileSettingUI({
           type="button"
           onClick={() => imgInputRef.current.click()}
         >
-          <ProfileImg src={previewImg} />
+          <ProfileImg src={previewImg} alt="유저 프로필 이미지" onError={(e)=>e.target.value = "assets/defaultProfile.png"}/>
         </ProfileImgButton>
         <ProfileImgResetBtn type="button" onClick={onClickImgReset}>
           <span className="a11y-hidden">초기화</span>

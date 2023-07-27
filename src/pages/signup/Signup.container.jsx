@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
-import Loading from "../../compoents/commons/loading/Loading";
 import SignupUI from "./Signup.presenter";
 
 export default function Signup() {
@@ -72,33 +71,29 @@ export default function Signup() {
   }, [emailValid, passowrdValid, passwordChkValid, phoneValid]);
 
   return (
-    <>
-      <SignupUI />
-      {isLoading && (
-        <Loading
-          defaultInfo={defaultInfo}
-          percentage={percentage}
-          profile={profile}
-          next={next}
-          emailValue={emailValue}
-          onChangeEmail={onChangeEmail}
-          emailValid={emailValid}
-          passwordValue={passwordValue}
-          onChangePassowrd={onChangePassowrd}
-          passowrdValid={passowrdValid}
-          passowrdChkValue={passowrdChkValue}
-          onChangePasswordChk={onChangePasswordChk}
-          passwordChkValid={passwordChkValid}
-          phoneValue={phoneValue}
-          onChangePhone={onChangePhone}
-          phoneValid={phoneValid}
-          disabled={disabled}
-          setIsLoading={setIsLoading}
-          setProfile={setProfile}
-          setPercentage={setPercentage}
-          setNext={setNext}
-        />
-      )}
-    </>
+    <SignupUI
+      defaultInfo={defaultInfo}
+      percentage={percentage}
+      profile={profile}
+      next={next}
+      emailValue={emailValue}
+      onChangeEmail={onChangeEmail}
+      emailValid={emailValid}
+      passwordValue={passwordValue}
+      onChangePassowrd={onChangePassowrd}
+      passowrdValid={passowrdValid}
+      passowrdChkValue={passowrdChkValue}
+      onChangePasswordChk={onChangePasswordChk}
+      passwordChkValid={passwordChkValid}
+      phoneValue={phoneValue}
+      onChangePhone={onChangePhone}
+      phoneValid={phoneValid}
+      disabled={disabled}
+      setIsLoading={setIsLoading}
+      setProfile={setProfile}
+      setPercentage={setPercentage}
+      setNext={setNext}
+      isLoading={isLoading}
+    />
   );
 }

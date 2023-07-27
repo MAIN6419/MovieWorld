@@ -15,6 +15,7 @@ import {
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import ProfileSetting from "./ProfileSetting.container";
+import Loading from "../../compoents/commons/loading/Loading";
 
 export default function SignupUI({
   defaultInfo,
@@ -38,8 +39,10 @@ export default function SignupUI({
   setProfile,
   setPercentage,
   setNext,
+  isLoading
 }) {
   return (
+    <>
     <Wrapper>
       <Title>회원가입</Title>
       <ProgressWrapper>
@@ -134,5 +137,10 @@ export default function SignupUI({
         />
       )}
     </Wrapper>
+  
+  {isLoading && (
+    <Loading/>
+  )}
+  </>
   );
 }

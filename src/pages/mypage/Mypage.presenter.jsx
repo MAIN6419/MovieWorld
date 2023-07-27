@@ -116,20 +116,18 @@ export default function MypageUI({
                   </MovieMenuItem>
                 </MovieMenuUl>
               </MovieMenuNav>
-              <MoiveListWrapper
-                style={{ height: !data.length ? "calc(100vh - 325px)" : "" }}
-              >
-                {!data.length && !notData ? (
-                  <Blank
-                    size={isMoblie ? "small" : ""}
-                    text={
-                      menu === "like"
-                        ? "찜 목록이 존재하지 않습니다."
-                        : "리뷰한 영화가 존재하지 않습니다."
-                    }
-                  />
-                ) : (
-                  data.map((item, idx) => {
+              {!data.length && !notData ? (
+                <Blank
+                  size={isMoblie ? "small" : ""}
+                  text={
+                    menu === "like"
+                      ? "찜 목록이 존재하지 않습니다."
+                      : "리뷰한 영화가 존재하지 않습니다."
+                  }
+                />
+              ) : (
+                <MoiveListWrapper>
+                  {data.map((item, idx) => {
                     return (
                       <MovieItem key={item.id + idx}>
                         <MovieImgWrapper>
@@ -156,10 +154,13 @@ export default function MypageUI({
                         </MovieTitle>
                       </MovieItem>
                     );
-                  })
-                )}
-              </MoiveListWrapper>
-              <InfiniteScrollTarget ref={infiniteScrollRef}></InfiniteScrollTarget>
+                  })}
+                </MoiveListWrapper>
+              )}
+
+              <InfiniteScrollTarget
+                ref={infiniteScrollRef}
+              ></InfiniteScrollTarget>
             </MovieMenuWrapper>
           </Wrapper>
           {isOpenMovieInfo && (

@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.section`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 300px;
 `;
 
 export const Title = styled.h2``;

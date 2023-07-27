@@ -21,8 +21,7 @@ export default function Splash() {
       <Title className="a11y-hidden">스플래쉬 페이지</Title>
       <Wrapper>
         <SportLight>
-          <span className="a11y-hidden">스포트라이트</span>
-          <Logo src="assets/logo.png" />
+          <Logo src="assets/logo.png" alt="MovieWorld"/>
         </SportLight>
       </Wrapper>
     </>

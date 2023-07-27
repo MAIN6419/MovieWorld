@@ -77,7 +77,6 @@ export default function ReviewUI({
             <ToggleButton
               className="toggleButton"
               toggle={spoiler}
-              aria-label="스포일러 체크"
             ></ToggleButton>
           </ToggleSwitch>
         </ToggleWrapper>
@@ -98,7 +97,6 @@ export default function ReviewUI({
           </TextCountWrapper>
         </TextAreaWrapper>
       </TextAreaForm>
-
       <SelectWrapper>
         <ToggleWrapper>
           <ToggleCheckbox
@@ -116,7 +114,6 @@ export default function ReviewUI({
             <ToggleButton
               className="toggleButton"
               toggle={showSpoilerData}
-              aria-label="스포일러 리뷰 포함"
             ></ToggleButton>
           </ToggleSwitch>
         </ToggleWrapper>
@@ -143,28 +140,29 @@ export default function ReviewUI({
           </OpectionList>
         )}
       </SelectWrapper>
-
-      <ReviewList>
-        {reviewData.length ? (
-          reviewData.map((item) => {
-            return (
-              <ReviewListItem
-                key={item.id}
-                reviewItem={item}
-                reviewData={reviewData}
-                reviewDataList={reviewData}
-                movieId={movieData.id}
-                setReviewData={setReviewData}
-                userData={userData}
-                setUserData={setUserData}
-              />
-            );
-          })
-        ) : (
-          <Blank text={"작성된 리뷰가 없어요."} />
-        )}
-        <div ref={infiniteScrollRef}></div>
-      </ReviewList>
+      {reviewData.length ? (
+        <>
+          <ReviewList>
+            {reviewData.map((item) => {
+              return (
+                <ReviewListItem
+                  key={item.id}
+                  reviewItem={item}
+                  reviewData={reviewData}
+                  reviewDataList={reviewData}
+                  movieId={movieData.id}
+                  setReviewData={setReviewData}
+                  userData={userData}
+                  setUserData={setUserData}
+                />
+              );
+            })}
+          </ReviewList>
+          <div ref={infiniteScrollRef}></div>
+        </>
+      ) : (
+        <Blank text={"작성된 리뷰가 없어요."} />
+      )}
     </Wrapper>
   );
 }

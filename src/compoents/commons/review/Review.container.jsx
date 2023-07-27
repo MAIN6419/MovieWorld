@@ -132,7 +132,6 @@ export default function Review({ movieData }) {
     const { res, data } = await fetchReviewPage(
       movieData.id,
       page,
-      limitPage,
       filter,
       showSpoilerData
     );

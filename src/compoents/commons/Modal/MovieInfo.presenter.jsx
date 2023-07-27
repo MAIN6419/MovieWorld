@@ -21,6 +21,7 @@ import {
   Iframe,
   MovieLikeBtn,
   MovieBtns,
+  MovieGenreWrapper,
 } from "./movieInfo.style";
 import Review from "../review/Review.container";
 export default function MovieInfoUI({
@@ -71,13 +72,15 @@ export default function MovieInfoUI({
               : videoData.first_air_date}
           </MovieRelease>
           {videoData.genres && (
-            <MovieGenre>
-              장르 :
-              {videoData.genres &&
-                videoData.genres.map(({ name }) => {
-                  return <MovieGenreLi key={name}>{name}</MovieGenreLi>;
-                })}
-            </MovieGenre>
+            <MovieGenreWrapper>
+              <span>장르 :</span>
+              <MovieGenre>
+                {videoData.genres &&
+                  videoData.genres.map(({ name }) => {
+                    return <MovieGenreLi key={name}>{name}</MovieGenreLi>;
+                  })}
+              </MovieGenre>
+            </MovieGenreWrapper>
           )}
           {videoData.runtime && (
             <MovieRunTime>상영시간 : {videoData.runtime}분</MovieRunTime>

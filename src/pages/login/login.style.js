@@ -70,21 +70,21 @@ export const SocialLoginWrapper = styled.ul`
   border-top: 1px solid #fff;
   padding-top: 30px;
   margin-top: 20px;
+  ::after {
+    content: "소셜 로그인";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    color: #fff;
+    font-size: 13px;
+    background-color: #111;
+    padding: 0 10px;
+  }
 `;
 
-export const SocialLoginTitle = styled.h3`
-  font-size: 13px;
-  color: #fff;
-  position: absolute;
-  z-index: 999;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #111;
-  padding: 0 10px;
-`;
-
-export const SocialLoginList = styled.li`
+export const SocialLoginItem = styled.li`
   margin-bottom: 20px;
   text-align: center;
 `;
@@ -101,10 +101,12 @@ export const SocialLoginBtn = styled.button`
       #fff;
   }
   &.facebook {
-    background: url("assets/icon-facebook.png") no-repeat center left 15px / 24px #3a5897;
+    background: url("assets/icon-facebook.png") no-repeat center left 15px /
+      24px #3a5897;
   }
   &.twitter {
-    background: url("assets/icon-twitter.png") no-repeat center left 15px / 24px #55acee;
+    background: url("assets/icon-twitter.png") no-repeat center left 15px / 24px
+      #55acee;
   }
   &.github {
     background: url("assets/icon-github.png") no-repeat center left 15px / 24px

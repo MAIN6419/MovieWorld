@@ -9,10 +9,9 @@ import {
   FindAccountLink,
   SignupText,
   SocialLoginWrapper,
-  SocialLoginList,
   SocialLoginBtn,
-  SocialLoginTitle,
   InputWrapper,
+  SocialLoginItem,
 } from "./login.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import { useValidationInput } from "../../hook/useValidationInput";
@@ -95,8 +94,7 @@ export default function Login() {
             <SignupLink to={"/signup"}>회원가입</SignupLink>
           </SignupText>
           <SocialLoginWrapper>
-            <SocialLoginTitle>소셜 로그인</SocialLoginTitle>
-            <SocialLoginList>
+            <SocialLoginItem>
               <SocialLoginBtn
                 className="google"
                 type="button"
@@ -104,8 +102,8 @@ export default function Login() {
               >
                 구글 계정으로 로그인
               </SocialLoginBtn>
-            </SocialLoginList>
-            <SocialLoginList>
+            </SocialLoginItem>
+            <SocialLoginItem>
               <SocialLoginBtn
                 className="github"
                 type="button"
@@ -113,7 +111,7 @@ export default function Login() {
               >
                 깃 허브 계정으로 로그인
               </SocialLoginBtn>
-            </SocialLoginList>
+            </SocialLoginItem>
           </SocialLoginWrapper>
         </LoginForm>
       </Wrapper>

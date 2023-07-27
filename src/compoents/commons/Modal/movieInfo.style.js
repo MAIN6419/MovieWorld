@@ -104,6 +104,10 @@ export const MovieRelease = styled.time`
   }
 `;
 
+export const MovieGenreWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`
 export const MovieGenre = styled.ul`
   display: flex;
   flex-wrap: wrap;
