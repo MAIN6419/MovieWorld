@@ -20,7 +20,7 @@ import {
   HeaderSearchIcon,
 } from "./header.style";
 import { UserContext } from "../../../../context/userContext";
-import { logout } from "../../../../firebase/auth";
+import { logout } from "../../../../firebase/loginAPI";
 import { useLocation } from "react-router-dom";
 
 export default function Header() {

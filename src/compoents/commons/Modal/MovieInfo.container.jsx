@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { fetchVideo } from "../../../api/movie";
-import { addLike, getUser, removeLike } from "../../../firebase/auth";
+import { getUser } from "../../../firebase/loginAPI";
+import { addLike, removeLike } from "../../../firebase/likeAPI";
 import { UserContext } from "../../../context/userContext";
 import { history } from "../../../history/history";
 import { isMobile } from "react-device-detect";

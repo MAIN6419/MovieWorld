@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
-import { updateUserProfile } from "../../firebase/auth";
+import { updateUserProfile } from "../../firebase/profileAPI";
 import { useMediaQuery } from "react-responsive";
 import { UserContext } from "../../context/userContext";
 import { isMobile } from "react-device-detect";

@@ -1,13 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
-import { useContext, useEffect, useRef, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { getUser } from "../../../firebase/loginAPI";
 import {
   addReview,
   fetchAddReviewData,
   fetchFirstReview,
   fetchReviewPage,
-  getUser,
-} from "../../../firebase/auth";
+} from "../../../firebase/reviewAPI";
 import { Timestamp } from "firebase/firestore";
 import { useInView } from "react-intersection-observer";
 import { UserContext } from "../../../context/userContext";

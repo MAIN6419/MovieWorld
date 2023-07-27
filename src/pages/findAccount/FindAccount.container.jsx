@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
-import { changePassword, findEmail } from "../../firebase/auth";
 import FindAccountUI from "./FindAccount.presenter";
+import { changePassword, findEmail } from "../../firebase/findAccountAPI";
 export default function FindAccount() {
   const [
     displayNameValue,

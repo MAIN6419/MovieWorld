@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { signup } from "../../firebase/auth";
+import { signup } from "../../firebase/signupAPI";
 import { useValidationInput } from "../../hook/useValidationInput";
 import { UserContext } from "../../context/userContext";
 import ProfileSettingUI from "./ProfileSetting.presenter";

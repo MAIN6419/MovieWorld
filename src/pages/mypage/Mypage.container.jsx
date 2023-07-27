@@ -1,19 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-
-import {
-  fetchFirstLikeList,
-  fetchFirstReviewMovieList,
-  fetchLikeListPage,
-  fetchReviewMovieListPage,
-} from "../../firebase/auth";
-
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import { useInView } from "react-intersection-observer";
-
 import { UserContext } from "../../context/userContext";
-
 import { useMediaQuery } from "react-responsive";
 import MypageUI from "./Mypage.presenter";
+import { fetchFirstLikeList, fetchLikeListPage } from "../../firebase/likeAPI";
+import {
+  fetchFirstReviewMovieList,
+  fetchReviewMovieListPage,
+} from "../../firebase/reviewAPI";
 
 export default function Mypage() {
   const { user } = useContext(UserContext);

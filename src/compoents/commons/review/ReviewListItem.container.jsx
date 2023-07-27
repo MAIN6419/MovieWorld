@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { editReview, removeReview, reviewReport } from "../../../firebase/auth";
+import {
+  editReview,
+  removeReview,
+  reviewReport,
+} from "../../../firebase/reviewAPI";
 import ReviewListItemUI from "./ReviewListItem.presenter";
 
 export default function ReviewListItem({

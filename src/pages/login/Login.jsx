@@ -17,7 +17,7 @@ import {
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-import { login, socialLogin } from "../../firebase/auth";
+import { login, socialLogin } from "../../firebase/loginAPI";
 
 export default function Login() {
   const [disabled, setDisabled] = useState(true);
@@ -100,11 +100,19 @@ export default function Login() {
               <SocialLoginBtn
                 className="google"
                 type="button"
-                onClick={()=>socialLogin("google")}
-              >구글 계정으로 로그인</SocialLoginBtn>
+                onClick={() => socialLogin("google")}
+              >
+                구글 계정으로 로그인
+              </SocialLoginBtn>
             </SocialLoginList>
             <SocialLoginList>
-              <SocialLoginBtn className="github" type="button" onClick={()=>socialLogin("github")}>깃 허브 계정으로 로그인</SocialLoginBtn>
+              <SocialLoginBtn
+                className="github"
+                type="button"
+                onClick={() => socialLogin("github")}
+              >
+                깃 허브 계정으로 로그인
+              </SocialLoginBtn>
             </SocialLoginList>
           </SocialLoginWrapper>
         </LoginForm>

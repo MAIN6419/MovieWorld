@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
 import { useCallback, useEffect, useState } from "react";
-import { duplication } from "../firebase/auth";
+import { duplication } from "../firebase/validationAPI";
 
 export const useValidationInput = (initialValue, type, checkDuplication) => {
   const displayNameReg = /^[a-zA-z0-9]{4,10}$/;
@@ -71,7 +71,7 @@ export const useValidationInput = (initialValue, type, checkDuplication) => {
       );
       // 프로필 변경시 기존 자신의 닉네임은 중복검사 제외 하기 위해 사용
       const user = JSON.parse(localStorage.getItem("user")) || "";
-      if (isDulplcation&&user?.displayName!==value) {
+      if (isDulplcation && user?.displayName !== value) {
         setValid({
           errorMsg: typeInfo.duplicationMsg,
           valid: false,

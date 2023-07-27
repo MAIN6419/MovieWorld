@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
 
 import { useMediaQuery } from "react-responsive";
-import { changeUserPassword } from "../../firebase/auth";
+import { changeUserPassword } from "../../firebase/findAccountAPI";
 import { isMobile } from "react-device-detect";
 import { history } from "../../history/history";
 import ChangePasswordUI from "./ChangePassword.presenter";
