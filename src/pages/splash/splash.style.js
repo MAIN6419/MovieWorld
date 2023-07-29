@@ -17,11 +17,14 @@ export const SportLight = styled.div`
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: url("assets/icon-camera.png") no-repeat center / contain;
+  background: url("assets/icon-camera.svg") no-repeat center / contain;
   background-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0px 0px 20px 2px rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 0px 20px 1px rgba(255, 255, 255, 0.5);
   animation: fadeIn 7s;
   overflow: hidden;
+  body.webp & {
+    background: url("assets/webp/icon-camera.webp") no-repeat center / contain;
+  }
   @keyframes fadeIn {
     from{
       opacity: 0;

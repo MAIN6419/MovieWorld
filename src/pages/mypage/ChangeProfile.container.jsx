@@ -6,12 +6,15 @@ import { UserContext } from "../../context/userContext";
 import { isMobile } from "react-device-detect";
 import { history } from "../../history/history";
 import ChangeProfileUI from "./ChangeProfile.presenter";
+import { WebpContext } from "../../context/webpContext";
+import { resolveWebp } from "../../libray/webpSupport";
 
 export default function ChangeProfile({
   user,
   setIsProfileEdit,
   setIsLoading,
 }) {
+  const { webpSupport } = useContext(WebpContext);
   const { refreshUser } = useContext(UserContext);
   const isMoblie = useMediaQuery({
     query: "(max-width:486px)",
@@ -105,6 +108,8 @@ export default function ChangeProfile({
       displayNameValid={displayNameValid}
       isMoblie={isMoblie}
       onClickSubmit={onClickSubmit}
+      webpSupport={webpSupport}
+      resolveWebp={resolveWebp}
     />
   );
 }

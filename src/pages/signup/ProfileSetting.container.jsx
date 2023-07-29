@@ -3,6 +3,8 @@ import { signup } from "../../firebase/signupAPI";
 import { useValidationInput } from "../../hook/useValidationInput";
 import { UserContext } from "../../context/userContext";
 import ProfileSettingUI from "./ProfileSetting.presenter";
+import { resolveWebp } from "../../libray/webpSupport";
+import { WebpContext } from "../../context/webpContext";
 
 export default function ProfileSetting({
   setIsLoading,
@@ -13,11 +15,14 @@ export default function ProfileSetting({
   setPercentage,
   setNext,
 }) {
+  const { webpSupport } = useContext(WebpContext);
   const { refreshUser } = useContext(UserContext);
   const imgInputRef = useRef();
   // 회원가입 버튼 활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
-  const [previewImg, setPreviewImg] = useState("assets/defaultProfile.png");
+  const [previewImg, setPreviewImg] = useState(
+    resolveWebp(webpSupport, "assets/webp/icon-defaultProfile.webp", "svg")
+  );
   const [uploadImg, setUploadImg] = useState("");
   const [displayNameValue, displayNameValid, onChangeDislayName] =
     useValidationInput("", "displayName", true);
@@ -59,7 +64,7 @@ export default function ProfileSetting({
   };
 
   const onClickImgReset = () => {
-    setPreviewImg("assets/defaultProfile.png");
+    setPreviewImg(resolveWebp(webpSupport, "assets/webp/icon-defaultProfile.webp", "svg"));
     setUploadImg("");
   };
 

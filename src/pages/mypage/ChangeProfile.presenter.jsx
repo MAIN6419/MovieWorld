@@ -19,7 +19,6 @@ import {
 } from "./changeProfile.style";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 
-
 export default function ChangeProfileUI({
   onClickCancel,
   imgInputRef,
@@ -31,6 +30,8 @@ export default function ChangeProfileUI({
   displayNameValid,
   isMoblie,
   onClickSubmit,
+  webpSupport,
+  resolveWebp,
 }) {
   return (
     <ModalWrapper>
@@ -43,8 +44,21 @@ export default function ChangeProfileUI({
           <ProfileImgWrapper>
             <ImgInput type="file" ref={imgInputRef} onChange={onChangeImg} />
             <ProfileImg
-              src={previewImg || "assets/defaultProfile.png"}
-              onError={(e) => (e.target.src = "assets/defaultProfile.png")}
+              src={
+                previewImg ||
+                resolveWebp(
+                  webpSupport,
+                  "assets/webp/icon-defaultProfile.webp",
+                  "svg"
+                )
+              }
+              onError={(e) =>
+                (e.target.src = resolveWebp(
+                  webpSupport,
+                  "assets/webp/icon-defaultProfile.webp",
+                  "svg"
+                ))
+              }
               alt="프로필 이미지"
             />
             <ChangeImgBtn type="button" onClick={onClickChangeImg}>

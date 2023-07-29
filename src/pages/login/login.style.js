@@ -97,20 +97,39 @@ export const SocialLoginBtn = styled.button`
   padding: 15px 0;
   border: px solid #bdbdbd;
   &.google {
-    background: url("assets/icon-google.png") no-repeat center left 15px / 24px
+    background: url("assets/icon-google.svg") no-repeat center left 15px / 24px
       #fff;
   }
   &.facebook {
-    background: url("assets/icon-facebook.png") no-repeat center left 15px /
+    background: url("assets/icon-facebook.svg") no-repeat center left 15px /
       24px #3a5897;
   }
   &.twitter {
-    background: url("assets/icon-twitter.png") no-repeat center left 15px / 24px
+    background: url("assets/icon-twitter.svg") no-repeat center left 15px / 24px
       #55acee;
   }
   &.github {
-    background: url("assets/icon-github.png") no-repeat center left 15px / 24px
+    background: url("assets/icon-github.svg") no-repeat center left 15px / 24px
       #fff;
+  }
+
+  body.webp & {
+    &.google {
+      background: url("assets/webp/icon-google.webp") no-repeat center left 15px /
+        24px #fff;
+    }
+    &.facebook {
+      background: url("assets/webp/icon-facebook.webp") no-repeat center left
+        15px / 24px #3a5897;
+    }
+    &.twitter {
+      background: url("assets/webp/icon-twitter.webp") no-repeat center left
+        15px / 24px #55acee;
+    }
+    &.github {
+      background: url("assets/webp/icon-github.webp") no-repeat center left 15px /
+        24px #fff;
+    }
   }
   :hover {
     background-color: ${isMobile ? "" : "#ddd"};

@@ -8,11 +8,14 @@ export const Wrapper = styled.section`
 `;
 
 export const Title = styled.h2`
-  background: url("assets/icon-review.png") no-repeat left / 25px;
+  background: url("assets/icon-review.svg") no-repeat left / 25px;
   padding-left: 28px;
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 10px;
+  body.webp & {
+    background: url("assets/webp/icon-review.webp") no-repeat left / 25px;
+  }
 `;
 
 export const ReviewCheckList = styled.div`
@@ -22,11 +25,9 @@ export const ReviewCheckList = styled.div`
   gap: 10px;
   align-items: center;
   margin-bottom: 20px;
-`
-
-export const RatingWrapper = styled.div`
-
 `;
+
+export const RatingWrapper = styled.div``;
 
 export const Rating = styled(Rate)`
   font-size: 25px;
@@ -170,11 +171,15 @@ export const Select = styled.button`
     content: "";
     width: 15px;
     height: 15px;
-    background: url("assets/icon-downArrow.png") no-repeat center right 0px /
+    background: url("assets/icon-downArrow.svg") no-repeat center right 0px /
       15px;
     transform: ${(props) =>
       props.active ? "rotate(-180deg)" : "rotate(0deg)"};
     transition: all 0.5s;
+  }
+  body.webp &::after {
+    background: url("assets/webp/icon-downArrow.webp") no-repeat center right 0px /
+      15px;
   }
 `;
 

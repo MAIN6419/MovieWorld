@@ -31,6 +31,7 @@ import ChangeProfile from "./ChangeProfile.container";
 import ChangePassword from "./ChangePassword.container";
 import TopButton from "../../compoents/commons/topButton/TopButton";
 
+
 export default function MypageUI({
   isLoading,
   user,
@@ -52,6 +53,8 @@ export default function MypageUI({
   isChangePassword,
   setIsChangePassword,
   setIsLoading,
+  webpSupport,
+  resolveWebp
 }) {
   return (
     <>
@@ -64,9 +67,22 @@ export default function MypageUI({
               <ProfileTitle>내 정보</ProfileTitle>
               <ProfileInfo>
                 <ProfileImg
-                  src={user.photoURL || "assets/defaultProfile.png"}
+                  src={
+                    user.photoURL ||
+                    resolveWebp(
+                      webpSupport,
+                      "assets/webp/icon-defaultProfile.webp",
+                      "svg"
+                    )
+                  }
                   alt="프로필 이미지"
-                  onError={(e) => (e.target.src = "assets/defaultProfile.png")}
+                  onError={(e) =>
+                    (e.target.src = resolveWebp(
+                      webpSupport,
+                      "assets/webp/icon-defaultProfile.webp",
+                      "svg"
+                    ))
+                  }
                 />
                 <ProfileNameWrapper>
                   <ProfileNickname>
@@ -132,7 +148,11 @@ export default function MypageUI({
                       <MovieItem key={item.id + idx}>
                         <MovieImgWrapper>
                           <ProgressiveImg
-                            placeholderSrc={"assets/placeholderImg.png"}
+                            placeholderSrc={
+                              document.body.className === "webp"
+                                ? "assets/webp/placeholderImg.webp"
+                                : "assets/placeholderImg.png"
+                            }
                             src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
                             styles={{
                               position: "absolute",
@@ -144,7 +164,10 @@ export default function MypageUI({
                             }}
                             alt="영화 포스터"
                             onError={(e) =>
-                              (e.target.src = "assets/placeholderImg.png")
+                              (e.target.src =
+                                document.body.className === "webp"
+                                  ? "assets/webp/placeholderImg.webp"
+                                  : "assets/placeholderImg.png")
                             }
                             onClick={() => onClickMovieInfo(item)}
                           />

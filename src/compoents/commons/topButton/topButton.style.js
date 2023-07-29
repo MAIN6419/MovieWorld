@@ -10,6 +10,9 @@ export const Btn = styled.button`
   background: url("assets/icon-topbutton.svg") no-repeat center / 44px;
   color: #fff;
   animation: fadeIn 1s;
+  body.webp & {
+    background: url("assets/webp/icon-topbutton.webp") no-repeat center / 44px;
+  }
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -23,5 +26,8 @@ export const Btn = styled.button`
     width: 38px;
     height: 38px;
     background: url("assets/icon-topbutton.svg") no-repeat center / 38px;
+    body.webp & {
+    background: url("assets/webp/icon-topbutton.webp") no-repeat center / 38px;
+  }
   }
 `;

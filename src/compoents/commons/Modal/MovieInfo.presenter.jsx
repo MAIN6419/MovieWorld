@@ -24,6 +24,8 @@ import {
   MovieGenreWrapper,
 } from "./movieInfo.style";
 import Review from "../review/Review.container";
+import { useMediaQuery } from "react-responsive";
+
 export default function MovieInfoUI({
   modalRef,
   isPlay,
@@ -33,6 +35,7 @@ export default function MovieInfoUI({
   onClickPlay,
   onClickLike,
 }) {
+  const isMedium = useMediaQuery({ query: "(max-width: 781px)" });
   return (
     <ModalWrapper>
       <ModalTitle className="a11y-hidden">영화정보</ModalTitle>
@@ -55,7 +58,7 @@ export default function MovieInfoUI({
             <MovieImg
               style={
                 videoData.backdrop_path && {
-                  background: `url(https://image.tmdb.org/t/p/original/${videoData.backdrop_path}) no-repeat top center / cover`,
+                  background: `url(https://image.tmdb.org/t/p/${isMedium? "w780": "w1280"}/${videoData.backdrop_path}) no-repeat top center / cover`,
                 }
               }
             ></MovieImg>

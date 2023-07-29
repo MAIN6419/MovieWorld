@@ -9,7 +9,8 @@ import {
   fetchFirstReviewMovieList,
   fetchReviewMovieListPage,
 } from "../../firebase/reviewAPI";
-
+import { resolveWebp } from "../../libray/webpSupport";
+import { WebpContext } from "../../context/webpContext";
 export default function Mypage() {
   const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
@@ -95,6 +96,8 @@ export default function Mypage() {
       isChangePassword={isChangePassword}
       setIsChangePassword={setIsChangePassword}
       setIsLoading={setIsLoading}
+      WebpContext={WebpContext}
+      resolveWebp={resolveWebp}
     />
   );
 }

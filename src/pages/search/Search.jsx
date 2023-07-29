@@ -17,6 +17,7 @@ import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveIm
 import TopButton from "../../compoents/commons/topButton/TopButton";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import Blank from "../../compoents/commons/blank/Blank";
+import { resolveWebp } from "../../libray/webpSupport";
 
 export default function Search() {
   const [keyWord, setKeyword] = useState("");
@@ -107,8 +108,11 @@ export default function Search() {
                     <SearchMovieItem key={data.id}>
                       <SearchMovieImgWrapper>
                         <ProgressiveImg
-                          placeholderSrc={"assets/placeholderImg.png"}
-                          src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
+                          placeholderSrc={resolveWebp(
+                            "assets/webp/placeholderImg.webp",
+                            "svg"
+                          )}
+                          src={`https://image.tmdb.org/t/p/w342/${data.poster_path}`}
                           styles={{
                             position: "absolute",
                             width: "100%",
@@ -119,7 +123,10 @@ export default function Search() {
                           }}
                           alt="영화 포스터"
                           onError={(e) =>
-                            (e.target.src = "assets/placeholderImg.png")
+                            (e.target.src = resolveWebp(
+                              "assets/webp/placeholderImg.webp",
+                              "svg"
+                            ))
                           }
                           onClick={() => onClickMovieInfo(data)}
                         />

@@ -22,31 +22,57 @@ import {
 import { UserContext } from "../../../../context/userContext";
 import { logout } from "../../../../firebase/loginAPI";
 import { useLocation } from "react-router-dom";
+import { resolveWebp } from "../../../../libray/webpSupport";
+import { WebpContext } from "../../../../context/webpContext";
 
 export default function Header() {
+  const { user } = useContext(UserContext);
+  const { webpSupport } = useContext(WebpContext);
   const pathname = useLocation().pathname;
   const [isUserMenu, setIsUserMenu] = useState(false);
-
-  const { user } = useContext(UserContext);
 
   const onClickUserMenu = () => {
     setIsUserMenu(!isUserMenu);
   };
+
   return (
     <HeaderBar>
       <HeaderTitle>
         <HeaderLogoLink to="/main" onClick={() => setIsUserMenu(false)}>
-          <HeaderLogo src="assets/logo.png" alt="MovieWorld" />
+          <HeaderLogo
+            src={resolveWebp(webpSupport, "assets/webp/icon-logo.webp", "svg")}
+            alt="MovieWorld"
+          />
         </HeaderLogoLink>
       </HeaderTitle>
       <HeaderRight>
         <HeaderSearchLink to="/search" onClick={() => setIsUserMenu(false)}>
-          <HeaderSearchIcon src="assets/icon-search.png" alt="검색" />
+          <HeaderSearchIcon
+            src={resolveWebp(
+              webpSupport,
+              "assets/webp/icon-search.webp",
+              "svg"
+            )}
+            alt="검색"
+          />
         </HeaderSearchLink>
         {user && user.displayName && (
           <UserProfileImg
-            src={user.photoURL || "assets/defaultProfile.png"}
-            onError={(e) => (e.target.src = "assets/defaultProfile.png")}
+            src={
+              user.photoURL ||
+              resolveWebp(
+                webpSupport,
+                "assets/webp/icon-defaultProfile.webp",
+                "svg"
+              )
+            }
+            onError={(e) =>
+              (e.target.src = resolveWebp(
+                webpSupport,
+                "assets/webp/icon-defaultProfile.webp",
+                "svg"
+              ))
+            }
             alt="유저 프로필 이미지"
           />
         )}
@@ -78,7 +104,11 @@ export default function Header() {
               )}
               <UserMenuBtn onClick={onClickUserMenu}>
                 <UserMenuBtnIcon
-                  src={"assets/icon-downArrow.png"}
+                  src={resolveWebp(
+                    webpSupport,
+                    "assets/webp/icon-downArrow.webp",
+                    "svg"
+                  )}
                   active={isUserMenu}
                   alt="유저 메뉴 버튼"
                 />

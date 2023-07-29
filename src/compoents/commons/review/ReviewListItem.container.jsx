@@ -5,6 +5,8 @@ import {
   reviewReport,
 } from "../../../firebase/reviewAPI";
 import ReviewListItemUI from "./ReviewListItem.presenter";
+import { resolveWebp } from "../../../libray/webpSupport";
+import { WebpContext } from "../../../context/webpContext";
 
 export default function ReviewListItem({
   reviewData,
@@ -109,6 +111,8 @@ export default function ReviewListItem({
       onClickRemove={onClickRemove}
       onClickReport={onClickReport}
       userData={userData}
+      resolveWebp={resolveWebp}
+      WebpContext={WebpContext}
     />
   );
 }

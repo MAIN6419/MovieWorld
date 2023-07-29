@@ -59,10 +59,17 @@ export const ProgressCheck = styled.div`
   flex-shrink: 0;
   background: ${(props) =>
       props.active
-        ? 'url("assets/icon-check-active.png")'
-        : 'url("assets/icon-check.png")'}
+        ? 'url("assets/icon-check-active.svg")'
+        : 'url("assets/icon-check.svg")'}
     no-repeat center / 20px #222;
   transition: all 0.5s;
+  body.webp & {
+    background: ${(props) =>
+        props.active
+          ? 'url("assets/webp/icon-check-active.webp")'
+          : 'url("assets/icon-check.svg")'}
+      no-repeat center / 20px #222;
+  }
   &.defalut {
     transition-delay: ${(props) => (props.active ? "" : "0.3s")};
   }
@@ -79,16 +86,14 @@ export const ProgressBar = styled.div`
   ::after {
     position: absolute;
     content: "";
-    width: ${(props) =>
-      props.percentage ? props.percentage : "0"};
+    width: ${(props) => (props.percentage ? props.percentage : "0")};
     height: 2px;
     background-color: #627af5;
     transition: all 0.5s;
     transition-delay: ${(props) => (props.percentage === "50%" ? "0.3s" : "")};
 
     @media screen and (max-width: 431px) {
-      width: ${(props) =>
-        props.percentage ? props.percentage : "0"};
+      width: ${(props) => (props.percentage ? props.percentage : "0")};
     }
   }
 `;
@@ -139,6 +144,9 @@ export const ProfileImgButton = styled.button`
     height: 40px;
     background: url("assets/icon-uploadImg.svg") no-repeat center / 40px;
   }
+  body.webp &::after {
+    background: url("assets/icon-uploadImg.webp") no-repeat center / 40px;
+  }
 `;
 
 export const ProfileImg = styled.img`
@@ -153,7 +161,10 @@ export const ProfileImgResetBtn = styled.button`
   height: 20px;
   top: -10px;
   right: 120px;
-  background: url("assets/icon-close.png") no-repeat center / 20px;
+  background: url("assets/icon-close.svg") no-repeat center / 20px;
+  body.webp &::after {
+    background: url("assets/webp/icon-close.webp") no-repeat center / 20px;
+  }
 `;
 export const ProfileImgDescList = styled.ul`
   padding: 20px 10px;

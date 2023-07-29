@@ -29,6 +29,8 @@ export default function ProfileSettingUI({
   setProfile,
   setPercentage,
   setNext,
+  webpSupport,
+  resolveWebp
 }) {
   return (
     <SignupForm onSubmit={handleSubmit}>
@@ -45,7 +47,13 @@ export default function ProfileSettingUI({
           type="button"
           onClick={() => imgInputRef.current.click()}
         >
-          <ProfileImg src={previewImg} alt="유저 프로필 이미지" onError={(e)=>e.target.value = "assets/defaultProfile.png"}/>
+          <ProfileImg
+            src={previewImg}
+            alt="유저 프로필 이미지"
+            onError={(e) =>
+              e.target.value = resolveWebp(webpSupport, "assets/webp/icon-defaultProfile.webp", "svg")
+            }
+          />
         </ProfileImgButton>
         <ProfileImgResetBtn type="button" onClick={onClickImgReset}>
           <span className="a11y-hidden">초기화</span>

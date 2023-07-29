@@ -17,12 +17,11 @@ export function detectWebpSupport() {
   image.src = webpdata;
 }
 
-export const resolveWebp = (img, fallbackExt) => {
-  const webpSupported =  document.body.classList.contains("webp");
+export const resolveWebp = (webpSupported,img, fallbackExt) => {
   const ext = img.split(".").pop();
-  if (!webpSupported && ext === "webp") {
-    img.replace("webp", "");
-    return img.replace(".webp", `.${fallbackExt}`);
+  if (!webpSupported && ext === "") {
+
+    return img.replace("/webp", "").replace(".webp", `.${fallbackExt}`);
   }
   return img;
 };

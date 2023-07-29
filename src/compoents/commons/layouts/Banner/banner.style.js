@@ -81,10 +81,10 @@ export const BannerBtn = styled.button`
   margin-right: 18px;
   color: black;
   &.play {
-    background: url("assets/icon-play.png") no-repeat center left 5px/ 20px #fff;
+    background: url("assets/icon-play.svg") no-repeat center left 5px/ 20px #fff;
   }
   &.info {
-    background: url("assets/icon-info.png") no-repeat center left 5px / 20px
+    background: url("assets/icon-info.svg") no-repeat center left 5px / 20px
       rgba(109, 109, 110, 0.7);
     color: #fff;
     :hover {
@@ -94,6 +94,16 @@ export const BannerBtn = styled.button`
   :hover {
     background-color: ${isMobile ? "" : "rgba(170, 170, 170, 0.9)"};
     transition: all 0.2s;
+  }
+  body.webp & {
+    &.play {
+      background: url("assets/webp/icon-play.webp") no-repeat center left 5px/ 20px
+        #fff;
+    }
+    &.info {
+      background: url("assets/webp/icon-info.webp") no-repeat center left 5px /
+        20px rgba(109, 109, 110, 0.7);
+    }
   }
 `;
 
@@ -180,8 +190,11 @@ export const CloseBtn = styled.button`
   top: 0;
   right: 20px;
   z-index: 999;
-  background: url("assets/icon-close.png") no-repeat center / 24px;
-  @media screen and (max-width:486px){
+  background: url("assets/icon-close.svg") no-repeat center / 24px;
+  body.webp & {
+    background: url("assets/webp/icon-close.webp") no-repeat center / 24px;
+  }
+  @media screen and (max-width: 486px) {
     width: 18px;
     height: 18px;
     right: 15px;
@@ -195,12 +208,16 @@ export const MobilePlayBtn = styled.button`
   position: absolute;
   width: 50px;
   height: 50px;
-  background: url("assets/icon-mobile-playBtn.png") no-repeat center / 50px;
+  background: url("assets/icon-mobile-playBtn.svg") no-repeat center / 50px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50px;
   z-index: 99;
+  body.webp & {
+    background: url("assets/webp/icon-mobile-playBtn.webp") no-repeat center /
+      50px;
+  }
   @media screen and (max-width: 486px) {
     top: 40%;
   }
@@ -212,7 +229,11 @@ export const MobileInfoBtn = styled.button`
   transform: translateX(-50%);
   width: 40px;
   height: 40px;
-  background: url("assets/icon-mobile-infoBtn.png") no-repeat center / 40px;
+  background: url("assets/icon-mobile-infoBtn.svg") no-repeat center / 40px;
   bottom: 20px;
   z-index: 99;
+  body.webp & {
+    background: url("assets/webp/icon-mobile-infoBtn.webp") no-repeat center /
+      40px;
+  }
 `;

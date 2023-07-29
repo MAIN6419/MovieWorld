@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   EditBtn,
   EditBtns,
@@ -20,6 +20,7 @@ import {
   ReviewerWrapper,
 } from "./reviewListItem.style";
 import { setDateFormate } from "../../../libray/setDateFormate";
+
 export default function ReviewListItemUI({
   reviewItem,
   isEdit,
@@ -34,14 +35,29 @@ export default function ReviewListItemUI({
   onClickRemove,
   onClickReport,
   userData,
+  webpSupport,
+  resolveWebp
 }) {
   return (
     <ReviewItem>
       <ReviewerWrapper>
         <ReviewerImg
-          src={reviewItem.reviewerImg || "assets/defaultProfile.png"}
+          src={
+            reviewItem.reviewerImg ||
+            resolveWebp(
+              webpSupport,
+              "assets/webp/icon-defaultProfile.webp",
+              "svg"
+            )
+          }
           alt="유저 프로필 이미지"
-          onError={(e) => (e.target.src = "assets/defaultProfile.png")}
+          onError={(e) =>
+            (e.target.src = resolveWebp(
+              webpSupport,
+              "assets/webp/icon-defaultProfile.webp",
+              "svg"
+            ))
+          }
         />
         <Reviewer>{reviewItem.reviewer}</Reviewer>
         <ReviewItemRateWrapper>
@@ -81,7 +97,11 @@ export default function ReviewListItemUI({
         <>
           <ReviewContents>{reviewItem.contents}</ReviewContents>
           <ReviewItemBottom>
-            <ReviewCreatedAt dateTime={new Date(reviewItem.createdAt.seconds * 1000).toISOString()}>
+            <ReviewCreatedAt
+              dateTime={new Date(
+                reviewItem.createdAt.seconds * 1000
+              ).toISOString()}
+            >
               {setDateFormate(reviewItem.createdAt.seconds * 1000)}
             </ReviewCreatedAt>
             {userData.displayName === reviewItem.reviewer ? (

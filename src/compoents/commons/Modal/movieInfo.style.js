@@ -107,7 +107,7 @@ export const MovieRelease = styled.time`
 export const MovieGenreWrapper = styled.div`
   display: flex;
   gap: 8px;
-`
+`;
 export const MovieGenre = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -198,10 +198,14 @@ export const MoviePlayBtn = styled.button`
   padding: 5px 20px 5px 30px;
   margin-right: 10px;
   color: black;
-  background: url("assets/icon-play.png") no-repeat center left 5px/ 20px #fff;
+  background: url("assets/icon-play.svg") no-repeat center left 5px/ 20px #fff;
   :hover {
     background-color: ${isMobile ? "" : "rgba(170, 170, 170, 0.9)"};
     transition: all 0.2s;
+  }
+  body.webp & {
+    background: url("assets/webp/icon-play.webp") no-repeat center left 5px/ 20px
+      #fff;
   }
 `;
 
@@ -211,8 +215,14 @@ export const MovieLikeBtn = styled.button`
   transition: all 0.2s;
   background: ${(props) =>
     props.like
-      ? "url(assets/icon-like.svg) no-repeat center  / cover"
+      ? "url(assets/icon-like.svg) no-repeat center / cover"
       : "url(assets/icon-unlike.svg) no-repeat center / cover"};
+  body.webp & {
+    background: ${(props) =>
+      props.like
+        ? "url(assets/webp/icon-like.webp) no-repeat center / cover"
+        : "url(assets/webp/icon-unlike.webp) no-repeat center / cover"};
+  }
 `;
 
 export const CloseBtn = styled.button`
@@ -222,7 +232,10 @@ export const CloseBtn = styled.button`
   top: 8px;
   right: 10px;
   z-index: 999;
-  background: url("assets/icon-close.png") no-repeat center / 22px;
+  background: url("assets/icon-close.svg") no-repeat center / 22px;
+  body.webp & {
+    background: url("assets/webp/icon-close.webp") no-repeat center / 22px;
+  }
 `;
 
 export const IframeWrapper = styled.div`

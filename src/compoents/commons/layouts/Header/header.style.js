@@ -25,6 +25,7 @@ export const HeaderLogoLink = styled(Link)``;
 
 export const HeaderLogo = styled.img`
   width: 105px;
+  height: 100%;
   margin-left: 10px;
   @media screen and (max-width: 486px) {
     width: 80px;

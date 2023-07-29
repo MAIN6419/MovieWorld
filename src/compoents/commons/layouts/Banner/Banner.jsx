@@ -22,11 +22,12 @@ import MovieInfo from "../../Modal/MovieInfo.container";
 import { useMediaQuery } from "react-responsive";
 
 export default function Banner() {
+  const isMedium = useMediaQuery({ query: "(max-width:786px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
   const [movieData, setMovieData] = useState([]);
   const [isPlay, setIsPlay] = useState(false);
   const [isOpenMovieInfo, setIsOpenMovieInfo] = useState(false);
 
-  const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
   const fetchData = async () => {
     const data = await fetchNowPlaying();
     setMovieData(data);
@@ -64,7 +65,8 @@ export default function Banner() {
           </CloseBtnWrapper>
           <IframeWrapper>
             <Container>
-              <Iframe className="bannerIframe"
+              <Iframe
+                className="bannerIframe"
                 src={`https://www.youtube.com/embed/${movieData.videos.results[0].key}?autoplay=1&enablejsapi=1&mute=1&loop=1&playlist=${movieData.videos.results[0].key}`}
                 title="YouTube video player"
                 frameborder="0"
@@ -78,9 +80,13 @@ export default function Banner() {
         <BannerWrapper>
           <BannerBox
             style={
-              movieData.backdrop_path ? {
-                background: `url(https://image.tmdb.org/t/p/original/${movieData.backdrop_path}) no-repeat top center / cover`,
-              } : {backgroundColor:"#bdbdbd"}
+              movieData.backdrop_path
+                ? {
+                    background: `url(https://image.tmdb.org/t/p/${
+                      isMedium ? "w780" : "original"
+                    }${movieData.backdrop_path}) no-repeat top center / cover`,
+                  }
+                : { backgroundColor: "#bdbdbd" }
             }
           >
             {isMobile ? (
@@ -96,37 +102,38 @@ export default function Banner() {
                 </MobileInfoBtn>
               </>
             ) : (
-              movieData.title&&
-              <BannerContents>
-                <BannerBackdrop>
-                  <Title>
-                    {movieData.title ||
-                      movieData.name ||
-                      movieData.original_name}
-                  </Title>
-                  <BannerBtns>
-                    <BannerBtn
-                      type="button"
-                      className="play"
-                      onClick={onClickPlay}
-                    >
-                      재생
-                    </BannerBtn>
-                    <BannerBtn
-                      type="button"
-                      className="info"
-                      onClick={onClickMovieInfo}
-                    >
-                      상세정보
-                    </BannerBtn>
-                  </BannerBtns>
-                  <BannerDesc>
-                    {movieData.overview
-                      ? movieData.overview
-                      : "영화에 대한 설명이 없습니다."}
-                  </BannerDesc>
-                </BannerBackdrop>
-              </BannerContents>
+              movieData.title && (
+                <BannerContents>
+                  <BannerBackdrop>
+                    <Title>
+                      {movieData.title ||
+                        movieData.name ||
+                        movieData.original_name}
+                    </Title>
+                    <BannerBtns>
+                      <BannerBtn
+                        type="button"
+                        className="play"
+                        onClick={onClickPlay}
+                      >
+                        재생
+                      </BannerBtn>
+                      <BannerBtn
+                        type="button"
+                        className="info"
+                        onClick={onClickMovieInfo}
+                      >
+                        상세정보
+                      </BannerBtn>
+                    </BannerBtns>
+                    <BannerDesc>
+                      {movieData.overview
+                        ? movieData.overview
+                        : "영화에 대한 설명이 없습니다."}
+                    </BannerDesc>
+                  </BannerBackdrop>
+                </BannerContents>
+              )
             )}
           </BannerBox>
           <BannerFadeBottom></BannerFadeBottom>

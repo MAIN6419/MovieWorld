@@ -34,6 +34,7 @@ export const MoiveItem = styled.div`
 `;
 
 export const SwiperContainer = styled(Swiper)`
+  min-height: 208px;
   &.swiper .swiper-pagination-bullet {
     background: gray !important;
     opacity: 1 !important;
