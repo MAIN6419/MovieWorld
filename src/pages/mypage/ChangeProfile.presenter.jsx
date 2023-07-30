@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ChangeImgBtn,
   Dim,
@@ -18,10 +18,14 @@ import {
   Title,
 } from "./changeProfile.style";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
+import { optKeyboardFocus } from "../../libray/optKeyBoard";
 
 export default function ChangeProfileUI({
   onClickCancel,
   imgInputRef,
+  imgBtnRef,
+  submitBtnRef,
+  cancelBtnRef,
   onChangeImg,
   previewImg,
   onClickChangeImg,
@@ -38,7 +42,13 @@ export default function ChangeProfileUI({
       <Dim onClick={onClickCancel}>
         <span>dim</span>
       </Dim>
-      <ModalCard>
+      <ModalCard
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            onClickCancel();
+          }
+        }}
+      >
         <Title>프로필 수정</Title>
         <ProfileForm>
           <ProfileImgWrapper>
@@ -61,7 +71,14 @@ export default function ChangeProfileUI({
               }
               alt="프로필 이미지"
             />
-            <ChangeImgBtn type="button" onClick={onClickChangeImg}>
+            <ChangeImgBtn
+              type="button"
+              onClick={onClickChangeImg}
+              ref={imgBtnRef}
+              onKeyDown={(e) => {
+                optKeyboardFocus(e, cancelBtnRef.current);
+              }}
+            >
               이미지 변경
             </ChangeImgBtn>
           </ProfileImgWrapper>
@@ -92,10 +109,21 @@ export default function ChangeProfileUI({
           </DisplayNameWrapper>
         </ProfileForm>
         <ProfileEditBtns>
-          <ProfileEditBtn type="button" onClick={onClickSubmit}>
+          <ProfileEditBtn
+            type="button"
+            onClick={onClickSubmit}
+            ref={submitBtnRef}
+          >
             확인
           </ProfileEditBtn>
-          <ProfileEditBtn type="button" onClick={onClickCancel}>
+          <ProfileEditBtn
+            type="button"
+            onClick={onClickCancel}
+            ref={cancelBtnRef}
+            onKeyDown={(e) => {
+              optKeyboardFocus(e, submitBtnRef.current, imgBtnRef.current);
+            }}
+          >
             취소
           </ProfileEditBtn>
         </ProfileEditBtns>

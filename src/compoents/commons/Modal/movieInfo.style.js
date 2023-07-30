@@ -207,6 +207,10 @@ export const MoviePlayBtn = styled.button`
     background: url("assets/webp/icon-play.webp") no-repeat center left 5px/ 20px
       #fff;
   }
+  :focus {
+    outline: none;
+    box-shadow: 0px 0px 1px 3px #e50914;
+  }
 `;
 
 export const MovieLikeBtn = styled.button`
@@ -215,13 +219,20 @@ export const MovieLikeBtn = styled.button`
   transition: all 0.2s;
   background: ${(props) =>
     props.like
-      ? "url(assets/icon-like.svg) no-repeat center / cover"
-      : "url(assets/icon-unlike.svg) no-repeat center / cover"};
-  body.webp & {
-    background: ${(props) =>
-      props.like
-        ? "url(assets/webp/icon-like.webp) no-repeat center / cover"
-        : "url(assets/webp/icon-unlike.webp) no-repeat center / cover"};
+      ? `url(${
+          document.body.classList.contains("webp")
+            ? "assets/webp/icon-like.webp"
+            : "assets/icon-like.svg"
+        }) no-repeat center / cover`
+      : `url(${
+          document.body.classList.contains("webp")
+            ? "assets/webp/icon-unlike.webp"
+            : "assets/icon-unlike.svg"
+        }) no-repeat center / cover`};
+
+:focus{
+    outline: none;
+    box-shadow: 0px 0px 1px 2px #e50914;
   }
 `;
 
@@ -235,6 +246,10 @@ export const CloseBtn = styled.button`
   background: url("assets/icon-close.svg") no-repeat center / 22px;
   body.webp & {
     background: url("assets/webp/icon-close.webp") no-repeat center / 22px;
+  }
+  :focus{
+    outline: none;
+    box-shadow: 0px 0px 1px 2px #e50914;
   }
 `;
 

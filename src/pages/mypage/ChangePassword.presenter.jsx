@@ -14,7 +14,7 @@ import {
   InputDescList,
 } from "./changePassword.style";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-
+import { optKeyboardFocus } from "../../libray/optKeyBoard";
 
 export default function ChangePasswordUI({
   onClickcancel,
@@ -26,13 +26,22 @@ export default function ChangePasswordUI({
   newPwValid,
   onChangePasswordChk,
   newPwChkValid,
+  currentPwRef,
+  submitBtnRef,
+  cancelBtnRef,
 }) {
   return (
     <ModalWrapper>
       <Dim onClick={onClickcancel}>
         <span className="a11y-hidden">dim</span>
       </Dim>
-      <ModalCard>
+      <ModalCard
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            onClickcancel();
+          }
+        }}
+      >
         <Title>비밀번호 변경</Title>
         <PasswordForm onSubmit={onClickSubmit}>
           <PasswordInputWrapper>
@@ -44,6 +53,10 @@ export default function ChangePasswordUI({
               type="password"
               onChange={onChangeCurrentPW}
               maxLength={16}
+              ref={currentPwRef}
+              onKeyDown={(e) => {
+                optKeyboardFocus(e, cancelBtnRef.current);
+              }}
             />
             {currentPwValid.errorMsg && (
               <ErrorMsg
@@ -99,8 +112,17 @@ export default function ChangePasswordUI({
             </InputDesc>
           </InputDescList>
           <PasswordChangeBtns>
-            <PasswordChangeBtn type="submit">확인</PasswordChangeBtn>
-            <PasswordChangeBtn type="button" onClick={onClickcancel}>
+            <PasswordChangeBtn type="submit" ref={submitBtnRef}>
+              확인
+            </PasswordChangeBtn>
+            <PasswordChangeBtn
+              type="button"
+              onClick={onClickcancel}
+              ref={cancelBtnRef}
+              onKeyDown={(e) => {
+                optKeyboardFocus(e, submitBtnRef.current, currentPwRef.current);
+              }}
+            >
               취소
             </PasswordChangeBtn>
           </PasswordChangeBtns>

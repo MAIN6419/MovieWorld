@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   CloseBtn,
   ModalCard,
@@ -25,6 +25,7 @@ import {
 } from "./movieInfo.style";
 import Review from "../review/Review.container";
 import { useMediaQuery } from "react-responsive";
+import { optKeyboardFocus } from "../../../libray/optKeyBoard";
 
 export default function MovieInfoUI({
   modalRef,
@@ -34,13 +35,32 @@ export default function MovieInfoUI({
   onClickClose,
   onClickPlay,
   onClickLike,
+  filterRef,
 }) {
   const isMedium = useMediaQuery({ query: "(max-width: 781px)" });
+  const playRef = useRef(null);
+  const closeBtnRef = useRef();
+  useEffect(() => {
+    console.log(modalRef.current);
+    modalRef.current.focus();
+  }, [modalRef]);
   return (
     <ModalWrapper>
       <ModalTitle className="a11y-hidden">영화정보</ModalTitle>
       <ModalDim onClick={onClickClose}></ModalDim>
-      <ModalCard ref={modalRef}>
+      <ModalCard
+        className="modalCard"
+        ref={modalRef}
+        tabIndex="0"
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            onClickClose();
+          }
+          if (e.target.classList.contains("modalCard")) {
+            optKeyboardFocus(e, closeBtnRef.current);
+          }
+        }}
+      >
         <MovieImgWrapper>
           {isPlay ? (
             <>
@@ -58,7 +78,9 @@ export default function MovieInfoUI({
             <MovieImg
               style={
                 videoData.backdrop_path && {
-                  background: `url(https://image.tmdb.org/t/p/${isMedium? "w780": "w1280"}/${videoData.backdrop_path}) no-repeat top center / cover`,
+                  background: `url(https://image.tmdb.org/t/p/${
+                    isMedium ? "w780" : "w1280"
+                  }/${videoData.backdrop_path}) no-repeat top center / cover`,
                 }
               }
             ></MovieImg>
@@ -93,7 +115,15 @@ export default function MovieInfoUI({
             {parseFloat(videoData.vote_average).toFixed(2)}
           </MovieRating>
           <MovieBtns>
-            <MoviePlayBtn onClick={onClickPlay}>재생</MoviePlayBtn>
+            <MoviePlayBtn
+              onClick={onClickPlay}
+              ref={playRef}
+              onKeyDown={(e) => {
+                optKeyboardFocus(e, closeBtnRef.current);
+              }}
+            >
+              재생
+            </MoviePlayBtn>
             <MovieLikeBtn
               type="button"
               onClick={onClickLike}
@@ -108,9 +138,15 @@ export default function MovieInfoUI({
           </MovieDesc>
         </MovieContetns>
 
-        <Review movieData={videoData} />
+        <Review movieData={videoData} filterRef={filterRef} />
 
-        <CloseBtn onClick={onClickClose}>
+        <CloseBtn
+          onClick={onClickClose}
+          ref={closeBtnRef}
+          onKeyDown={(e) => {
+            optKeyboardFocus(e, filterRef.current, playRef.current)
+          }}
+        >
           <span className="a11y-hidden">닫기</span>
         </CloseBtn>
       </ModalCard>

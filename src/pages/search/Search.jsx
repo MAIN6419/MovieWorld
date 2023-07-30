@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   SearchMovieImgWrapper,
   SearchMovieItem,
@@ -18,8 +18,10 @@ import TopButton from "../../compoents/commons/topButton/TopButton";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import Blank from "../../compoents/commons/blank/Blank";
 import { resolveWebp } from "../../libray/webpSupport";
+import { WebpContext } from "../../context/webpContext";
 
 export default function Search() {
+  const { webpSupprot } = useContext(WebpContext);
   const [keyWord, setKeyword] = useState("");
   const [movieData, setMovieData] = useState([]);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
@@ -105,10 +107,11 @@ export default function Search() {
                 return (
                   // 포스터가 있는 영화 데이터만 받아옴
                   data.poster_path && (
-                    <SearchMovieItem key={data.id}>
+                    <SearchMovieItem key={data.id} tabIndex="0">
                       <SearchMovieImgWrapper>
                         <ProgressiveImg
                           placeholderSrc={resolveWebp(
+                            webpSupprot,
                             "assets/webp/placeholderImg.webp",
                             "svg"
                           )}

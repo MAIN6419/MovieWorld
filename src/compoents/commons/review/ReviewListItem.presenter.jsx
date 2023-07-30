@@ -36,7 +36,7 @@ export default function ReviewListItemUI({
   onClickReport,
   userData,
   webpSupport,
-  resolveWebp
+  resolveWebp,
 }) {
   return (
     <ReviewItem>

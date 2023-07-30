@@ -146,7 +146,7 @@ export default function MypageUI({
                   {data.map((item, idx) => {
                     return (
                       <MovieItem key={item.id + idx}>
-                        <MovieImgWrapper>
+                        <MovieImgWrapper tabIndex="0">
                           <ProgressiveImg
                             placeholderSrc={
                               document.body.className === "webp"

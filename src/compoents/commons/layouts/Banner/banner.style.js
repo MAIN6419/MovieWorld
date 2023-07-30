@@ -72,7 +72,6 @@ export const BannerBtn = styled.button`
   justify-content: start;
   align-items: center;
   cursor: pointer;
-  outline: none;
   border: none;
   font-size: 16px;
   font-weight: 500;

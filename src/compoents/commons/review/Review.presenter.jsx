@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Blank from "../blank/Blank";
 import ReviewListItem from "./ReviewListItem.container";
 import {
@@ -26,6 +26,7 @@ import {
   ToggleWrapper,
   ReviewCheckList,
 } from "./review.style";
+import { optKeyboardFocus } from "../../../libray/optKeyBoard";
 export default function ReviewUI({
   rating,
   setRating,
@@ -40,6 +41,7 @@ export default function ReviewUI({
   setShowSpoilerData,
   selectValue,
   isOpenSelect,
+  setIsOpenSelect,
   onClickOpction,
   reviewData,
   setReviewData,
@@ -47,7 +49,12 @@ export default function ReviewUI({
   userData,
   setUserData,
   infiniteScrollRef,
+  filterRef,
 }) {
+  const newestFilterRef = useRef(null);
+  const oldestFilterRef = useRef(null);
+  const ratingFilterRef = useRef(null);
+
   return (
     <Wrapper>
       <Title>리뷰</Title>
@@ -66,6 +73,7 @@ export default function ReviewUI({
             type="checkbox"
             id="toggle"
             className="a11y-hidden"
+            tabIndex="-1"
             onClick={() => setSpoiler(!spoiler)}
           />
           <span>스포일러 체크</span>
@@ -73,6 +81,10 @@ export default function ReviewUI({
             htmlFor="toggle"
             className="toggleSwitch"
             toggle={spoiler}
+            tabIndex="0"
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) setSpoiler(!spoiler);
+            }}
           >
             <ToggleButton
               className="toggleButton"
@@ -103,6 +115,7 @@ export default function ReviewUI({
             type="checkbox"
             id="toggle-showSpoiler"
             className="a11y-hidden"
+            tabIndex="-1"
             onClick={() => setShowSpoilerData(!showSpoilerData)}
           />
           <span>스포일러 리뷰 포함</span>
@@ -110,6 +123,10 @@ export default function ReviewUI({
             htmlFor="toggle-showSpoiler"
             className="toggleSwitch"
             toggle={showSpoilerData}
+            tabIndex="0"
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) setShowSpoilerData(!showSpoilerData);
+            }}
           >
             <ToggleButton
               className="toggleButton"
@@ -117,23 +134,69 @@ export default function ReviewUI({
             ></ToggleButton>
           </ToggleSwitch>
         </ToggleWrapper>
-        <Select type="button" onClick={onClickSelect} active={isOpenSelect}>
+        <Select
+          type="button"
+          onClick={onClickSelect}
+          active={isOpenSelect}
+          ref={filterRef}
+          onKeyDown={(e) => {
+            if (e.keyCode === 27) {
+              e.stopPropagation();
+              setIsOpenSelect(false);
+            } 
+          }}
+        >
           {selectValue}
         </Select>
         {isOpenSelect && (
           <OpectionList>
             <Opection>
-              <OpectionBtn type="button" id="new" onClick={onClickOpction}>
+              <OpectionBtn
+                type="button"
+                id="new"
+                onClick={onClickOpction}
+                ref={newestFilterRef}
+                onKeyDown={(e) => {
+                  if (e.keyCode === 27) {
+                    e.stopPropagation();
+                    setIsOpenSelect(false);
+                  } 
+                  optKeyboardFocus(e, ratingFilterRef.current)
+                }}
+              >
                 최신순
               </OpectionBtn>
             </Opection>
             <Opection>
-              <OpectionBtn type="button" id="old" onClick={onClickOpction}>
+              <OpectionBtn
+                type="button"
+                id="old"
+                onClick={onClickOpction}
+                ref={oldestFilterRef}
+                onKeyDown={(e) => {
+                  if (e.keyCode === 27) {
+                    e.stopPropagation();
+                    setIsOpenSelect(false);
+                  }
+                }}
+              >
                 등록순
               </OpectionBtn>
             </Opection>
             <Opection>
-              <OpectionBtn type="button" id="rating" onClick={onClickOpction}>
+              <OpectionBtn
+                type="button"
+                id="rating"
+                onClick={onClickOpction}
+                onKeyDown={(e) => {
+                  if (e.keyCode === 27) {
+                    e.stopPropagation();
+                    setIsOpenSelect(false);
+                  } 
+                  optKeyboardFocus(e, oldestFilterRef.current, newestFilterRef.current);
+                }}
+                ref={ratingFilterRef}
+              >
                 평점순
               </OpectionBtn>
             </Opection>

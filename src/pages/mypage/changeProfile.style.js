@@ -69,6 +69,10 @@ export const ChangeImgBtn = styled.button`
   padding: 5px;
   width: 120px;
   font-size: 12px;
+  :focus{
+    outline: none;
+    box-shadow: 0px 0px 1px 1px #fff;
+  }
 `;
 
 export const DisplayNameWrapper = styled.div`

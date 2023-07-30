@@ -20,6 +20,9 @@ export default function ChangeProfile({
     query: "(max-width:486px)",
   });
   const imgInputRef = useRef(null);
+  const imgBtnRef = useRef(null);
+  const submitBtnRef = useRef(null);
+  const cancelBtnRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(user.photoURL);
   const [uploadImg, setUploadImg] = useState("");
   const [displayNameValue, displayNameValid, onChnageDisplayName] =
@@ -96,10 +99,16 @@ export default function ChangeProfile({
     }
   }, []);
 
+  useEffect(()=>{
+    imgBtnRef.current.focus();
+  },[])
   return (
     <ChangeProfileUI
       onClickCancel={onClickCancel}
       imgInputRef={imgInputRef}
+      imgBtnRef={imgBtnRef}
+      submitBtnRef={submitBtnRef}
+      cancelBtnRef={cancelBtnRef}
       onChangeImg={onChangeImg}
       previewImg={previewImg}
       onClickChangeImg={onClickChangeImg}

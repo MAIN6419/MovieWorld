@@ -13,13 +13,15 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
   const [isPlay, setIsPlay] = useState(false);
   const [videoData, setVideoData] = useState({});
   const [like, setLike] = useState(false);
-  const modalRef = useRef();
+  const modalRef = useRef(null);
+  const filterRef = useRef(null);
 
   const fetchLike = async () => {
     if (user) {
       const data = await getUser();
       const isLike =
         data && data.likeList.find((likeId) => likeId === videoData.id);
+        console.log(isLike)
       setLike(!!isLike);
     }
   };
@@ -71,7 +73,9 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
         setLike(true);
       }
     } else {
-      const res = removeLike(videoData);
+      console.log("a")
+      const res = await removeLike(videoData);
+      console.log(res)
       if (res) {
         setLike(false);
       }
@@ -113,6 +117,7 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
           onClickClose={onClickClose}
           onClickPlay={onClickPlay}
           onClickLike={onClickLike}
+          filterRef={filterRef}
         />
       )}
     </>

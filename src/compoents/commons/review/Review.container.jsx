@@ -12,7 +12,7 @@ import { useInView } from "react-intersection-observer";
 import { UserContext } from "../../../context/userContext";
 import ReviewUI from "./Review.presenter";
 
-export default function Review({ movieData }) {
+export default function Review({ movieData, filterRef }) {
   const { user } = useContext(UserContext);
   const [reviewValue, setReivewValue] = useState("");
   const [rating, setRating] = useState(0);
@@ -170,6 +170,7 @@ export default function Review({ movieData }) {
       setShowSpoilerData={setShowSpoilerData}
       selectValue={selectValue}
       isOpenSelect={isOpenSelect}
+      setIsOpenSelect={setIsOpenSelect}
       onClickOpction={onClickOpction}
       reviewData={reviewData}
       setReviewData={setReviewData}
@@ -177,6 +178,7 @@ export default function Review({ movieData }) {
       userData={userData}
       setUserData={setUserData}
       infiniteScrollRef={ref}
+      filterRef={filterRef}
     />
   );
 }

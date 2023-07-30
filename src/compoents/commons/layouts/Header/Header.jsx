@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   HeaderBar,
   HeaderLink,
@@ -7,10 +7,6 @@ import {
   HeaderLogoLink,
   HeaderRight,
   HeaderTitle,
-  UserMenu,
-  UserMenuBtn,
-  UserMenuBtnIcon,
-  UserMenuLi,
   UserMenuItemBtn,
   UserMenuItemLink,
   UserNickname,
@@ -18,17 +14,24 @@ import {
   UserProfileImg,
   HeaderSearchLink,
   HeaderSearchIcon,
+  UserMenuOpection,
+  UserMenuOpectionList,
+  UserMenuSelect,
+  UserMenuSelectIcon,
 } from "./header.style";
 import { UserContext } from "../../../../context/userContext";
 import { logout } from "../../../../firebase/loginAPI";
 import { useLocation } from "react-router-dom";
 import { resolveWebp } from "../../../../libray/webpSupport";
 import { WebpContext } from "../../../../context/webpContext";
+import { optKeyboardFocus } from "../../../../libray/optKeyBoard";
 
 export default function Header() {
   const { user } = useContext(UserContext);
   const { webpSupport } = useContext(WebpContext);
   const pathname = useLocation().pathname;
+  const menuItemLinkRef = useRef(null);
+  const menuItemBtnRef = useRef(null);
   const [isUserMenu, setIsUserMenu] = useState(false);
 
   const onClickUserMenu = () => {
@@ -78,32 +81,18 @@ export default function Header() {
         )}
         <HeaderLinks>
           {user && user.displayName ? (
-            <UserNicknameWrapper>
+            <UserNicknameWrapper
+              tabIndex="0"
+              onClick={onClickUserMenu}
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  onClickUserMenu();
+                }
+              }}
+            >
               <UserNickname>{user.displayName} 님</UserNickname>
-              {isUserMenu && (
-                <UserMenu>
-                  <UserMenuLi>
-                    <UserMenuItemLink
-                      to="/mypage"
-                      onClick={() => setIsUserMenu(false)}
-                    >
-                      내 정보
-                    </UserMenuItemLink>
-                  </UserMenuLi>
-                  <UserMenuLi>
-                    <UserMenuItemBtn
-                      onClick={() => {
-                        setIsUserMenu(false);
-                        logout();
-                      }}
-                    >
-                      로그아웃
-                    </UserMenuItemBtn>
-                  </UserMenuLi>
-                </UserMenu>
-              )}
-              <UserMenuBtn onClick={onClickUserMenu}>
-                <UserMenuBtnIcon
+              <UserMenuSelect tabIndex="-1">
+                <UserMenuSelectIcon
                   src={resolveWebp(
                     webpSupport,
                     "assets/webp/icon-downArrow.webp",
@@ -112,7 +101,46 @@ export default function Header() {
                   active={isUserMenu}
                   alt="유저 메뉴 버튼"
                 />
-              </UserMenuBtn>
+              </UserMenuSelect>
+              {isUserMenu && (
+                <UserMenuOpectionList>
+                  <UserMenuOpection>
+                    <UserMenuItemLink
+                      ref={menuItemLinkRef}
+                      to="/mypage"
+                      onClick={() => setIsUserMenu(false)}
+                      onKeyDown={(e) => {
+                        if (e.keyCode === 27) {
+                          setIsUserMenu(false);
+                        } 
+                        optKeyboardFocus(e, menuItemBtnRef.current, menuItemBtnRef.current);
+                      }}
+                    >
+                      내 정보
+                    </UserMenuItemLink>
+                  </UserMenuOpection>
+                  <UserMenuOpection>
+                    <UserMenuItemBtn
+                      onClick={() => {
+                        setIsUserMenu(false);
+                        logout();
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.keyCode === 27) {
+                          setIsUserMenu(false);
+                        } else if (e.keyCode === 13) {
+                          setIsUserMenu(false);
+                          logout();
+                        } 
+                        optKeyboardFocus(e, menuItemLinkRef.current, menuItemLinkRef.current)
+                      }}
+                      ref={menuItemBtnRef}
+                    >
+                      로그아웃
+                    </UserMenuItemBtn>
+                  </UserMenuOpection>
+                </UserMenuOpectionList>
+              )}
             </UserNicknameWrapper>
           ) : (
             <>

@@ -61,6 +61,20 @@ export const ToggleSwitch = styled.label`
   cursor: pointer;
   position: relative;
   transition: all 0.3s;
+  :focus {
+    outline: none;
+    &::after {
+      position: absolute;
+      top:50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      content: "";
+      display: block;
+      width: 56px;
+      height: 32px;
+      box-shadow: 0px 0px 1px 2px #e50914;
+    }
+  }
 `;
 
 /* 토글 버튼 */
@@ -130,6 +144,10 @@ export const TextAreaBtn = styled.button`
   @media screen and (max-width: 486px) {
     font-size: 14px;
   }
+  :focus {
+    outline: none;
+    box-shadow: 0px 0px 1px 2px #e50914;
+  }
 `;
 
 export const ReviewList = styled.ul`
@@ -178,8 +196,12 @@ export const Select = styled.button`
     transition: all 0.5s;
   }
   body.webp &::after {
-    background: url("assets/webp/icon-downArrow.webp") no-repeat center right 0px /
-      15px;
+    background: url("assets/webp/icon-downArrow.webp") no-repeat center right
+      0px / 15px;
+  }
+  :focus {
+    outline: none;
+    box-shadow: 0px 0px 1px 2px #e50914;
   }
 `;
 
@@ -232,5 +254,9 @@ export const OpectionBtn = styled.button`
   font-size: 14px;
   :hover {
     background-color: ${isMobile ? "" : "rgba(74,74,74)"};
+  }
+  :focus {
+    outline: none;
+    background-color: rgba(74, 74, 74);
   }
 `;

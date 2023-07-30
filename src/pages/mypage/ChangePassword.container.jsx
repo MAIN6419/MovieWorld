@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { useValidationInput } from "../../hook/useValidationInput";
 
@@ -12,6 +12,9 @@ export default function ChangePassword({ setIsChangePassword }) {
   const isMoblie = useMediaQuery({
     query: "(max-width:486px)",
   });
+  const currentPwRef = useRef(null);
+  const submitBtnRef = useRef(null);
+  const cancelBtnRef = useRef(null);
   const [currentPw, currentPwValid, onChangeCurrentPW] = useValidationInput(
     "",
     "password"
@@ -57,6 +60,10 @@ export default function ChangePassword({ setIsChangePassword }) {
     }
   }, []);
 
+  useEffect(() => {
+    currentPwRef.current.focus();
+  }, []);
+
   return (
     <ChangePasswordUI
       onClickcancel={onClickcancel}
@@ -68,6 +75,9 @@ export default function ChangePassword({ setIsChangePassword }) {
       newPwValid={newPwValid}
       onChangePasswordChk={onChangePasswordChk}
       newPwChkValid={newPwChkValid}
+      currentPwRef={currentPwRef}
+      submitBtnRef={submitBtnRef}
+      cancelBtnRef={cancelBtnRef}
     />
   );
 }

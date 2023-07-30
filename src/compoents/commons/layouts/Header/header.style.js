@@ -83,9 +83,12 @@ export const UserNicknameWrapper = styled.div`
 export const UserNickname = styled.strong`
   color: #fff;
   font-weight: 500;
+  cursor: pointer;
   @media screen and (max-width: 486px) {
     font-size: 14px;
   }
+  color: transparent;
+  text-shadow: 0 0 0 #fff;
 `;
 
 export const UserProfileImg = styled.img`
@@ -101,13 +104,13 @@ export const UserProfileImg = styled.img`
   }
 `;
 
-export const UserMenuBtn = styled.button`
+export const UserMenuSelect = styled.button`
   width: 20px;
   height: 20px;
   background: none;
 `;
 
-export const UserMenuBtnIcon = styled.img`
+export const UserMenuSelectIcon = styled.img`
   width: 20px;
   height: 20px;
   transform: ${(props) => (props.active ? "rotate(-180deg)" : "rotate(0deg)")};
@@ -119,7 +122,7 @@ export const UserMenuBtnIcon = styled.img`
   }
 `;
 
-export const UserMenu = styled.ul`
+export const UserMenuOpectionList = styled.ul`
   position: absolute;
   top: 30px;
   width: 80px;
@@ -129,15 +132,16 @@ export const UserMenu = styled.ul`
   overflow: hidden;
   animation: open 0.5s;
   @keyframes open {
-    from{
+    from {
       height: 0;
-    } to{
+    }
+    to {
       height: 74px;
     }
   }
 `;
 
-export const UserMenuLi = styled.li`
+export const UserMenuOpection = styled.li`
   transition: all 0.3s;
   :not(:last-child) {
     border-bottom: 2px solid #292a2b;
@@ -155,6 +159,10 @@ export const UserMenuItemLink = styled(Link)`
   width: 100%;
   font-weight: 400;
   cursor: pointer;
+  :focus {
+    outline: none;
+    background-color: rgba(74, 74, 74);
+  }
 `;
 
 export const UserMenuItemBtn = styled.button`
@@ -168,4 +176,8 @@ export const UserMenuItemBtn = styled.button`
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;
+  :focus {
+    outline: none;
+    background-color: rgba(74, 74, 74);
+  }
 `;

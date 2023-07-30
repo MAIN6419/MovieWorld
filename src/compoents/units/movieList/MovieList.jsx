@@ -78,7 +78,10 @@ export default function MovieList({ title, fetchMoive }) {
           <MovieItems>
             {movieData.map((data) => {
               return (
-                <SwiperSlide key={data.id}>
+                <SwiperSlide
+                  key={data.id}
+                  onKeyDown={(e) => {if(e.keyCode ===13)onClickMovieInfo(data)}}
+                >
                   <MoiveItem>
                     <ProgressiveImg
                       placeholderSrc={resolveWebp(
@@ -93,10 +96,11 @@ export default function MovieList({ title, fetchMoive }) {
                         objectFit: "contain",
                         width: "100%",
                         height: "100%",
-                        transition: "transform 450ms",
+                        transition: "transform 0.45s",
                         margin: "25px 0 25px 5px",
                         borderRadius: "5px",
                       }}
+                      tabIndex="0"
                       alt="영화 포스터"
                       onClick={() => {
                         onClickMovieInfo(data);
