@@ -36,6 +36,7 @@ export default function MovieInfoUI({
   onClickPlay,
   onClickLike,
   filterRef,
+  iframeRef,
 }) {
   const isMedium = useMediaQuery({ query: "(max-width: 781px)" });
   const playRef = useRef(null);
@@ -66,6 +67,7 @@ export default function MovieInfoUI({
             <>
               <IframeWrapper>
                 <Iframe
+                  ref={iframeRef}
                   src={`https://www.youtube.com/embed/${videoData.videos.results[0].key}?autoplay=1&mute=1&loop=1&playlist=${videoData.videos.results[0].key}`}
                   title="YouTube video player"
                   frameborder="0"
@@ -119,7 +121,9 @@ export default function MovieInfoUI({
               onClick={onClickPlay}
               ref={playRef}
               onKeyDown={(e) => {
-                optKeyboardFocus(e, closeBtnRef.current);
+                isPlay
+                  ? optKeyboardFocus(e, iframeRef.current)
+                  : optKeyboardFocus(e, closeBtnRef.current);
               }}
             >
               재생
@@ -144,7 +148,9 @@ export default function MovieInfoUI({
           onClick={onClickClose}
           ref={closeBtnRef}
           onKeyDown={(e) => {
-            optKeyboardFocus(e, filterRef.current, playRef.current)
+            isPlay
+              ? optKeyboardFocus(e, filterRef.current, iframeRef.current)
+              : optKeyboardFocus(e, filterRef.current, playRef.current);
           }}
         >
           <span className="a11y-hidden">닫기</span>
