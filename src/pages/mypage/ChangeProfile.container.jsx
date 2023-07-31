@@ -8,6 +8,7 @@ import { history } from "../../history/history";
 import ChangeProfileUI from "./ChangeProfile.presenter";
 import { WebpContext } from "../../context/webpContext";
 import { resolveWebp } from "../../libray/webpSupport";
+import { imgCompression } from "../../libray/imagCompression";
 
 export default function ChangeProfile({
   user,
@@ -60,12 +61,13 @@ export default function ChangeProfile({
     return true;
   };
 
-  const onChangeImg = (e) => {
+  const onChangeImg = async (e) => {
     const file = e.target.files[0];
     const isValid = imgValidation(file);
     if (!isValid) return;
-    setPreviewImg(URL.createObjectURL(file));
-    setUploadImg(file);
+    const {compressedFile, preview} = await imgCompression(file);
+    setPreviewImg(preview);
+    setUploadImg(compressedFile);
   };
 
   const onClickCancel = () => {
