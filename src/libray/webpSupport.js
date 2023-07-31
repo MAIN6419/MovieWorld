@@ -9,7 +9,7 @@ export function detectWebpSupport() {
       document.body.classList.add("webp");
     }
     else {
-      document.body.classList.add("no-webp");
+      document.body.classList.remove("webp");
     }
   };
   image.onerror = callback;
