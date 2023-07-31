@@ -190,7 +190,6 @@ export const MovieBtns = styled.div`
 export const MoviePlayBtn = styled.button`
   width: 80px;
   cursor: pointer;
-  outline: none;
   border: none;
   font-size: 16px;
   font-weight: 500;
@@ -208,8 +207,7 @@ export const MoviePlayBtn = styled.button`
       #fff;
   }
   :focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 3px #e50914;
+    outline-color: #e50914;
   }
 `;
 
@@ -229,11 +227,6 @@ export const MovieLikeBtn = styled.button`
             ? "assets/webp/icon-unlike.webp"
             : "assets/icon-unlike.svg"
         }) no-repeat center / cover`};
-
-:focus{
-    outline: none;
-    box-shadow: 0px 0px 1px 2px #e50914;
-  }
 `;
 
 export const CloseBtn = styled.button`
@@ -246,10 +239,6 @@ export const CloseBtn = styled.button`
   background: url("assets/icon-close.svg") no-repeat center / 22px;
   body.webp & {
     background: url("assets/webp/icon-close.webp") no-repeat center / 22px;
-  }
-  :focus{
-    outline: none;
-    box-shadow: 0px 0px 1px 2px #e50914;
   }
 `;
 

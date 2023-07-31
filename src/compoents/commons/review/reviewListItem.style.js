@@ -94,10 +94,6 @@ export const ReviewItemBtn = styled.button`
   background: none;
   color: #bdbdbd;
   font-size: 12px;
-  :focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 2px #e50914;
-  }
 `;
 
 export const EditTextAreaForm = styled.form`

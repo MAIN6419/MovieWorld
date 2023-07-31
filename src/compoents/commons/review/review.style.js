@@ -62,18 +62,7 @@ export const ToggleSwitch = styled.label`
   position: relative;
   transition: all 0.3s;
   :focus {
-    outline: none;
-    &::after {
-      position: absolute;
-      top:50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      content: "";
-      display: block;
-      width: 56px;
-      height: 32px;
-      box-shadow: 0px 0px 1px 2px #e50914;
-    }
+    outline-color: #e50914;
   }
 `;
 
@@ -145,8 +134,7 @@ export const TextAreaBtn = styled.button`
     font-size: 14px;
   }
   :focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 2px #e50914;
+    outline-color: #e50914;
   }
 `;
 
@@ -198,10 +186,6 @@ export const Select = styled.button`
   body.webp &::after {
     background: url("assets/webp/icon-downArrow.webp") no-repeat center right
       0px / 15px;
-  }
-  :focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 2px #e50914;
   }
 `;
 
