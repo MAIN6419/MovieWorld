@@ -7,12 +7,22 @@ import { UserContext } from "../../../context/userContext";
 import { history } from "../../../history/history";
 import { isMobile } from "react-device-detect";
 import MovieInfoUI from "./MovieInfo.presenter";
+import { useMediaQuery } from "react-responsive";
 
-export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
+export default function MovieInfo({
+  movieData,
+  setIsOpenMovieInfo,
+  // 좋아요를 누를 시 mypage 데이터를 수정하기 위해 추가
+  setMypageLikeData,
+}) {
   const { user } = useContext(UserContext);
   const [isPlay, setIsPlay] = useState(false);
   const [videoData, setVideoData] = useState({});
   const [like, setLike] = useState(false);
+  const isMedium = useMediaQuery({
+    query: "(max-width: 780px)and(min-width:501px)",
+  });
+  const isSmall = useMediaQuery({ query: "(max-width: 500px)" });
   const modalRef = useRef(null);
   const filterRef = useRef(null);
   const iframeRef = useRef(null);
@@ -21,13 +31,12 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
       const data = await getUser();
       const isLike =
         data && data.likeList.find((likeId) => likeId === videoData.id);
-      console.log(isLike);
       setLike(!!isLike);
     }
   };
 
   const onClickClose = () => {
-    modalRef.current.style.animation = "fadeOut 800ms";
+    modalRef.current.style.animation = "fadeOut 0.6s";
     setTimeout(() => {
       setIsOpenMovieInfo(false);
       document.body.style.overflow = "auto";
@@ -48,7 +57,7 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
       }
       setVideoData(data);
     } catch (error) {
-      // 비디오 데이터가 아예 없을 경우 기존 영화 데이터를 적용
+      // 비디오 데이터가 없을 경우 기존 영화 데이터를 적용
       setVideoData(movieData);
       console.log(error);
     }
@@ -68,16 +77,18 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
       return;
     }
     if (!like) {
-      const res = await addLike(videoData);
-      if (res) {
-        setLike(true);
+      setLike(true);
+      await addLike(videoData);
+      if (setMypageLikeData) {
+        setMypageLikeData((prev) => [...prev, videoData]);
       }
     } else {
-      console.log("a");
-      const res = await removeLike(videoData);
-      console.log(res);
-      if (res) {
-        setLike(false);
+      setLike(false);
+      removeLike(videoData);
+      if (setMypageLikeData) {
+        setMypageLikeData((prev) =>
+          prev.filter((item) => item.id !== videoData.id)
+        );
       }
     }
   };
@@ -120,11 +131,14 @@ export default function MovieInfo({ movieData, setIsOpenMovieInfo }) {
           isPlay={isPlay}
           videoData={videoData}
           like={like}
+          isMedium={isMedium}
+          isSmall={isSmall}
           onClickClose={onClickClose}
           onClickPlay={onClickPlay}
           onClickLike={onClickLike}
           filterRef={filterRef}
           iframeRef={iframeRef}
+          setMypageReivewData={setMypageLikeData}
         />
       )}
     </>

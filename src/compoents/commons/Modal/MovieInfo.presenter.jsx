@@ -23,8 +23,7 @@ import {
   MovieBtns,
   MovieGenreWrapper,
 } from "./movieInfo.style";
-import Review from "../review/Review.container";
-import { useMediaQuery } from "react-responsive";
+import Review from "../review/Review";
 import { optKeyboardFocus } from "../../../libray/optKeyBoard";
 
 export default function MovieInfoUI({
@@ -32,17 +31,18 @@ export default function MovieInfoUI({
   isPlay,
   like,
   videoData,
+  isMedium,
+  isSmall,
   onClickClose,
   onClickPlay,
   onClickLike,
   filterRef,
   iframeRef,
+  setMypageLikeData,
 }) {
-  const isMedium = useMediaQuery({ query: "(max-width: 781px)" });
   const playRef = useRef(null);
   const closeBtnRef = useRef();
   useEffect(() => {
-    console.log(modalRef.current);
     modalRef.current.focus();
   }, [modalRef]);
   return (
@@ -81,8 +81,8 @@ export default function MovieInfoUI({
               style={
                 videoData.backdrop_path && {
                   background: `url(https://image.tmdb.org/t/p/${
-                    isMedium ? "w780" : "w1280"
-                  }/${videoData.backdrop_path}) no-repeat top center / cover`,
+                    isMedium ? "w780" : isSmall ? "w500" : "w1280"
+                  }${videoData.backdrop_path}) no-repeat top center / cover`,
                 }
               }
             ></MovieImg>
@@ -142,7 +142,11 @@ export default function MovieInfoUI({
           </MovieDesc>
         </MovieContetns>
 
-        <Review movieData={videoData} filterRef={filterRef} />
+        <Review
+          movieData={videoData}
+          filterRef={filterRef}
+          setMypageLikeData={setMypageLikeData}
+        />
 
         <CloseBtn
           onClick={onClickClose}
