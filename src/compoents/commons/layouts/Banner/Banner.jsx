@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { fetchNowPlaying } from "../../../../api/movie";
 import {
   BannerBtns,
@@ -22,11 +22,15 @@ import MovieInfo from "../../Modal/MovieInfo.container";
 import { useMediaQuery } from "react-responsive";
 
 export default function Banner() {
-  const isMedium = useMediaQuery({ query: "(max-width:786px)" });
+  const isMedium = useMediaQuery({
+    query: "(max-width:786px)and(min-width:501px)",
+  });
+  const isSmall = useMediaQuery({ query: "(max-width:500px)" });
   const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
   const [movieData, setMovieData] = useState([]);
   const [isPlay, setIsPlay] = useState(false);
   const [isOpenMovieInfo, setIsOpenMovieInfo] = useState(false);
+  const iframeRef = useRef(null);
 
   const fetchData = async () => {
     const data = await fetchNowPlaying();
@@ -54,6 +58,12 @@ export default function Banner() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (isPlay && movieData.videos.results.length) {
+      iframeRef.current.focus();
+    }
+  }, [isPlay]);
+
   return (
     <>
       {isPlay && movieData.videos.results.length > 0 ? (
@@ -66,6 +76,7 @@ export default function Banner() {
           <IframeWrapper>
             <Container>
               <Iframe
+                ref={iframeRef}
                 className="bannerIframe"
                 src={`https://www.youtube.com/embed/${movieData.videos.results[0].key}?autoplay=1&enablejsapi=1&mute=1&loop=1&playlist=${movieData.videos.results[0].key}`}
                 title="YouTube video player"
@@ -83,7 +94,7 @@ export default function Banner() {
               movieData.backdrop_path
                 ? {
                     background: `url(https://image.tmdb.org/t/p/${
-                      isMedium ? "w780" : "original"
+                      isMedium ? "w780" : isSmall ? "w500" : "original"
                     }${movieData.backdrop_path}) no-repeat top center / cover`,
                   }
                 : { backgroundColor: "#bdbdbd" }
