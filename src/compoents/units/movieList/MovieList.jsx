@@ -17,15 +17,12 @@ import { SwiperSlide } from "swiper/react";
 import ProgressiveImg from "../../commons/progressiveImg/ProgressiveImg";
 import { useMovieInfo } from "../../../hook/useMovieInfo";
 import { useMediaQuery } from "react-responsive";
-import { resolveWebp } from "../../../libray/webpSupport";
-import { WebpContext } from "../../../context/webpContext";
-
 export default function MovieList({ title, fetchMoive }) {
   const isMedium = useMediaQuery({
     query: "(max-width:786px) and (min-width:500px)",
   });
   const isSmall = useMediaQuery({ query: "(max-width:500px)" });
-  const { webpSupport } = useContext(WebpContext);
+
   const [movieData, setMovieData] = useState([]);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
@@ -80,15 +77,13 @@ export default function MovieList({ title, fetchMoive }) {
               return (
                 <SwiperSlide
                   key={data.id}
-                  onKeyDown={(e) => {if(e.keyCode ===13)onClickMovieInfo(data)}}
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) onClickMovieInfo(data);
+                  }}
                 >
                   <MoiveItem>
                     <ProgressiveImg
-                      placeholderSrc={resolveWebp(
-                        webpSupport,
-                        "assets/webp/placeholderImg.webp",
-                        "svg"
-                      )}
+                      placeholderSrc={`https://image.tmdb.org/t/p/w45/${data.poster_path}`}
                       src={`https://image.tmdb.org/t/p/${
                         isMedium ? "w185" : isSmall ? "w154" : "w342"
                       }${data.poster_path}`}
