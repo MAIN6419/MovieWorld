@@ -17,6 +17,7 @@ import UserInput from "../../compoents/commons/userInput/UserInput";
 import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { login, socialLogin } from "../../firebase/loginAPI";
+import Loading from "../../compoents/commons/loading/Loading";
 
 export default function Login() {
   const [disabled, setDisabled] = useState(true);
@@ -25,13 +26,15 @@ export default function Login() {
     useValidationInput("", "email", false);
   const [passowordValue, passwordValid, onChangePassword, setPasswordValue] =
     useValidationInput("", "password");
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (emailValid.valid && passwordValid.valid) {
+      setIsLoading(true);
       await login(emailValue, passowordValue);
       setEmailValue("");
       setPasswordValue("");
+      setIsLoading(false);
     }
   };
 
@@ -115,6 +118,7 @@ export default function Login() {
           </SocialLoginWrapper>
         </LoginForm>
       </Wrapper>
+      {isLoading && <Loading />}
     </>
   );
 }
