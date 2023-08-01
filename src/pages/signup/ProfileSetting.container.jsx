@@ -5,6 +5,7 @@ import { UserContext } from "../../context/userContext";
 import ProfileSettingUI from "./ProfileSetting.presenter";
 import { resolveWebp } from "../../libray/webpSupport";
 import { WebpContext } from "../../context/webpContext";
+import { imgCompression } from "../../libray/imagCompression";
 
 export default function ProfileSetting({
   setIsLoading,
@@ -55,16 +56,19 @@ export default function ProfileSetting({
     return true;
   };
 
-  const onChangeImg = (e) => {
+  const onChangeImg = async (e) => {
     const file = e.target.files[0];
     const isValid = imgValidation(file);
     if (!isValid) return;
-    setPreviewImg(URL.createObjectURL(file));
-    setUploadImg(file);
+    const { compressedFile, preview } = await imgCompression(file);
+    setPreviewImg(preview);
+    setUploadImg(compressedFile);
   };
 
   const onClickImgReset = () => {
-    setPreviewImg(resolveWebp(webpSupport, "assets/webp/icon-defaultProfile.webp", "svg"));
+    setPreviewImg(
+      resolveWebp(webpSupport, "assets/webp/icon-defaultProfile.webp", "svg")
+    );
     setUploadImg("");
   };
 
@@ -78,8 +82,8 @@ export default function ProfileSetting({
       passwordValue,
       phoneValue.replace(/-/g, "")
     );
-    refreshUser();
     setIsLoading(false);
+    refreshUser();
   };
 
   useEffect(() => {

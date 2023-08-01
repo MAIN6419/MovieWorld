@@ -59,17 +59,15 @@ export const ProgressCheck = styled.div`
   flex-shrink: 0;
   background: ${(props) =>
       props.active
-        ? 'url("assets/icon-check-active.svg")'
+        ? document.body.classList.contains("webp")
+          ? 'url("assets/webp/icon-check-active.webp")'
+          : 'url("assets/icon-check-active.svg")'
+        : document.body.classList.contains("webp")
+        ? 'url("assets/webp/icon-check.webp")'
         : 'url("assets/icon-check.svg")'}
     no-repeat center / 20px #222;
   transition: all 0.5s;
-  body.webp & {
-    background: ${(props) =>
-        props.active
-          ? 'url("assets/webp/icon-check-active.webp")'
-          : 'url("assets/icon-check.svg")'}
-      no-repeat center / 20px #222;
-  }
+
   &.defalut {
     transition-delay: ${(props) => (props.active ? "" : "0.3s")};
   }

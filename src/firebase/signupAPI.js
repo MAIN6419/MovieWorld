@@ -1,8 +1,4 @@
-import {
-  collection,
-  doc,
-  setDoc,
-} from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -47,6 +43,12 @@ export const signup = async (displayName, file, email, password, phone) => {
       reportList: [],
       photoFileName: fileName || "",
     });
+    return {
+      uid: res.user.uid,
+      email: res.user.email,
+      displayName: res.user.displayName,
+      photoURL: res.user.photoURL || "",
+    };
   } catch (error) {
     if (error.message.includes("email-already-in-use")) {
       alert("이미 사용중인 이메일 입니다!");
