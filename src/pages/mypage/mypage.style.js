@@ -112,8 +112,8 @@ export const MovieMenuBtn = styled.button`
     border-radius: 10px;
     background-color: #e50914;
     bottom: -3px;
-    animation: fadeIn 0.5s;
-    @keyframes fadeIn {
+    animation: scaleUp 0.5s;
+    @keyframes scaleUp {
       from {
         width: 0;
       }
@@ -144,6 +144,27 @@ export const MovieImgWrapper = styled.div`
   padding-bottom: calc(3 / 4 * 100%);
   margin-bottom: 10px;
   cursor: pointer;
+`;
+
+export const RemoveBtn = styled.button`
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: url("assets/icon-close.svg") no-repeat center / 20px;
+  body.webp & {
+    background: url("assets/webp/icon-close.webp") no-repeat center / 20px;
+  }
+  @media screen and (max-width: 486px) {
+    top: 0;
+    right: 0;
+    background: url("assets/icon-close.svg") no-repeat center / 18px;
+    body.webp & {
+      background: url("assets/webp/icon-close.webp") no-repeat center / 18px;
+    }
+  }
 `;
 
 export const MovieImg = styled.img`

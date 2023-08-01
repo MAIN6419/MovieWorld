@@ -40,7 +40,7 @@ export default function ChangeProfileUI({
   return (
     <ModalWrapper>
       <Dim onClick={onClickCancel}>
-        <span>dim</span>
+        <span className="a11y-hidden">dim</span>
       </Dim>
       <ModalCard
         onKeyDown={(e) => {

@@ -65,7 +65,7 @@ export default function ChangeProfile({
     const file = e.target.files[0];
     const isValid = imgValidation(file);
     if (!isValid) return;
-    const {compressedFile, preview} = await imgCompression(file);
+    const { compressedFile, preview } = await imgCompression(file);
     setPreviewImg(preview);
     setUploadImg(compressedFile);
   };
@@ -101,9 +101,10 @@ export default function ChangeProfile({
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
+    console.log("a");
     imgBtnRef.current.focus();
-  },[])
+  }, []);
   return (
     <ChangeProfileUI
       onClickCancel={onClickCancel}
