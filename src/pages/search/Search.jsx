@@ -18,10 +18,8 @@ import TopButton from "../../compoents/commons/topButton/TopButton";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import Blank from "../../compoents/commons/blank/Blank";
 import { resolveWebp } from "../../libray/webpSupport";
-import { WebpContext } from "../../context/webpContext";
 
 export default function Search() {
-  const { webpSupprot } = useContext(WebpContext);
   const [keyWord, setKeyword] = useState("");
   const [movieData, setMovieData] = useState([]);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
@@ -110,11 +108,7 @@ export default function Search() {
                     <SearchMovieItem key={data.id} tabIndex="0">
                       <SearchMovieImgWrapper>
                         <ProgressiveImg
-                          placeholderSrc={resolveWebp(
-                            webpSupprot,
-                            "assets/webp/placeholderImg.webp",
-                            "svg"
-                          )}
+                          placeholderSrc={`https://image.tmdb.org/t/p/w45/${data.poster_path}`}
                           src={`https://image.tmdb.org/t/p/w342/${data.poster_path}`}
                           styles={{
                             position: "absolute",
