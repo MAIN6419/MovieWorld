@@ -95,6 +95,7 @@ export const UserProfileImg = styled.img`
   width: 35px;
   height: 35px;
   object-position: center;
+  object-fit: cover;
   overflow: hidden;
   border: 1px solid #bdbdbd;
   margin: 0 10px;

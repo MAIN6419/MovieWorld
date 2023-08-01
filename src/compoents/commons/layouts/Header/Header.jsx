@@ -85,7 +85,8 @@ export default function Header() {
               tabIndex="0"
               onClick={onClickUserMenu}
               onKeyDown={(e) => {
-                if (e.keyCode === 13) {
+                if (e.keyCode === 13 || e.keyCode === 32) {
+                  e.preventDefault();
                   onClickUserMenu();
                 }
               }}
@@ -112,8 +113,14 @@ export default function Header() {
                       onKeyDown={(e) => {
                         if (e.keyCode === 27) {
                           setIsUserMenu(false);
-                        } 
-                        optKeyboardFocus(e, menuItemBtnRef.current, menuItemBtnRef.current);
+                        } else if (e.keyCode === 13 || e.keyCode === 32) {
+                          menuItemLinkRef.current.click();
+                        }
+                        optKeyboardFocus(
+                          e,
+                          menuItemBtnRef.current,
+                          menuItemBtnRef.current
+                        );
                       }}
                     >
                       내 정보
@@ -128,11 +135,15 @@ export default function Header() {
                       onKeyDown={(e) => {
                         if (e.keyCode === 27) {
                           setIsUserMenu(false);
-                        } else if (e.keyCode === 13) {
-                          setIsUserMenu(false);
-                          logout();
-                        } 
-                        optKeyboardFocus(e, menuItemLinkRef.current, menuItemLinkRef.current)
+                        } else if (e.keyCode === 13 || e.keyCode === 32) {
+                          e.preventDefault();
+                          menuItemBtnRef.current.click();
+                        }
+                        optKeyboardFocus(
+                          e,
+                          menuItemLinkRef.current,
+                          menuItemLinkRef.current
+                        );
                       }}
                       ref={menuItemBtnRef}
                     >
