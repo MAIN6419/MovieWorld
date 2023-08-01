@@ -9,6 +9,7 @@ const GlobalStyles = createGlobalStyle`
     position: relative;
     background-color: #111;
     padding-top: 67px;
+    -webkit-tap-highlight-color : rgba(0,0,0,0);
     ::-webkit-scrollbar{
       display: none;
     }
