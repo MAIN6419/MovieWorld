@@ -5,7 +5,7 @@ import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup.container";
 import FindAccount from "./pages/findAccount/FindAccount.container";
 import Search from "./pages/search/Search";
-import Mypage from "./pages/mypage/Mypage.container";
+import Mypage from "./pages/mypage/Mypage";
 import Header from "./compoents/commons/layouts/Header/Header";
 import Banner from "./compoents/commons/layouts/Banner/Banner";
 import Footer from "./compoents/commons/layouts/Footer/Footer";
@@ -25,6 +25,15 @@ function App() {
 
   const refreshUser = () => {
     const user = getAuth().currentUser;
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      })
+    );
     setUser({
       uid: user.uid,
       displayName: user.displayName,
