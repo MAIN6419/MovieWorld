@@ -44,7 +44,7 @@ export default function FindAccount() {
 
   const onClickFindEmail = async (e) => {
     e.preventDefault();
-    const res = await findEmail(displayNameValue, phoneValue);
+    const res = await findEmail(displayNameValue, phoneValue.replace(/-/g, ""));
     if (res) {
       setFindEmailValue(res);
     }
@@ -54,7 +54,7 @@ export default function FindAccount() {
 
   const onClickFindPassword = async (e) => {
     e.preventDefault();
-    const res = await changePassword(emailValue, phoneValue);
+    const res = await changePassword(emailValue, phoneValue.replace(/-/g, ""));
     if (res) {
       setFindPasswordValue(res);
     }
@@ -85,7 +85,7 @@ export default function FindAccount() {
       onClickFindEmailMenu={onClickFindEmailMenu}
       onClickFindPwMenu={onClickFindPwMenu}
       onClickFindPassword={onClickFindPassword}
-      onClickFindEmail={onClickFindPassword}
+      onClickFindEmail={onClickFindEmail}
       findEmailValue={findEmailValue}
       emailValue={emailValue}
       onChangeEmail={onChangeEmail}

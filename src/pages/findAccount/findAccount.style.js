@@ -82,7 +82,7 @@ export const LoginLink = styled(Link)`
   display: block;
   text-align: center;
   width: 100%;
-  padding: 14px 0;
+  padding: 18px 0;
   border-radius: 4px;
   background-color: #e50914;
   font-size: 16px;
