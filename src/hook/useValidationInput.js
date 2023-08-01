@@ -51,6 +51,10 @@ export const useValidationInput = (initialValue, type, checkDuplication) => {
   };
 
   const validation = (value) => {
+    if (type === "phone" && value.length < 12) {
+      setValid({ errorMsg: typeInfo.errorMsg, valid: false });
+      return;
+    }
     if (typeInfo.reg.test(value)) {
       if (checkDuplication) {
         setValid({ errorMsg: "", valid: false });
