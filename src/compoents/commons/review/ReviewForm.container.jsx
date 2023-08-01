@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../../../context/userContext";
 import { Timestamp } from "firebase/firestore";
 import { addReview, fetchAddReviewData } from "../../../firebase/reviewAPI";
-import { getUser } from "../../../firebase/loginAPI";
 import ReviewFormUI from "./ReviewForm.presenter";
+import { sweetToast } from "../../../sweetAlert/sweetAlert";
 export default function ReviewForm({
   movieData,
   reviewData,
@@ -38,7 +38,7 @@ export default function ReviewForm({
         (data) => data === movieData.id
       );
       if (isReview) {
-        alert("이미 리뷰한 영화 입니다!");
+        sweetToast("이미 리뷰한 영화입니다!", "warning");
         setReivewValue("");
         setTextCount(0);
         setRating(0);
@@ -64,6 +64,7 @@ export default function ReviewForm({
           setPage(res.docs[res.docs.length - 1]);
           setHasMore(res.docs.length / limitPage >= 0);
           setReviewData(data);
+          sweetToast("리뷰가 작성되었습니다.", "success");
         } else {
           if (spoiler && !showSpoilerData) return;
           setReviewData([
@@ -76,7 +77,7 @@ export default function ReviewForm({
         }
       }
     } else {
-      alert("로그인 후 이용가능합니다!");
+      sweetToast("로그인 후 이용가능합니다!", "warning");
     }
     setReivewValue("");
     setTextCount(0);

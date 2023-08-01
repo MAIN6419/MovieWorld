@@ -11,6 +11,7 @@ import {
   ref as storageRef,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import { sweetToast } from "../sweetAlert/sweetAlert";
 
 const auth = getAuth();
 
@@ -51,9 +52,12 @@ export const signup = async (displayName, file, email, password, phone) => {
     };
   } catch (error) {
     if (error.message.includes("email-already-in-use")) {
-      alert("이미 사용중인 이메일 입니다!");
+      sweetToast("이미 사용중인 이메일 입니다!", "warning");
     } else {
-      alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+      sweetToast(
+        "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+        "warning"
+      );
     }
     throw error;
   }

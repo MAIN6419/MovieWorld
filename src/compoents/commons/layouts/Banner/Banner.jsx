@@ -21,6 +21,7 @@ import {
 import MovieInfo from "../../Modal/MovieInfo.container";
 import { useMediaQuery } from "react-responsive";
 
+import {  sweetToast } from "../../../../sweetAlert/sweetAlert";
 export default function Banner() {
   const isMedium = useMediaQuery({
     query: "(max-width:786px)and(min-width:501px)",
@@ -39,7 +40,7 @@ export default function Banner() {
 
   const onClickPlay = () => {
     if (!movieData.videos.results.length) {
-      alert("영상이 존재하지 않습니다!");
+      sweetToast("현재 영상이 존재하지 않습니다!", "warning");
     }
     setIsPlay(true);
     window.scroll({ top: 0, left: 0, behavior: "smooth" });

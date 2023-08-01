@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   ChangeImgBtn,
   Dim,
@@ -104,6 +104,9 @@ export default function ChangeProfileUI({
               </InputDesc>
               <InputDesc>
                 .jpg, .png, .jpeg,.bmp, .tif, *.heic 형식의 이미지를 지원합니다.
+              </InputDesc>
+              <InputDesc>
+                업로드한 이미지는 256X256 사이즈로 압축되어 반영됩니다.
               </InputDesc>
             </InputDescList>
           </DisplayNameWrapper>

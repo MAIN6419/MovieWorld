@@ -1,9 +1,4 @@
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import {
   getAuth,
   sendPasswordResetEmail,
@@ -13,6 +8,7 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { db } from "./setting";
+import { sweetToast } from "../sweetAlert/sweetAlert";
 
 const auth = getAuth();
 // 이메일 찾기 API
@@ -28,11 +24,14 @@ export const findEmail = async (displayName, phone) => {
     const datas = res.docs.map((el) => el.data());
     if (datas.length > 0) return datas[0].email;
     else {
-      alert("일치하는 정보가 없습니다!");
+      sweetToast("일치하는 정보가 없습니다!", "warning");
       return false;
     }
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -56,11 +55,14 @@ export const changePassword = async (email, phone) => {
         });
       return true;
     } else {
-      alert("일치하는 정보가 없습니다!");
+      sweetToast("일치하는 정보가 없습니다!", "warning");
       return false;
     }
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -79,18 +81,21 @@ export async function changeUserPassword(currentPassword, newPassword) {
     // 비밀번호가 일치하지 않는다는 것을 판별
     await reauthenticateWithCredential(user, credential);
     if (currentPassword === newPassword) {
-      alert("현재 비밀번호와 새 비밀번호가 같습니다!");
+      sweetToast("현재 비밀번호와 새 비밀번호가 같습니다!", "warning");
       return false;
     }
     await updatePassword(auth.currentUser, newPassword);
-    alert(
-      "비밀번호가 변경되었습니다. 변경사항 확인을 위해 다시 로그인 해주세요."
+    sweetToast(
+      "비밀번호가 변경되었습니다. 변경사항 확인을 위해 다시 로그인 해주세요.",
+      "warning"
     );
     await signOut(auth);
-    window.location.replace("/login");
   } catch (error) {
     if (error.message.includes("auth/wrong-password")) {
-      alert("현재 비밀번호가 일치하지 않습니다!");
+      sweetToast("현재 비밀번호가 일치하지 않습니다!", "warning");
+      return;
+    } else if(error.message.includes("auth/too-many-requests")){
+      sweetToast("비밀번호 변경 시도가 많아 일시적으로 비밀번호 변경이 제한됩니다!", "warning");
       return;
     } else {
       throw error;

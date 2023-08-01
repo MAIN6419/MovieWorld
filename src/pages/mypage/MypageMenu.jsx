@@ -31,6 +31,7 @@ import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveIm
 import Blank from "../../compoents/commons/blank/Blank";
 import Loading from "../../compoents/commons/loading/Loading";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo.container";
+import { sweetToast } from "../../sweetAlert/sweetAlert";
 
 export default function MypageMenu() {
   const [data, setData] = useState([]);
@@ -154,6 +155,7 @@ export default function MypageMenu() {
                           setData((prev) =>
                             prev.filter((el) => el.id !== item.id)
                           );
+                          sweetToast("삭제가 완료되었습니다.", "success")
                         }}
                         aria-label="닫기"
                       />

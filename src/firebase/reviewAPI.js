@@ -17,6 +17,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./setting";
 import { getAuth } from "firebase/auth";
+import { sweetToast } from "../sweetAlert/sweetAlert";
 
 const auth = getAuth();
 
@@ -67,7 +68,10 @@ export const fetchFirstReview = async (
 
     return { res, data };
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -119,7 +123,10 @@ export const fetchReviewPage = async (
 
     return { res, data };
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -162,18 +169,16 @@ export const addReview = async (movieData, reviewData) => {
       addUserReivewPromise,
     ]);
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
 
 // 리뷰 작성 후 스크롤 내린 만큼의 이전 데이터도 같이 불러오는 API
-export const fetchAddReviewData = async (
-  movieId,
-  page,
-  filter,
-  isSpoiler
-) => {
+export const fetchAddReviewData = async (movieId, page, filter, isSpoiler) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
@@ -214,7 +219,10 @@ export const fetchAddReviewData = async (
 
     return { res, data };
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -245,7 +253,10 @@ export const removeReview = async (movieId, reviewId) => {
       deleteUserReviewPromise,
     ]);
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -263,7 +274,10 @@ export const editReview = async (movieId, editData) => {
       contents: editData.contents,
     });
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -287,7 +301,10 @@ export const reviewReport = async (movieId, reviewData) => {
     });
     await Promise.all[(reportReviewPromise, addReportListPromise)];
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -302,7 +319,10 @@ export const fetchFirstReviewMovieList = async (limitPage) => {
     const res = await getDocs(q);
     return res;
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -317,7 +337,10 @@ export const fetchReviewMovieListPage = async (page, limitPage) => {
     const res = await getDocs(q);
     return res;
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };

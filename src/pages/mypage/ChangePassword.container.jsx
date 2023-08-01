@@ -8,7 +8,7 @@ import { isMobile } from "react-device-detect";
 import { history } from "../../history/history";
 import ChangePasswordUI from "./ChangePassword.presenter";
 
-export default function ChangePassword({ setIsChangePassword }) {
+export default function ChangePassword({ setIsChangePassword, setIsLoading }) {
   const isMoblie = useMediaQuery({
     query: "(max-width:486px)",
   });
@@ -41,9 +41,11 @@ export default function ChangePassword({ setIsChangePassword }) {
     document.body.style.overflow = "auto";
   };
 
-  const onClickSubmit = (e) => {
+  const onClickSubmit = async (e) => {
     e.preventDefault();
-    changeUserPassword(currentPw, newPw);
+    setIsLoading(true);
+    await changeUserPassword(currentPw, newPw);
+    setIsLoading(false);
   };
 
   useEffect(() => {

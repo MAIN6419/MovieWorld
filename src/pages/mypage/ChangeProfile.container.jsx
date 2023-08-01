@@ -9,6 +9,7 @@ import ChangeProfileUI from "./ChangeProfile.presenter";
 import { WebpContext } from "../../context/webpContext";
 import { resolveWebp } from "../../libray/webpSupport";
 import { imgCompression } from "../../libray/imagCompression";
+import { sweetToast } from "../../sweetAlert/sweetAlert";
 
 export default function ChangeProfile({
   user,
@@ -40,7 +41,7 @@ export default function ChangeProfile({
     }
     // 파일 사이즈 확인
     if (file.size > 1024 * 1024 * 10) {
-      alert("이미지 파일의 크기를 초과하였습니다.(최대 10MB)");
+      sweetToast("이미지 파일의 크기를 초과하였습니다.(최대 10MB)", "warning");
       return false;
     }
     // 이미지 지원 형식 확인
@@ -52,8 +53,9 @@ export default function ChangeProfile({
       !file.name.includes("tif") &&
       !file.name.includes("heic")
     ) {
-      alert(
-        "이미지 형식을 확인해 주세요!\n(지원형식 : .jpg, .png, .jpeg,.bmp, .tif, *.heic)"
+      sweetToast(
+        "이미지 형식을 확인해 주세요!\n(지원형식 : .jpg, .png, .jpeg,.bmp, .tif, *.heic)",
+        "warning"
       );
       return false;
     }
@@ -76,9 +78,10 @@ export default function ChangeProfile({
   };
 
   const onClickSubmit = async () => {
+    if (!displayNameValid.valid)
+      return sweetToast("닉네임을 확인해주세요!", "warning");
     if (user.displayName === displayNameValue && user.photoURL === previewImg) {
-      alert("수정 사항이 없습니다!");
-      return;
+      return sweetToast("수정 사항이 없습니다!", "warning");
     }
     setIsLoading(true);
     await updateUserProfile(uploadImg, displayNameValue);

@@ -6,6 +6,7 @@ import ProfileSettingUI from "./ProfileSetting.presenter";
 import { resolveWebp } from "../../libray/webpSupport";
 import { WebpContext } from "../../context/webpContext";
 import { imgCompression } from "../../libray/imagCompression";
+import { sweetToast } from "../../sweetAlert/sweetAlert";
 
 export default function ProfileSetting({
   setIsLoading,
@@ -35,7 +36,7 @@ export default function ProfileSetting({
     }
     // 파일 사이즈 확인
     if (file.size > 1024 * 1024 * 10) {
-      alert("이미지 파일의 크기를 초과하였습니다.(최대 10MB)");
+      sweetToast("이미지 파일의 크기를 초과하였습니다.(최대 10MB)", "warning");
       return false;
     }
     // 이미지 지원 형식 확인
@@ -47,8 +48,9 @@ export default function ProfileSetting({
       !file.name.includes("tif") &&
       !file.name.includes("heic")
     ) {
-      alert(
-        "이미지 형식을 확인해 주세요!\n(지원형식 : .jpg, .png, .jpeg,.bmp, .tif, *.heic)"
+      sweetToast(
+        "이미지 형식을 확인해 주세요!\n(지원형식 : .jpg, .png, .jpeg,.bmp, .tif, *.heic)",
+        "warning"
       );
       return false;
     }

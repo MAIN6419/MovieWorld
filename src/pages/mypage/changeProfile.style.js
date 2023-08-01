@@ -37,7 +37,7 @@ export const ProfileForm = styled.form`
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-bottom: 80px;
+  margin-bottom: 90px;
   @media screen and (max-width: 486px) {
     gap: 20px;
   }
@@ -101,7 +101,7 @@ export const InputDescList = styled.ul`
   font-size: 12px;
   @media screen and (max-width: 486px) {
     position: absolute;
-    bottom: 85px;
+    bottom: 80px;
     left: 20px;
     gap: 0;
     font-size: 11px;

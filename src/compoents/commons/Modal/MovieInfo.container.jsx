@@ -8,6 +8,7 @@ import { history } from "../../../history/history";
 import { isMobile } from "react-device-detect";
 import MovieInfoUI from "./MovieInfo.presenter";
 import { useMediaQuery } from "react-responsive";
+import { sweetToast } from "../../../sweetAlert/sweetAlert";
 
 export default function MovieInfo({
   movieData,
@@ -65,7 +66,7 @@ export default function MovieInfo({
 
   const onClickPlay = () => {
     if (!videoData.videos || !videoData.videos.results.length) {
-      alert("영상이 존재하지 않습니다!");
+      sweetToast("현재 영상이 존재하지 않습니다!", "warning");
       return;
     }
     setIsPlay(true);
@@ -73,7 +74,7 @@ export default function MovieInfo({
 
   const onClickLike = async () => {
     if (!user) {
-      alert("로그인 후 이용가능합니다!");
+      sweetToast("로그인 후 이용가능합니다!", "warning");
       return;
     }
     if (!like) {

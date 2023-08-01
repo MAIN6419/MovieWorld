@@ -11,6 +11,7 @@ import {
   FacebookAuthProvider,
 } from "firebase/auth";
 import { db } from "./setting";
+import { sweetToast } from "../sweetAlert/sweetAlert";
 
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
@@ -25,19 +26,25 @@ export const login = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
     if (error.message.includes("auth/invalid-email")) {
-      alert("유효하지 않은 이메일 형식 입니다!");
+      sweetToast("유효하지 않은 이메일 형식 입니다!", "warning");
     } else if (error.message.includes("auth/missing-email")) {
-      alert("존재하지 않는 이메일 입니다!");
+      sweetToast("존재하지 않는 이메일 입니다!", "warning");
     } else if (error.message.includes("auth/user-not-found")) {
-      alert("일치 하는 로그인 정보가 없습니다!");
+      sweetToast("일치 하는 로그인 정보가 없습니다!", "warning");
       return;
     } else if (error.message.includes("auth/wrong-password")) {
-      alert("아이디 또는 비밀번호가 일치하지 않습니다!");
+      sweetToast("아이디 또는 비밀번호가 일치하지 않습니다!", "warning");
       return;
     } else if (error.message.includes("auth/too-many-requests")) {
-      alert("많은 로그인 시도로 인해 로그인이 일시적으로 제한됩니다!");
+      sweetToast(
+        "많은 로그인 시도로 로그인이 일시적으로 제한됩니다!",
+        "warning"
+      );
     } else {
-      alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
+      sweetToast(
+        "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+        "warning"
+      );
       throw error;
     }
   }
@@ -87,7 +94,7 @@ export const socialLogin = async (type) => {
     if (
       error.message.includes("auth/account-exists-with-different-credential")
     ) {
-      alert("이미 가입된 이메일 계정입니다!");
+      sweetToast("이미 가입된 이메일 계정입니다!", "warning");
     }
   }
 };
@@ -101,7 +108,10 @@ export const logout = async () => {
       localStorage.removeItem("user");
       window.location.reload();
     } catch (error) {
-      alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
+      sweetToast(
+        "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+        "warning"
+      );
       throw error;
     }
   }
@@ -118,7 +128,10 @@ export const getUser = async () => {
     const data = res.data();
     return data;
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };

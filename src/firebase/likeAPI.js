@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "./setting";
+import { sweetToast } from "../sweetAlert/sweetAlert";
 
 const auth = getAuth();
 const userData = JSON.parse(localStorage.getItem("user")) || {};
@@ -32,7 +33,7 @@ export const addLike = async (movieData) => {
 
     return true;
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.");
+    sweetToast("알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.", "warning");
     throw error;
   }
 };
@@ -51,11 +52,9 @@ export const removeLike = async (movieData) => {
         likeList: arrayRemove(movieData.id),
       });
       return true;
-    } else {
-      return alert("로그인 후 이용 가능합니다!");
     }
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast("알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.", "warning");
     throw error;
   }
 };
@@ -73,7 +72,7 @@ export const fetchFirstLikeList = async (limitPage) => {
     const res = await getDocs(q);
     return res;
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast("알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.","waring");
     throw error;
   }
 };
@@ -88,7 +87,7 @@ export const fetchLikeListPage = async (page, limitPage) => {
     const res = await getDocs(q);
     return res;
   } catch (error) {
-    alert("알 수 없는 에러가 발생하였습니다. 잠시후 다시 시도해 주세요.");
+    sweetToast("알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.", "warning");
     throw error;
   }
 };

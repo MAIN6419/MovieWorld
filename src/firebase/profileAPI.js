@@ -9,6 +9,7 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { getUser } from "./loginAPI";
+import { sweetToast } from "../sweetAlert/sweetAlert";
 
 const auth = getAuth();
 // 유저 프로필 수정 API
@@ -86,7 +87,7 @@ export const updateUserProfile = async (file, displayName) => {
       })
     );
   } catch (error) {
-    alert("알 수 없는 오류가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+    sweetToast("알 수 없는 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.", "");
     throw error;
   }
 };
