@@ -138,7 +138,7 @@ export const TextAreaBtn = styled.button`
   }
 `;
 
-export const ReviewList = styled.ul`
+export const ReviewUl = styled.ul`
   position: relative;
   display: flex;
   flex-direction: column;

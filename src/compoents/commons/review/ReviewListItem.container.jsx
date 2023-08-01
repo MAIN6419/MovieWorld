@@ -15,6 +15,7 @@ export default function ReviewListItem({
   setReviewData,
   userData,
   setUserData,
+  setMypageReviewData
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const [editValue, setEditValue] = useState(reviewItem.contents);
@@ -69,8 +70,12 @@ export default function ReviewListItem({
       removeReview(movieId, reviewItem.id);
       setReviewData((prev) => prev.filter((item) => item.id !== reviewItem.id));
       let newUserData = { ...userData };
+      console.log(newUserData)
       newUserData = userData.reviewList.filter((review) => review !== movieId);
       setUserData(newUserData);
+      if (setMypageReviewData) {
+        setMypageReviewData((prev) => prev.filter(el=>el.id!==movieId));
+      }
     }
   };
 
