@@ -170,7 +170,7 @@ export const addReview = async (movieData, reviewData) => {
 // 리뷰 작성 후 스크롤 내린 만큼의 이전 데이터도 같이 불러오는 API
 export const fetchAddReviewData = async (
   movieId,
-  limitPage,
+  page,
   filter,
   isSpoiler
 ) => {
@@ -184,7 +184,7 @@ export const fetchAddReviewData = async (
         reviewRef,
         orderBy(filter.target, filter.order),
         where("isBlock", "==", false),
-        endAt(limitPage)
+        endAt(page)
       );
     } else {
       q = query(
@@ -192,7 +192,7 @@ export const fetchAddReviewData = async (
         orderBy(filter.target, filter.order),
         where("isBlock", "==", false),
         where("spoiler", "==", false),
-        endAt(limitPage)
+        endAt(page)
       );
     }
 
