@@ -9,12 +9,20 @@ export const Wrapper = styled.section`
 
 export const Title = styled.h2`
   background: url("assets/icon-review.svg") no-repeat left / 25px;
+  body.webp & {
+    background: url("assets/webp/icon-review.webp") no-repeat left / 25px;
+  }
   padding-left: 28px;
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 10px;
-  body.webp & {
-    background: url("assets/webp/icon-review.webp") no-repeat left / 25px;
+
+  @media screen and (max-width: 400px) {
+    font-size: 18px;
+    background: url("assets/icon-review.svg") no-repeat left / 22px;
+    body.webp & {
+      background: url("assets/webp/icon-review.webp") no-repeat left / 22px;
+    }
   }
 `;
 
@@ -25,6 +33,9 @@ export const ReviewCheckList = styled.div`
   gap: 10px;
   align-items: center;
   margin-bottom: 20px;
+  @media screen and (max-width: 400px) {
+    margin-bottom: 10px;
+  }
 `;
 
 export const RatingWrapper = styled.div``;
@@ -34,6 +45,15 @@ export const Rating = styled(Rate)`
   margin-right: 10px;
   & .ant-rate-star-zero svg {
     fill: #fff !important;
+  }
+  & .ant-rate-star-focused:first-child svg {
+    fill: #fff !important;
+  }
+  & .ant-rate-star-full.ant-rate-star-focused:first-child svg {
+    fill: gold !important;
+  }
+  @media screen and (max-width: 486px) {
+    font-size: 20px;
   }
 `;
 
@@ -50,7 +70,12 @@ export const ToggleWrapper = styled.div`
   gap: 10px;
   flex-wrap: wrap;
 `;
-
+export const ToggleSwithTag = styled.span`
+  font-weight: 500;
+  @media screen and (max-width: 486px) {
+    font-size: 14px;
+  }
+`;
 export const ToggleSwitch = styled.label`
   display: inline-block;
   width: 50px;
@@ -63,6 +88,10 @@ export const ToggleSwitch = styled.label`
   transition: all 0.3s;
   :focus {
     outline-color: #e50914;
+  }
+  @media screen and (max-width: 486px) {
+    width: 40px;
+    height: 20px;
   }
 `;
 
@@ -77,6 +106,11 @@ export const ToggleButton = styled.span`
   border-radius: 50%;
   background-color: ${(props) => (props.toggle ? "#fff" : "#f03d3d")};
   transition: all 0.3s;
+  @media screen and (max-width: 486px) {
+    width: 10px;
+    height: 10px;
+    left: ${(props) => (props.toggle ? "calc(100% - 14px)" : "4px")};
+  }
 `;
 
 export const TextAreaForm = styled.form`
@@ -104,7 +138,10 @@ export const TextArea = styled.textarea`
     display: none;
   }
   @media screen and (max-width: 486px) {
-    font-size: 14px;
+    font-size: 12px;
+    ::placeholder {
+      font-size: 12px;
+    }
   }
 `;
 
@@ -152,6 +189,9 @@ export const SelectWrapper = styled.div`
   position: relative;
   text-align: right;
   margin-bottom: 20px;
+  @media screen and (max-width: 486px) {
+    margin-bottom: 10px;
+  }
 `;
 
 export const Select = styled.button`
@@ -187,6 +227,11 @@ export const Select = styled.button`
     background: url("assets/webp/icon-downArrow.webp") no-repeat center right
       0px / 15px;
   }
+  @media screen and (max-width: 486px) {
+    font-size: 12px;
+    width: 72px;
+    padding-left: 10px;
+  }
 `;
 
 export const OpectionList = styled.ul`
@@ -217,6 +262,27 @@ export const OpectionList = styled.ul`
       height: 0;
     }
   }
+  @media screen and (max-width: 486px) {
+    font-size: 12px;
+    width: 72px;
+    @keyframes open {
+      from {
+        height: 0;
+      }
+      to {
+        height: 103px;
+      }
+    }
+
+    @keyframes close {
+      from {
+        height: 103px;
+      }
+      to {
+        height: 0;
+      }
+    }
+  }
 `;
 
 export const Opection = styled.li`
@@ -242,5 +308,8 @@ export const OpectionBtn = styled.button`
   :focus {
     outline: none;
     background-color: rgba(74, 74, 74);
+  }
+  @media screen and (max-width: 486px) {
+    font-size: 12px;
   }
 `;

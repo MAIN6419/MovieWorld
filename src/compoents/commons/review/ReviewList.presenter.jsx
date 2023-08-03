@@ -6,6 +6,7 @@ import {
   OpectionList,
   Opection,
   OpectionBtn,
+  ToggleSwithTag,
   ToggleSwitch,
   ToggleButton,
   ToggleCheckbox,
@@ -45,7 +46,7 @@ export default function ReviewListUI({
             tabIndex="-1"
             onClick={() => setShowSpoilerData(!showSpoilerData)}
           />
-          <span>스포일러 리뷰 포함</span>
+          <ToggleSwithTag>스포일러 리뷰 포함</ToggleSwithTag>
           <ToggleSwitch
             htmlFor="toggle-showSpoiler"
             className="toggleSwitch"

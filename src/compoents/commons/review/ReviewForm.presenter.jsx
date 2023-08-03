@@ -15,6 +15,7 @@ import {
   ToggleCheckbox,
   ToggleWrapper,
   ReviewCheckList,
+  ToggleSwithTag,
 } from "./review.style";
 export default function ReviewFormUI({
   rating,
@@ -46,7 +47,7 @@ export default function ReviewFormUI({
             tabIndex="-1"
             onClick={() => setSpoiler(!spoiler)}
           />
-          <span>스포일러 체크</span>
+          <ToggleSwithTag>스포일러 체크</ToggleSwithTag>
           <ToggleSwitch
             htmlFor="toggle"
             className="toggleSwitch"
