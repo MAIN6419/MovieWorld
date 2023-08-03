@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Btn } from "./topButton.style";
 
-export default function TopButton() {
+export default function TopButton({ targetElement = window }) {
   const [isShow, setIsShow] = useState(false);
 
   const scrollToTop = () => {
-    window.scroll({
+    targetElement.scroll({
       top: 0,
       behavior: "smooth",
     });
   };
 
   const handleScroll = () => {
-    if (window.scrollY > 500) {
+    if (
+      targetElement === window
+        ? targetElement.scrollY
+        : targetElement.scrollTop > 500
+    ) {
       setIsShow(true);
     } else {
       setIsShow(false);
@@ -20,9 +24,10 @@ export default function TopButton() {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    targetElement.addEventListener("scroll", handleScroll);
+    return () => targetElement.removeEventListener("scroll", handleScroll);
   }, []);
+
   return (
     isShow && (
       <Btn onClick={scrollToTop}>
