@@ -20,6 +20,7 @@ export default function MovieInfo({
   const [isPlay, setIsPlay] = useState(false);
   const [videoData, setVideoData] = useState({});
   const [like, setLike] = useState(false);
+  const [videoUrl, setVideoUrl] = useState("");
   const isMedium = useMediaQuery({
     query: "(max-width: 780px)and(min-width:501px)",
   });
@@ -27,6 +28,9 @@ export default function MovieInfo({
   const modalRef = useRef(null);
   const filterRef = useRef(null);
   const iframeRef = useRef(null);
+  const closeBtnRef = useRef(null);
+  const likeBtnRef = useRef(null);
+
   const fetchLike = async () => {
     if (user) {
       const data = await getUser();
@@ -37,6 +41,11 @@ export default function MovieInfo({
   };
 
   const onClickClose = () => {
+    if (isPlay) {
+      setIsPlay(false);
+      modalRef.current.focus();
+      return;
+    }
     modalRef.current.style.animation = "fadeOut 0.6s";
     setTimeout(() => {
       setIsOpenMovieInfo(false);
@@ -64,11 +73,13 @@ export default function MovieInfo({
     }
   };
 
-  const onClickPlay = () => {
+  const onClickPlay = (vedio) => {
     if (!videoData.videos || !videoData.videos.results.length) {
       sweetToast("현재 영상이 존재하지 않습니다!", "warning");
       return;
     }
+    modalRef.current.scroll({ top: 0, behavior: "smooth" });
+    setVideoUrl(vedio);
     setIsPlay(true);
   };
 
@@ -124,6 +135,10 @@ export default function MovieInfo({
     }
   }, [isPlay]);
 
+  useEffect(() => {
+    if (videoData.id) modalRef.current.focus();
+  }, [videoData]);
+
   return (
     <>
       {videoData.id && (
@@ -132,6 +147,8 @@ export default function MovieInfo({
           isPlay={isPlay}
           videoData={videoData}
           like={like}
+          videoUrl={videoUrl}
+          setVideoUrl={setVideoUrl}
           isMedium={isMedium}
           isSmall={isSmall}
           onClickClose={onClickClose}
@@ -139,6 +156,8 @@ export default function MovieInfo({
           onClickLike={onClickLike}
           filterRef={filterRef}
           iframeRef={iframeRef}
+          closeBtnRef={closeBtnRef}
+          likeBtnRef={likeBtnRef}
           setMypageReivewData={setMypageLikeData}
         />
       )}

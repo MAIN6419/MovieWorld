@@ -1,6 +1,6 @@
 import { StarFilled } from "@ant-design/icons";
-import { isMobile } from "react-device-detect";
 import styled from "styled-components";
+import { Swiper } from "swiper/react";
 
 export const ModalWrapper = styled.section``;
 
@@ -33,6 +33,9 @@ export const ModalCard = styled.div`
   overflow-y: scroll;
   ::-webkit-scrollbar {
     display: none;
+  }
+  :focus {
+    outline: none;
   }
   @keyframes fadeIn {
     from {
@@ -78,11 +81,12 @@ export const MovieContetns = styled.div`
   gap: 20px;
   padding: 20px 20px 0 20px;
 `;
+
 export const MovieTitle = styled.h3`
   display: flex;
   align-items: center;
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 600;
   border-bottom: 1px solid #fff;
   padding-bottom: 20px;
   @media screen and (max-width: 768px) {
@@ -97,16 +101,21 @@ export const MovieRelease = styled.time`
   font-size: 20px;
   font-weight: 500;
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-  }
-  @media screen and (max-width: 486px) {
-    font-size: 14px;
+    font-size: 18px;
   }
 `;
 
 export const MovieGenreWrapper = styled.div`
   display: flex;
   gap: 8px;
+`;
+
+export const MovieGenreTag = styled.span`
+  font-size: 20px;
+  font-weight: 500;
+  @media screen and (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 export const MovieGenre = styled.ul`
   display: flex;
@@ -115,10 +124,7 @@ export const MovieGenre = styled.ul`
   font-size: 20px;
   font-weight: 500;
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-  }
-  @media screen and (max-width: 486px) {
-    font-size: 14px;
+    font-size: 18px;
   }
 `;
 
@@ -127,10 +133,7 @@ export const MovieGenreLi = styled.li`
     margin-left: -5px;
   }
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-  }
-  @media screen and (max-width: 486px) {
-    font-size: 14px;
+    font-size: 18px;
   }
   :not(:last-child) {
     ::after {
@@ -151,10 +154,7 @@ export const MovieRunTime = styled.span`
   font-size: 20px;
   font-weight: 500;
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-  }
-  @media screen and (max-width: 486px) {
-    font-size: 14px;
+    font-size: 18px;
   }
 `;
 
@@ -162,10 +162,7 @@ export const MovieRating = styled.span`
   font-size: 20px;
   font-weight: 500;
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-  }
-  @media screen and (max-width: 486px) {
-    font-size: 14px;
+    font-size: 18px;
   }
 `;
 
@@ -174,46 +171,35 @@ export const MovieRatingIcon = styled(StarFilled)`
 `;
 
 export const MovieDesc = styled.p`
+  font-size: 16px;
   border-bottom: 1px solid #fff;
   padding-bottom: 20px;
+  font-weight: 500;
   line-height: 1.5;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width:486px){
     font-size: 14px;
   }
 `;
 
-export const MovieBtns = styled.div`
+export const MovieLike = styled.div`
+  font-size: 20px;
+  font-weight: 500;
   display: flex;
   align-items: center;
-`;
-
-export const MoviePlayBtn = styled.button`
-  width: 80px;
-  cursor: pointer;
-  border: none;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 4px;
-  padding: 5px 20px 5px 30px;
-  margin-right: 10px;
-  color: black;
-  background: url("assets/icon-play.svg") no-repeat center left 5px/ 20px #fff;
-  :hover {
-    background-color: ${isMobile ? "" : "rgba(170, 170, 170, 0.9)"};
-    transition: all 0.2s;
-  }
-  body.webp & {
-    background: url("assets/webp/icon-play.webp") no-repeat center left 5px/ 20px
-      #fff;
-  }
-  :focus {
-    outline-color: #e50914;
+  gap: 10px;
+  @media screen and (max-width: 768px) {
+    gap: 5px;
+    font-size: 18px;
   }
 `;
 
 export const MovieLikeBtn = styled.button`
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
+  @media screen and (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
   transition: all 0.2s;
   background: ${(props) =>
     props.like
@@ -227,6 +213,74 @@ export const MovieLikeBtn = styled.button`
             ? "assets/webp/icon-unlike.webp"
             : "assets/icon-unlike.svg"
         }) no-repeat center / cover`};
+`;
+
+export const VideoThumbnailTitle = styled.h3`
+  font-size: 20px;
+  @media screen and (max-width: 486px) {
+    font-size: 18px;
+  }
+`;
+export const SwiperContainer = styled.div``;
+
+export const CustomSwiper = styled(Swiper)`
+  padding: 5px 0;
+  .swiper-button-next {
+    background: url("assets/icon-nextBtn.svg") no-repeat center left 8px / 15px
+      rgba(255, 255, 255, 0.8);
+    body.webp & {
+      background: url("assets/webp/icon-nextBtn.webp") no-repeat center left 8px /
+        15px rgba(255, 255, 255, 0.8);
+    }
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    @media screen and (max-width: 486px) {
+      background: url("assets/icon-nextBtn.svg") no-repeat center left 8px/ 12px
+        rgba(255, 255, 255, 0.8);
+      body.webp & {
+        background: url("assets/webp/icon-nextBtn.webp") no-repeat center left
+          8px / 12px rgba(255, 255, 255, 0.8);
+      }
+      width: 25px;
+      height: 25px;
+      right: 5px;
+    }
+  }
+
+  .swiper-button-prev {
+    background: url("assets/icon-prevBtn.svg") no-repeat center right 8px/ 15px rgba(255, 255, 255, 0.8);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    @media screen and (max-width: 486px) {
+      background: url("assets/icon-prevBtn.svg") no-repeat center right 8px/ 12px
+        rgba(255, 255, 255, 0.8);
+      width: 25px;
+      height: 25px;
+      left: 5px;
+    }
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    display: none;
+  }
+
+  .swiper-pagination {
+    text-align: right !important;
+    position: relative !important;
+    margin-left: -10px !important;
+    bottom: -5px !important;
+    font-size: 14px;
+  }
+`;
+
+export const VideoThumbnailBtn = styled.button`
+  background: none;
+`;
+export const VideoThumbnail = styled.img`
+  width: 100%;
 `;
 
 export const CloseBtn = styled.button`

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import {
   CloseBtn,
   ModalCard,
@@ -10,7 +10,6 @@ import {
   MovieDesc,
   MovieImg,
   MovieImgWrapper,
-  MoviePlayBtn,
   MovieRating,
   MovieRatingIcon,
   MovieRelease,
@@ -20,16 +19,30 @@ import {
   IframeWrapper,
   Iframe,
   MovieLikeBtn,
-  MovieBtns,
   MovieGenreWrapper,
+  VideoThumbnail,
+  SwiperContainer,
+  VideoThumbnailBtn,
+  MovieGenreTag,
+  VideoThumbnailTitle,
+  MovieLike,
+  CustomSwiper,
 } from "./movieInfo.style";
+import TopButton from "../topButton/TopButton";
 import Review from "../review/Review";
 import { optKeyboardFocus } from "../../../libray/optKeyBoard";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { SwiperSlide } from "swiper/react";
 
 export default function MovieInfoUI({
   modalRef,
   isPlay,
   like,
+  videoUrl,
   videoData,
   isMedium,
   isSmall,
@@ -38,13 +51,11 @@ export default function MovieInfoUI({
   onClickLike,
   filterRef,
   iframeRef,
+  closeBtnRef,
+  likeBtnRef,
   setMypageLikeData,
 }) {
-  const playRef = useRef(null);
-  const closeBtnRef = useRef();
-  useEffect(() => {
-    modalRef.current.focus();
-  }, [modalRef]);
+
   return (
     <ModalWrapper>
       <ModalTitle className="a11y-hidden">영화정보</ModalTitle>
@@ -68,7 +79,7 @@ export default function MovieInfoUI({
               <IframeWrapper>
                 <Iframe
                   ref={iframeRef}
-                  src={`https://www.youtube.com/embed/${videoData.videos.results[0].key}?autoplay=1&mute=1&loop=1&playlist=${videoData.videos.results[0].key}`}
+                  src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1&mute=1&loop=1&playlist=${videoUrl}`}
                   title="YouTube video player"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
@@ -92,6 +103,7 @@ export default function MovieInfoUI({
           <MovieTitle>
             {videoData.title || videoData.name || videoData.original_name}
           </MovieTitle>
+
           <MovieRelease dateTime={videoData.release_date}>
             개봉 :{" "}
             {videoData.release_date
@@ -100,7 +112,7 @@ export default function MovieInfoUI({
           </MovieRelease>
           {videoData.genres && (
             <MovieGenreWrapper>
-              <span>장르 :</span>
+              <MovieGenreTag>장르 :</MovieGenreTag>
               <MovieGenre>
                 {videoData.genres &&
                   videoData.genres.map(({ name }) => {
@@ -116,30 +128,74 @@ export default function MovieInfoUI({
             평점 : <MovieRatingIcon />{" "}
             {parseFloat(videoData.vote_average).toFixed(2)}
           </MovieRating>
-          <MovieBtns>
-            <MoviePlayBtn
-              onClick={onClickPlay}
-              ref={playRef}
-              onKeyDown={(e) => {
-                isPlay
-                  ? optKeyboardFocus(e, iframeRef.current)
-                  : optKeyboardFocus(e, closeBtnRef.current);
-              }}
-            >
-              재생
-            </MoviePlayBtn>
+
+          <MovieLike>
+            찜
             <MovieLikeBtn
               type="button"
               onClick={onClickLike}
               like={like}
-            ></MovieLikeBtn>
-          </MovieBtns>
+              aria-label="찜"
+              onKeyDown={(e) => {
+                optKeyboardFocus(e, closeBtnRef.current);
+              }}
+              ref={likeBtnRef}
+            />
+          </MovieLike>
 
           <MovieDesc>
             {videoData.overview
               ? videoData.overview
               : "영화에 대한 설명이 없습니다."}
           </MovieDesc>
+
+          <VideoThumbnailTitle>관련 영상</VideoThumbnailTitle>
+          <SwiperContainer>
+            <CustomSwiper
+              modules={[Navigation, Pagination, Scrollbar, A11y]}
+              navigation
+              slidesPerView={4}
+              spaceBetween={10}
+              pagination={{
+                type: "fraction",
+              }}
+              breakpoints={{
+                800: {
+                  slidesPerView: 4,
+                  slidesPerGroup: 4,
+                },
+                600: {
+                  slidesPerView: 3,
+                  slidesPerGroup: 3,
+                },
+                340: {
+                  slidesPerView: 2,
+                  slidesPerGroup: 2,
+                },
+                0: {
+                  slidesPerView: 1,
+                  slidesPerGroup: 1,
+                },
+              }}
+            >
+              {videoData.videos.results.map((video) => {
+                return (
+                  <SwiperSlide key={video.key}>
+                    <VideoThumbnailBtn
+                      type="button"
+                      onClick={() => onClickPlay(video.key)}
+                    >
+                      <VideoThumbnail
+                        style={{ width: "100%", maxWidth: "300px" }}
+                        src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
+                        alt="영화 관련영상"
+                      />
+                    </VideoThumbnailBtn>
+                  </SwiperSlide>
+                );
+              })}
+            </CustomSwiper>
+          </SwiperContainer>
         </MovieContetns>
 
         <Review
@@ -154,12 +210,13 @@ export default function MovieInfoUI({
           onKeyDown={(e) => {
             isPlay
               ? optKeyboardFocus(e, filterRef.current, iframeRef.current)
-              : optKeyboardFocus(e, filterRef.current, playRef.current);
+              : optKeyboardFocus(e, filterRef.current, likeBtnRef.current);
           }}
         >
           <span className="a11y-hidden">닫기</span>
         </CloseBtn>
       </ModalCard>
+      {modalRef.current && <TopButton targetElement={modalRef.current} />}
     </ModalWrapper>
   );
 }
