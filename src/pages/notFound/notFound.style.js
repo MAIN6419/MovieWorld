@@ -35,7 +35,10 @@ export const BackBtn = styled.button`
   color: #fff;
   padding: 8px 45px 8px 20px;
   font-size: 20px;
-  background: url("/assets/icon-back.png") no-repeat center right 20px / 20px;
+  background: url("/assets/icon-back.svg") no-repeat center right 20px / 20px;
+  body.webp & {
+    background: url("/assets/webp/icon-back.webp") no-repeat center right 20px / 20px;
+  }
   :hover {
     background-color: ${isMobile ? "" : "#292a2b"};
   }
