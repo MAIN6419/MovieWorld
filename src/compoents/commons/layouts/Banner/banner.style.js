@@ -189,15 +189,9 @@ export const CloseBtn = styled.button`
   top: 0;
   right: 20px;
   z-index: 999;
-  background: url("assets/icon-close.svg") no-repeat center / 24px;
+  background: url("assets/icon-close.svg") no-repeat center / 22px;
   body.webp & {
-    background: url("assets/webp/icon-close.webp") no-repeat center / 24px;
-  }
-  @media screen and (max-width: 486px) {
-    width: 18px;
-    height: 18px;
-    right: 15px;
-    background-size: 18px;
+    background: url("assets/webp/icon-close.webp") no-repeat center / 22px;
   }
 `;
 export const MobileTitleWrapper = styled.div`

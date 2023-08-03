@@ -131,8 +131,8 @@ export const UserMenuOpectionList = styled.ul`
   border-radius: 5px;
   background: #1d1e1e;
   overflow: hidden;
-  animation: open 0.5s;
-  @keyframes open {
+  animation: openUserMenu 0.5s;
+  @keyframes openUserMenu {
     from {
       height: 0;
     }
