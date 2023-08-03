@@ -11,7 +11,17 @@ export const ModalDim = styled.div`
   inset: 0;
   z-index: 999;
 `;
-
+export const ModalCardWrapper = styled.div`
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  max-width: 1000px;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+`;
 export const ModalCard = styled.div`
   position: fixed;
   z-index: 999;
@@ -176,7 +186,7 @@ export const MovieDesc = styled.p`
   padding-bottom: 20px;
   font-weight: 500;
   line-height: 1.5;
-  @media screen and (max-width:486px){
+  @media screen and (max-width: 486px) {
     font-size: 14px;
   }
 `;
@@ -309,4 +319,15 @@ export const Iframe = styled.iframe`
   height: 100%;
   z-index: -1;
   border: none;
+`;
+
+export const ModalTopButtons = styled.button`
+  position: fixed;
+  bottom: 0px;
+  right: 0;
+  background-color: #fff;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  z-index: 999;
 `;
