@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import {
-  MoiveItem,
-  MovieItems,
+  MovieItemWrapper,
+  MovieItemBtn,
   SwiperContainer,
   Title,
   Wrapper,
@@ -18,9 +18,6 @@ import ProgressiveImg from "../../commons/progressiveImg/ProgressiveImg";
 import { useMovieInfo } from "../../../hook/useMovieInfo";
 import { useMediaQuery } from "react-responsive";
 export default function MovieList({ title, fetchMoive }) {
-  const isMedium = useMediaQuery({
-    query: "(max-width:786px) and (min-width:500px)",
-  });
   const isSmall = useMediaQuery({ query: "(max-width:500px)" });
 
   const [movieData, setMovieData] = useState([]);
@@ -42,6 +39,7 @@ export default function MovieList({ title, fetchMoive }) {
         <Title>{title}</Title>
         <SwiperContainer
           modules={[Navigation, Pagination, Scrollbar, A11y]}
+          navigation
           slidesPerView={5}
           spaceBetween={15}
           pagination={{ clickable: true }}
@@ -50,7 +48,8 @@ export default function MovieList({ title, fetchMoive }) {
               slidesPerView: 7,
               slidesPerGroup: 7,
             },
-            1378: {
+            1378:
+             {
               slidesPerView: 6,
               slidesPerGroup: 6,
             },
@@ -72,7 +71,7 @@ export default function MovieList({ title, fetchMoive }) {
             },
           }}
         >
-          <MovieItems>
+          <MovieItemWrapper>
             {movieData.map((data) => {
               return (
                 <SwiperSlide
@@ -81,40 +80,40 @@ export default function MovieList({ title, fetchMoive }) {
                     if (e.keyCode === 13) onClickMovieInfo(data);
                   }}
                 >
-                  <MoiveItem>
+                  <MovieItemBtn
+                    onClick={() => {
+                      onClickMovieInfo(data);
+                      // movieInfo 모달창을 열때 banner 동영상이 실행중 이라면 중지 시킴
+                      if (document.querySelector(".bannerIframe") !== null) {
+                        document
+                          .querySelector(".bannerIframe")
+                          .contentWindow.postMessage(
+                            '{"event":"command","func":"pauseVideo","args":""}',
+                            "*"
+                          );
+                      }
+                    }}
+                  >
                     <ProgressiveImg
                       placeholderSrc={`https://image.tmdb.org/t/p/w45/${data.poster_path}`}
                       src={`https://image.tmdb.org/t/p/${
-                        isMedium ? "w185" : isSmall ? "w154" : "w342"
+                        isSmall? "w185" : "w342"
                       }${data.poster_path}`}
                       styles={{
                         objectFit: "contain",
                         width: "100%",
                         height: "100%",
                         transition: "transform 0.45s",
-                        margin: "25px 0 25px 5px",
+
                         borderRadius: "5px",
                       }}
-                      tabIndex="0"
                       alt="영화 포스터"
-                      onClick={() => {
-                        onClickMovieInfo(data);
-                        // movieInfo 모달창을 열때 banner 동영상이 실행중 이라면 중지 시킴
-                        if (document.querySelector(".bannerIframe") !== null) {
-                          document
-                            .querySelector(".bannerIframe")
-                            .contentWindow.postMessage(
-                              '{"event":"command","func":"pauseVideo","args":""}',
-                              "*"
-                            );
-                        }
-                      }}
                     />
-                  </MoiveItem>
+                  </MovieItemBtn>
                 </SwiperSlide>
               );
             })}
-          </MovieItems>
+          </MovieItemWrapper>
         </SwiperContainer>
       </Wrapper>
       {isOpenMovieInfo && (

@@ -19,22 +19,38 @@ export const Title = styled.h2`
   }
 `;
 
-export const MovieItems = styled.div`
-  display: flex;
-  padding: 20px 0 20px 20px;
-  transition: transform 400ms;
-  width: 100%;
-`;
+export const MovieItemWrapper = styled.div``;
 
-export const MoiveItem = styled.div`
-  cursor: pointer;
+export const MovieItemBtn = styled.button`
+  background: none;
   transition: transform 400ms;
   width: 95%;
   border-radius: 5px;
+  margin: 25px 0 25px 5px;
 `;
 
 export const SwiperContainer = styled(Swiper)`
   min-height: 208px;
+  .swiper-button-next {
+    background: url("assets/icon-nextBtn.svg") no-repeat center left 8px / 15px
+      rgba(255, 255, 255, 0.8);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+  .swiper-button-prev {
+    background: url("assets/icon-prevBtn.svg") no-repeat center right 8px/ 15px rgba(255, 255, 255, 0.8);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    display: none;
+  }
+  
   &.swiper .swiper-pagination-bullet {
     background: gray !important;
     opacity: 1 !important;
