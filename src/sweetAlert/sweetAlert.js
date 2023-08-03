@@ -1,14 +1,14 @@
 import Swal from "sweetalert2";
 import "./sweetAlert.css";
-
-export const sweetToast = (title, icon = null) => {
+import 'sweetalert2/dist/sweetalert2.min.css';
+export const sweetToast = (title, icon = null, timer = 2000) => {
   return Swal.fire({
     toast: true,
     title,
     position: "top",
     showConfirmButton: false,
     icon,
-    timer: 2000,
+    timer
   });
 };
 
@@ -16,7 +16,7 @@ export const sweetConfirm = (
   title,
   confirmButtonText,
   cancelButtonText,
-  cb,
+  cb
 ) => {
   return Swal.fire({
     title,
@@ -26,10 +26,10 @@ export const sweetConfirm = (
     confirmButtonText,
     cancelButtonText,
     showCloseButton: false,
-  }).then(({isConfirmed}) => {
-    console.log(isConfirmed)
+  }).then(({ isConfirmed }) => {
+    console.log(isConfirmed);
     if (isConfirmed) {
       cb();
-    } 
+    }
   });
 };

@@ -24,6 +24,7 @@ const userData = JSON.parse(localStorage.getItem("user")) || {};
 export const login = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    sweetToast(`${auth.currentUser.displayName}님 환영합니다.`, "success", 3000);
   } catch (error) {
     if (error.message.includes("auth/invalid-email")) {
       sweetToast("유효하지 않은 이메일 형식 입니다!", "warning");
