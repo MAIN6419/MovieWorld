@@ -21,32 +21,7 @@ export const ModalCardWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-`;
-export const ModalCard = styled.div`
-  position: fixed;
-  z-index: 999;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  height: 100%;
-  width: 100%;
-  max-width: 1000px;
-  color: #fff;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-    0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
-  background: #111;
-  transition: all 0.5s ease-in-out 2s;
   animation: fadeIn 0.5s;
-  overflow-y: scroll;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  :focus {
-    outline: none;
-  }
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -66,6 +41,30 @@ export const ModalCard = styled.div`
       opacity: 0;
       transform: translate(-50%, 50%);
     }
+  }
+`;
+export const ModalCard = styled.div`
+  position: fixed;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  height: 100%;
+  width: 100%;
+  max-width: 1000px;
+  color: #fff;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+  background: #111;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  :focus {
+    outline: none;
   }
 `;
 

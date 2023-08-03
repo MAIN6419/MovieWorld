@@ -25,11 +25,12 @@ export default function MovieInfo({
     query: "(max-width: 780px)and(min-width:501px)",
   });
   const isSmall = useMediaQuery({ query: "(max-width: 500px)" });
-  const modalRef = useRef(null);
+  const modalCardRef = useRef(null);
   const filterRef = useRef(null);
   const iframeRef = useRef(null);
   const closeBtnRef = useRef(null);
   const likeBtnRef = useRef(null);
+  const modalCardWrapperRef = useRef(null);
 
   const fetchLike = async () => {
     if (user) {
@@ -41,12 +42,7 @@ export default function MovieInfo({
   };
 
   const onClickClose = () => {
-    if (isPlay) {
-      setIsPlay(false);
-      modalRef.current.focus();
-      return;
-    }
-    modalRef.current.style.animation = "fadeOut 0.6s";
+    modalCardWrapperRef.current.style.animation = "fadeOut 0.6s";
     setTimeout(() => {
       setIsOpenMovieInfo(false);
       document.body.style.overflow = "auto";
@@ -78,7 +74,7 @@ export default function MovieInfo({
       sweetToast("현재 영상이 존재하지 않습니다!", "warning");
       return;
     }
-    modalRef.current.scroll({ top: 0, behavior: "smooth" });
+    modalCardRef.current.scroll({ top: 0, behavior: "smooth" });
     setVideoUrl(vedio);
     setIsPlay(true);
   };
@@ -136,15 +132,17 @@ export default function MovieInfo({
   }, [isPlay]);
 
   useEffect(() => {
-    if (videoData.id) modalRef.current.focus();
+    if (videoData.id) modalCardRef.current.focus();
   }, [videoData]);
 
   return (
     <>
       {videoData.id && (
         <MovieInfoUI
-          modalRef={modalRef}
+        modalCardWrapperRef={modalCardWrapperRef}
+          modalCardRef={modalCardRef}
           isPlay={isPlay}
+          setIsPlay={setIsPlay}
           videoData={videoData}
           like={like}
           videoUrl={videoUrl}

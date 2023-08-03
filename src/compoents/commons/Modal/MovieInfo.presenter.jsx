@@ -39,10 +39,11 @@ import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { SwiperSlide } from "swiper/react";
 import ModalTopbutton from "../topButton/ModalTopbutton";
 
-
 export default function MovieInfoUI({
-  modalRef,
+  modalCardWrapperRef,
+  modalCardRef,
   isPlay,
+  setIsPlay,
   like,
   videoUrl,
   videoData,
@@ -57,15 +58,15 @@ export default function MovieInfoUI({
   likeBtnRef,
   setMypageLikeData,
 }) {
-  console.log(modalRef.current);
+
   return (
     <ModalWrapper>
       <ModalTitle className="a11y-hidden">영화정보</ModalTitle>
       <ModalDim onClick={onClickClose}></ModalDim>
-      <ModalCardWrapper>
+      <ModalCardWrapper ref={modalCardWrapperRef}>
         <ModalCard
           className="modalCard"
-          ref={modalRef}
+          ref={modalCardRef}
           tabIndex="0"
           onKeyDown={(e) => {
             if (e.keyCode === 27) {
@@ -189,7 +190,6 @@ export default function MovieInfoUI({
                         onClick={() => onClickPlay(video.key)}
                       >
                         <VideoThumbnail
-                          style={{ width: "100%", maxWidth: "300px" }}
                           src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
                           alt="영화 관련영상"
                         />
@@ -208,7 +208,14 @@ export default function MovieInfoUI({
           />
 
           <CloseBtn
-            onClick={onClickClose}
+            onClick={() => {
+              if (isPlay) {
+                setIsPlay(false);
+                modalCardRef.current.focus();
+                return;
+              }
+              onClickClose();
+            }}
             ref={closeBtnRef}
             onKeyDown={(e) => {
               isPlay
@@ -219,7 +226,7 @@ export default function MovieInfoUI({
             <span className="a11y-hidden">닫기</span>
           </CloseBtn>
         </ModalCard>
-        {<ModalTopbutton modalRef={modalRef}/>}
+        {<ModalTopbutton modalRef={modalCardRef} />}
       </ModalCardWrapper>
     </ModalWrapper>
   );
