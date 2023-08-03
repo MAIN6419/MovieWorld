@@ -30,9 +30,7 @@ export default function TopButton({ targetElement = window }) {
 
   return (
     isShow && (
-      <Btn onClick={scrollToTop}>
-        <span className="a11y-hidden"></span>
-      </Btn>
+      <Btn onClick={scrollToTop} aria-label="Top"/>
     )
   );
 }

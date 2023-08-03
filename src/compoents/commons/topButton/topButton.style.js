@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Btn = styled.button`
   position: fixed;
-  z-index: 999;
+  z-index: 990;
   bottom: 40px;
   right: 20px;
   width: 44px;
@@ -29,5 +29,10 @@ export const Btn = styled.button`
     body.webp & {
     background: url("assets/webp/icon-topbutton.webp") no-repeat center / 38px;
   }
+
   }
 `;
+
+export const ModalBtn = styled(Btn)`
+z-index: 999;
+`
