@@ -2,7 +2,11 @@ import { v4 as uuidv4 } from "uuid";
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../../context/userContext";
 import { Timestamp } from "firebase/firestore";
-import { addReview, fetchAddReviewData } from "../../../firebase/reviewAPI";
+import {
+  addReview,
+  fetchAddReviewData,
+  fetchFirstReview,
+} from "../../../firebase/reviewAPI";
 import ReviewFormUI from "./ReviewForm.presenter";
 import { sweetToast } from "../../../sweetAlert/sweetAlert";
 export default function ReviewForm({
@@ -66,14 +70,16 @@ export default function ReviewForm({
           setReviewData(data);
           sweetToast("리뷰가 작성되었습니다.", "success");
         } else {
-          if (spoiler && !showSpoilerData) return;
-          setReviewData([
-            {
-              ...newReviewData,
-              reviewer: userData.displayName,
-              reviewerImg: userData.photoURL,
-            },
-          ]);
+          const { res, data } = await fetchFirstReview(
+            movieData.id,
+            limitPage,
+            filter,
+            showSpoilerData
+          );
+          setPage(res.docs[res.docs.length - 1]);
+          setHasMore(res.docs.length / limitPage >= 0);
+          setReviewData(data);
+          sweetToast("리뷰가 작성되었습니다.", "success");
         }
       }
     } else {
@@ -83,7 +89,6 @@ export default function ReviewForm({
     setTextCount(0);
     setRating(0);
   };
-
 
   return (
     <ReviewFormUI
