@@ -76,7 +76,6 @@ export default function ReviewListItem({
       removeReview(movieId, reviewItem.id);
       setReviewData((prev) => prev.filter((item) => item.id !== reviewItem.id));
       let newUserData = { ...userData };
-      console.log(newUserData);
       newUserData = userData.reviewList.filter((review) => review !== movieId);
       setUserData(newUserData);
       if (setMypageReviewData) {

@@ -27,7 +27,6 @@ export const sweetConfirm = (
     cancelButtonText,
     showCloseButton: false,
   }).then(({ isConfirmed }) => {
-    console.log(isConfirmed);
     if (isConfirmed) {
       cb();
     }

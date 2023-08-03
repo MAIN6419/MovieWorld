@@ -105,7 +105,6 @@ export default function ChangeProfile({
   }, []);
 
   useEffect(() => {
-    console.log("a");
     imgBtnRef.current.focus();
   }, []);
   return (
