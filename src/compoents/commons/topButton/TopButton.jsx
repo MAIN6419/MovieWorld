@@ -1,36 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Btn } from "./topButton.style";
 
-export default function TopButton({ targetElement = window }) {
+export default function TopButton() {
   const [isShow, setIsShow] = useState(false);
+  const topBtnRef = useRef(null);
 
   const scrollToTop = () => {
-    targetElement.scroll({
+    window.scroll({
       top: 0,
       behavior: "smooth",
     });
   };
 
   const handleScroll = () => {
-    if (
-      targetElement === window
-        ? targetElement.scrollY
-        : targetElement.scrollTop > 500
+    if (window.scrollY > 500
     ) {
       setIsShow(true);
-    } else {
-      setIsShow(false);
+    } else if (topBtnRef.current){
+      topBtnRef.current.style.animation = "topBtnFadeOut 0.5s";
+      setTimeout(() => {
+        setIsShow(false);
+      }, 400);
     }
   };
 
   useEffect(() => {
-    targetElement.addEventListener("scroll", handleScroll);
-    return () => targetElement.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    isShow && (
-      <Btn onClick={scrollToTop} aria-label="Top"/>
-    )
+    isShow && <Btn ref={topBtnRef} onClick={scrollToTop} aria-label="Top" />
   );
 }

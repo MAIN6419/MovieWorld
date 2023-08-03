@@ -9,16 +9,24 @@ export const Btn = styled.button`
   height: 44px;
   background: url("assets/icon-topbutton.svg") no-repeat center / 44px;
   color: #fff;
-  animation: TopButtonfadeIn 1s;
+  animation: topBtnfadeIn 1s;
   body.webp & {
     background: url("assets/webp/icon-topbutton.webp") no-repeat center / 44px;
   }
-  @keyframes TopButtonfadeIn {
+  @keyframes topBtnfadeIn {
     from {
       opacity: 0;
     }
     to {
       opacity: 1;
+    }
+  }
+  @keyframes topBtnFadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
     }
   }
   @media screen and (max-width: 486px) {
