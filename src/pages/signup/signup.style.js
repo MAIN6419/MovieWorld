@@ -31,7 +31,7 @@ export const ProgressWrapper = styled.section`
   width: 100%;
   margin-bottom: 80px;
 `;
-export const ProgressTitle = styled.h3``;
+export const ProgressTitle = styled.h2``;
 
 export const ProgressCheckWrapper = styled.div`
   position: relative;
