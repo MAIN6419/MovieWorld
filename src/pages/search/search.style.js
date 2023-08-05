@@ -26,7 +26,8 @@ export const SearchInput = styled.input`
   border: none;
   color: #fff;
   body.webp & {
-    background: url("assets/webp/icon-search.webp") no-repeat left top 1px / 20px;
+    background: url("assets/webp/icon-search.webp") no-repeat left top 1px /
+      20px;
   }
   ::placeholder {
     color: #bdbdbd;
@@ -60,7 +61,13 @@ export const SearchMovieItem = styled.li`
     transform: ${isMobile ? "" : "scale(1.05)"};
   }
 `;
-
+export const SearchMovieBtn = styled.button`
+  width: 100%;
+  height: 100%;
+  background: none;
+  padding: 3px;
+  border-radius: 10px;
+`;
 export const SearchMovieImgWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -70,4 +77,38 @@ export const SearchMovieImgWrapper = styled.div`
 
 export const InfiniteScrollTarget = styled.div`
   height: 20px;
-`
+`;
+
+export const SearchBlank = styled.div`
+  width: 100%;
+  max-width: 360px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const SearchBlankImg = styled.img`
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+`;
+
+export const SearchBlankKeyword = styled.strong`
+  display: inline-block;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 말줄임 적용 */
+`;
+
+export const SearchBlankText = styled.p`
+  white-space: pre-line;
+  line-height: 1.2;
+  text-align: center;
+`;

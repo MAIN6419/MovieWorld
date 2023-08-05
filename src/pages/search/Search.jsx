@@ -8,6 +8,11 @@ import {
   SearchLabel,
   SearchWrapper,
   InfiniteScrollTarget,
+  SearchBlank,
+  SearchBlankImg,
+  SearchBlankText,
+  SearchBlankKeyword,
+  SearchMovieBtn,
 } from "./search.style";
 import { debounce } from "lodash";
 import { fetchSearchMovie, fetchTrending } from "../../api/movie";
@@ -16,10 +21,11 @@ import { useInView } from "react-intersection-observer";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
 import TopButton from "../../compoents/commons/topButton/TopButton";
 import { useMovieInfo } from "../../hook/useMovieInfo";
-import Blank from "../../compoents/commons/blank/Blank";
 import { resolveWebp } from "../../libray/webpSupport";
+import { WebpContext } from "../../context/webpContext";
 
 export default function Search() {
+  const { webpSupported } = useContext(WebpContext);
   const [keyWord, setKeyword] = useState("");
   const [movieData, setMovieData] = useState([]);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
@@ -97,7 +103,19 @@ export default function Search() {
           />
         </SearchForm>
         {!movieData.length ? (
-          <Blank text={`"${keyWord}"에 대한 검색결과가 없습니다.`} />
+          keyWord&&<SearchBlank>
+            <SearchBlankImg
+              src={resolveWebp(
+                webpSupported,
+                "assets/webp/icon-blank.webp",
+                "svg"
+              )}
+            />
+            <SearchBlankText>
+              <SearchBlankKeyword>"{keyWord}"</SearchBlankKeyword>
+              {' 에 대한\n검색 결과가 존재하지 않습니다.'}
+            </SearchBlankText>
+          </SearchBlank>
         ) : (
           <>
             <SearchMovieList>
@@ -105,29 +123,33 @@ export default function Search() {
                 return (
                   // 포스터가 있는 영화 데이터만 받아옴
                   data.poster_path && (
-                    <SearchMovieItem key={data.id} tabIndex="0">
-                      <SearchMovieImgWrapper>
-                        <ProgressiveImg
-                          placeholderSrc={`https://image.tmdb.org/t/p/w45/${data.poster_path}`}
-                          src={`https://image.tmdb.org/t/p/w342/${data.poster_path}`}
-                          styles={{
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                            top: "0",
-                            left: "0",
-                            borderRadius: "10px",
-                          }}
-                          alt="영화 포스터"
-                          onError={(e) =>
-                            (e.target.src = resolveWebp(
-                              "assets/webp/placeholderImg.webp",
-                              "svg"
-                            ))
-                          }
-                          onClick={() => onClickMovieInfo(data)}
-                        />
-                      </SearchMovieImgWrapper>
+                    <SearchMovieItem key={data.id}>
+                      <SearchMovieBtn
+                        type="button"
+                        onClick={() => onClickMovieInfo(data)}
+                      >
+                        <SearchMovieImgWrapper>
+                          <ProgressiveImg
+                            placeholderSrc={`https://image.tmdb.org/t/p/w45/${data.poster_path}`}
+                            src={`https://image.tmdb.org/t/p/w342/${data.poster_path}`}
+                            styles={{
+                              position: "absolute",
+                              width: "100%",
+                              height: "100%",
+                              top: "0",
+                              left: "0",
+                              borderRadius: "10px",
+                            }}
+                            alt="영화 포스터"
+                            onError={(e) =>
+                              (e.target.src = resolveWebp(
+                                "assets/webp/placeholderImg.webp",
+                                "svg"
+                              ))
+                            }
+                          />
+                        </SearchMovieImgWrapper>
+                      </SearchMovieBtn>
                     </SearchMovieItem>
                   )
                 );
