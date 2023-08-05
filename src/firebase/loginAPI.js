@@ -12,7 +12,6 @@ import {
 } from "firebase/auth";
 import { db } from "./setting";
 import { sweetToast } from "../sweetAlert/sweetAlert";
-import { isMobile } from "react-device-detect";
 
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
@@ -25,7 +24,11 @@ const userData = JSON.parse(localStorage.getItem("user")) || {};
 export const login = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    sweetToast(`${auth.currentUser.displayName}님 환영합니다.`, "success", 3000);
+    sweetToast(
+      `${auth.currentUser.displayName}님 환영합니다.`,
+      "success",
+      3000
+    );
   } catch (error) {
     if (error.message.includes("auth/invalid-email")) {
       sweetToast("유효하지 않은 이메일 형식 입니다!", "warning");
@@ -54,7 +57,6 @@ export const login = async (email, password) => {
 
 export const socialLogin = async (type) => {
   try {
-    if(isMobile) return sweetToast("현재 모바일 소셜로그인이 지원되지 않습니다!", "warning")
     let provider;
     if (type === "google") {
       provider = googleProvider;
@@ -104,18 +106,18 @@ export const socialLogin = async (type) => {
 
 // 로그아웃 API
 export const logout = async () => {
-    try {
-      // 로그아웃
-      await signOut(auth);
-      localStorage.removeItem("user");
-      window.location.reload();
-    } catch (error) {
-      sweetToast(
-        "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
-        "warning"
-      );
-      throw error;
-    }
+  try {
+    // 로그아웃
+    await signOut(auth);
+    localStorage.removeItem("user");
+    window.location.reload();
+  } catch (error) {
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+      "warning"
+    );
+    throw error;
+  }
 };
 
 // 유저 데이터 API
