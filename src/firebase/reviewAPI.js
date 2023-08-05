@@ -22,33 +22,17 @@ import { sweetToast } from "../sweetAlert/sweetAlert";
 const auth = getAuth();
 
 // 리뷰 첫번째 목록 API
-export const fetchFirstReview = async (
-  movieId,
-  limitPage,
-  filter,
-  isSpoiler
-) => {
+export const fetchFirstReview = async (movieId, limitPage, filter) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    let q;
-    if (isSpoiler) {
-      q = query(
-        reviewRef,
-        orderBy(filter.target, filter.order),
-        where("isBlock", "==", false),
-        limit(limitPage)
-      );
-    } else {
-      q = query(
-        reviewRef,
-        orderBy(filter.target, filter.order),
-        where("isBlock", "==", false),
-        where("spoiler", "==", false),
-        limit(limitPage)
-      );
-    }
+    const q = query(
+      reviewRef,
+      orderBy(filter.target, filter.order),
+      where("isBlock", "==", false),
+      limit(limitPage)
+    );
     const res = await getDocs(q);
 
     let data = res.docs.map((el) => el.data());
@@ -77,33 +61,17 @@ export const fetchFirstReview = async (
 };
 
 // 리뷰 목록 페이징 API
-export const fetchReviewPage = async (
-  movieId,
-  limitPage,
-  filter,
-  isSpoiler
-) => {
+export const fetchReviewPage = async (movieId, limitPage, filter) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    let q;
-    if (isSpoiler) {
-      q = query(
-        reviewRef,
-        orderBy(filter.target, filter.order),
-        where("isBlock", "==", false),
-        startAfter(limitPage)
-      );
-    } else {
-      q = query(
-        reviewRef,
-        orderBy(filter.target, filter.order),
-        where("isBlock", "==", false),
-        where("spoiler", "==", false),
-        startAfter(limitPage)
-      );
-    }
+    const q = query(
+      reviewRef,
+      orderBy(filter.target, filter.order),
+      where("isBlock", "==", false),
+      startAfter(limitPage)
+    );
     const res = await getDocs(q);
     let data = res.docs.map((el) => el.data());
 
@@ -178,28 +146,17 @@ export const addReview = async (movieData, reviewData) => {
 };
 
 // 리뷰 작성 후 스크롤 내린 만큼의 이전 데이터도 같이 불러오는 API
-export const fetchAddReviewData = async (movieId, page, filter, isSpoiler) => {
+export const fetchAddReviewData = async (movieId, page, filter) => {
   try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
-    let q;
-    if (isSpoiler) {
-      q = query(
-        reviewRef,
-        orderBy(filter.target, filter.order),
-        where("isBlock", "==", false),
-        endAt(page)
-      );
-    } else {
-      q = query(
-        reviewRef,
-        orderBy(filter.target, filter.order),
-        where("isBlock", "==", false),
-        where("spoiler", "==", false),
-        endAt(page)
-      );
-    }
+    const q = query(
+      reviewRef,
+      orderBy(filter.target, filter.order),
+      where("isBlock", "==", false),
+      endAt(page)
+    );
 
     const res = await getDocs(q);
     let data = res.docs.map((el) => el.data());
@@ -272,6 +229,7 @@ export const editReview = async (movieId, editData) => {
     await updateDoc(updateReviewRef, {
       rating: editData.rating,
       contents: editData.contents,
+      spoiler: editData.spoiler,
     });
   } catch (error) {
     sweetToast(
