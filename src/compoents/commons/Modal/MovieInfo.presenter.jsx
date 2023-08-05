@@ -219,7 +219,7 @@ export default function MovieInfoUI({
           <Review
             movieData={videoData}
             filterRef={filterRef}
-            setMypageLikeData={setMypageLikeData}
+            setMypageReviewData={setMypageLikeData}
           />
 
           <CloseBtn

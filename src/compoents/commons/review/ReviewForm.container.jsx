@@ -10,6 +10,7 @@ import {
 import ReviewFormUI from "./ReviewForm.presenter";
 import { sweetToast } from "../../../sweetAlert/sweetAlert";
 export default function ReviewForm({
+  setMypageReviewData,
   movieData,
   reviewData,
   page,
@@ -57,6 +58,9 @@ export default function ReviewForm({
           spoiler,
         };
         await addReview(movieData, newReviewData);
+        if (setMypageReviewData) {
+          setMypageReviewData((prev) => [...prev, movieData]);
+        }
         if (reviewData.length) {
           // 댓글 추가후 이전 데이터들도 같이 불러오기 위해서 사용(스크롤 유지)
           const { res, data } = await fetchAddReviewData(

@@ -139,7 +139,7 @@ export default function MovieInfo({
     <>
       {videoData.id && (
         <MovieInfoUI
-        modalCardWrapperRef={modalCardWrapperRef}
+          modalCardWrapperRef={modalCardWrapperRef}
           modalCardRef={modalCardRef}
           isPlay={isPlay}
           setIsPlay={setIsPlay}
@@ -156,7 +156,7 @@ export default function MovieInfo({
           iframeRef={iframeRef}
           closeBtnRef={closeBtnRef}
           likeBtnRef={likeBtnRef}
-          setMypageReivewData={setMypageLikeData}
+          setMypageLikeData={setMypageLikeData}
         />
       )}
     </>

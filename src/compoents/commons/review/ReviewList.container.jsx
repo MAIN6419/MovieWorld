@@ -13,7 +13,7 @@ export default function ReviewList({
   setPage,
   hasMore,
   setHasMore,
-  setMypageData,
+  setMypageReviewData,
   filterRef,
   filter,
   setFilter,
@@ -95,7 +95,7 @@ export default function ReviewList({
       userData={userData}
       setUserData={setUserData}
       movieData={movieData}
-      setMypageReviewData={setMypageData}
+      setMypageReviewData={setMypageReviewData}
       infinityScrollRef={ref}
       isSmall={isSmall}
     />

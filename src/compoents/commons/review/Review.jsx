@@ -31,6 +31,7 @@ const Review = ({ movieData, filterRef, setMypageReviewData }) => {
       <Title>리뷰</Title>
       <ReviewForm
         movieData={movieData}
+        setMypageReviewData={setMypageReviewData}
         reviewData={reviewData}
         page={page}
         filter={filter}
@@ -43,7 +44,7 @@ const Review = ({ movieData, filterRef, setMypageReviewData }) => {
       />
       <ReviewList
         movieData={movieData}
-        setMypageData={setMypageReviewData}
+        setMypageReviewData={setMypageReviewData}
         filterRef={filterRef}
         reviewData={reviewData}
         setReviewData={setReviewData}
