@@ -6,17 +6,12 @@ import {
   OpectionList,
   Opection,
   OpectionBtn,
-  ToggleSwithTag,
-  ToggleSwitch,
-  ToggleButton,
-  ToggleCheckbox,
-  ToggleWrapper,
+  InfinityScollTarget
 } from "./review.style";
 import ReviewListItem from "./ReviewListItem.container";
 import Blank from "../blank/Blank";
+
 export default function ReviewListUI({
-  showSpoilerData,
-  setShowSpoilerData,
   filterRef,
   isOpenSelect,
   setIsOpenSelect,
@@ -33,35 +28,12 @@ export default function ReviewListUI({
   setUserData,
   movieData,
   setMypageReviewData,
-  infinityScrollRef
+  infinityScrollRef,
+  isSmall
 }) {
   return (
     <>
       <SelectWrapper>
-        <ToggleWrapper>
-          <ToggleCheckbox
-            type="checkbox"
-            id="toggle-showSpoiler"
-            className="a11y-hidden"
-            tabIndex="-1"
-            onClick={() => setShowSpoilerData(!showSpoilerData)}
-          />
-          <ToggleSwithTag>스포일러 리뷰 포함</ToggleSwithTag>
-          <ToggleSwitch
-            htmlFor="toggle-showSpoiler"
-            className="toggleSwitch"
-            toggle={showSpoilerData}
-            tabIndex="0"
-            onKeyDown={(e) => {
-              if (e.keyCode === 13) setShowSpoilerData(!showSpoilerData);
-            }}
-          >
-            <ToggleButton
-              className="toggleButton"
-              toggle={showSpoilerData}
-            ></ToggleButton>
-          </ToggleSwitch>
-        </ToggleWrapper>
         <Select
           type="button"
           onClick={onClickSelect}
@@ -154,10 +126,10 @@ export default function ReviewListUI({
               );
             })}
           </ReviewUl>
-          <div ref={infinityScrollRef}></div>
+          <InfinityScollTarget ref={infinityScrollRef}></InfinityScollTarget>
         </>
       ) : (
-        <Blank text={"작성된 리뷰가 없어요."} />
+        <Blank text={"작성된 리뷰가 없어요."} size={isSmall ? "small" : ""}/>
       )}
     </>
   );

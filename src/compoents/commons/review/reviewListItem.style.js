@@ -14,14 +14,18 @@ export const ReviewItemRate = styled(Rate)`
   & .ant-rate-star-zero svg {
     fill: #fff !important;
   }
+  & .ant-rate-star-focused:first-child svg {
+    fill: #fff !important;
+  }
+  & .ant-rate-star-full.ant-rate-star-focused:first-child svg {
+    fill: gold !important;
+  }
   font-size: 20px;
   &:where(.css-dev-only-do-not-override-14wwjjs).ant-rate
     .ant-rate-star:not(:last-child) {
     margin-inline-end: 3px;
   }
-  @media screen and (max-width: 486px) {
-    font-size: 18px;
-  }
+
 `;
 
 export const ReviewItemRateCount = styled.strong`
@@ -34,6 +38,9 @@ export const ReviewerWrapper = styled.div`
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+  justify-content: ${props=>props.isEdit&&"space-between"};
+  padding: ${props=>props.isEdit&&"5px 0"};
+  
 `;
 
 export const ReviewerImg = styled.img`
@@ -56,7 +63,7 @@ export const Reviewer = styled.span`
 `;
 
 export const ReviewContents = styled.p`
-  color: #fff;
+  color: ${(props) => (props.isSpoiler ? "rgba(189,189,189)" : "#fff")};
   margin-left: 10px;
   font-size: 16px;
   margin-bottom: 5px;
@@ -64,6 +71,18 @@ export const ReviewContents = styled.p`
   line-height: 1.5;
   @media screen and (max-width: 486px) {
     font-size: 14px;
+  }
+`;
+
+export const ShowSpoilerBtn = styled.button`
+  background: none;
+  color: #e50914 !important;
+  border-bottom: 1px solid #e50914;
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  @media screen and (max-width: 486px) {
+    font-size: 12px;
   }
 `;
 
@@ -139,7 +158,7 @@ export const EditBtns = styled.div``;
 export const EditBtn = styled.button`
   background: ${(props) => (props.disabled ? "#292a2b" : "gold")};
   padding: 8px 10px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
   transition: all 0.5s;
   color: ${(props) => (props.disabled ? "rgba(245, 245, 245, 0.8)" : "#000")};

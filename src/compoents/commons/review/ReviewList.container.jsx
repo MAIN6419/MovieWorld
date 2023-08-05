@@ -3,6 +3,7 @@ import { optKeyboardFocus } from "../../../libray/optKeyBoard";
 import { useInView } from "react-intersection-observer";
 import { fetchFirstReview, fetchReviewPage } from "../../../firebase/reviewAPI";
 import ReviewListUI from "./ReviewList.presenter";
+import { useMediaQuery } from "react-responsive";
 
 export default function ReviewList({
   movieData,
@@ -13,8 +14,6 @@ export default function ReviewList({
   hasMore,
   setHasMore,
   setMypageData,
-  showSpoilerData,
-  setShowSpoilerData,
   filterRef,
   filter,
   setFilter,
@@ -22,6 +21,7 @@ export default function ReviewList({
   userData,
   setUserData,
 }) {
+  const isSmall = useMediaQuery({ query: "(max-width:501px)" });
   const [isOpenSelect, setIsOpenSelect] = useState(false);
   const [selectValue, setSelectValue] = useState("최신순");
   const newestFilterRef = useRef(null);
@@ -53,8 +53,7 @@ export default function ReviewList({
     const { res, data } = await fetchFirstReview(
       movieData.id,
       limitPage,
-      filter,
-      showSpoilerData
+      filter
     );
     setReviewData(data);
     setPage(res.docs[res.docs.length - 1]);
@@ -62,22 +61,16 @@ export default function ReviewList({
   };
 
   const fetchAddData = async () => {
-    const { res, data } = await fetchReviewPage(
-      movieData.id,
-      page,
-      filter,
-      showSpoilerData
-    );
+    const { res, data } = await fetchReviewPage(movieData.id, page, filter);
     setReviewData((prev) => [...prev, ...data]);
     setPage(res.docs[res.docs.length - 1]);
     setHasMore(res.docs.length === limitPage);
   };
 
-
   // 정렬이 바뀔때 마다 데이터를 새로 받아옴
   useEffect(() => {
     fetchFirstPage();
-  }, [filter, showSpoilerData]);
+  }, [filter]);
 
   useEffect(() => {
     if (hasMore && inview) {
@@ -85,11 +78,8 @@ export default function ReviewList({
     }
   }, [inview]);
 
-
   return (
     <ReviewListUI
-      showSpoilerData={showSpoilerData}
-      setShowSpoilerData={setShowSpoilerData}
       filterRef={filterRef}
       isOpenSelect={isOpenSelect}
       setIsOpenSelect={setIsOpenSelect}
@@ -107,6 +97,7 @@ export default function ReviewList({
       movieData={movieData}
       setMypageReviewData={setMypageData}
       infinityScrollRef={ref}
+      isSmall={isSmall}
     />
   );
 }

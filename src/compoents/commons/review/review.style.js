@@ -68,7 +68,6 @@ export const ToggleWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
 `;
 export const ToggleSwithTag = styled.span`
   font-weight: 500;
@@ -163,7 +162,7 @@ export const TextAreaBtn = styled.button`
   background: ${(props) => (props.disabled ? "##292a2b" : "gold")};
   float: right;
   padding: 8px 10px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
   transition: all 0.5s;
   color: ${(props) => (props.disabled ? "rgba(245, 245, 245, 0.8)" : "#000")};
@@ -312,4 +311,9 @@ export const OpectionBtn = styled.button`
   @media screen and (max-width: 486px) {
     font-size: 12px;
   }
+`;
+
+export const InfinityScollTarget = styled.div`
+  position: relative;
+  bottom: 120px;
 `;
