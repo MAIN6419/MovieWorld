@@ -27,7 +27,7 @@ export default function ChangeProfile({
   const cancelBtnRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(user.photoURL);
   const [uploadImg, setUploadImg] = useState("");
-  const [displayNameValue, displayNameValid, onChnageDisplayName] =
+  const [displayNameValue, displayNameValid, onChnageDisplayName, setDisplayNameValue, setDisplayNameValid] =
     useValidationInput(user.displayName, "displayName", true);
 
   const onClickChangeImg = () => {
@@ -106,6 +106,7 @@ export default function ChangeProfile({
 
   useEffect(() => {
     imgBtnRef.current.focus();
+    setDisplayNameValid({errorMsg:"", valid: true})
   }, []);
   return (
     <ChangeProfileUI
