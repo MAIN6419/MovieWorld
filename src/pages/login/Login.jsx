@@ -84,7 +84,7 @@ export default function Login() {
           </InputWrapper>
 
           <FindAccountLink to={"/findAccount"}>
-            아이디{" "}
+            이메일{" "}
             <span style={{ fontSize: "10px", verticalAlign: "top" }}>|</span>{" "}
             비밀번호 찾기
           </FindAccountLink>
