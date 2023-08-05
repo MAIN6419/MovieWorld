@@ -91,6 +91,29 @@ export const MovieContetns = styled.div`
   padding: 20px 20px 0 20px;
 `;
 
+export const MovieContentsInfo = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const MovieContentsInfoItem = styled.li`
+  font-size: 20px;
+  font-weight: 500;
+  @media screen and (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
+export const MovieContetnsTag = styled.span`
+  font-size: 20px;
+  font-weight: 500;
+  flex-shrink: 0;
+  @media screen and (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
 export const MovieTitle = styled.h3`
   display: flex;
   align-items: center;
@@ -116,20 +139,12 @@ export const MovieRelease = styled.time`
 
 export const MovieGenreWrapper = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 5px;
 `;
 
-export const MovieGenreTag = styled.span`
-  font-size: 20px;
-  font-weight: 500;
-  @media screen and (max-width: 768px) {
-    font-size: 18px;
-  }
-`;
 export const MovieGenre = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
   font-size: 20px;
   font-weight: 500;
   @media screen and (max-width: 768px) {
@@ -138,9 +153,7 @@ export const MovieGenre = styled.ul`
 `;
 
 export const MovieGenreLi = styled.li`
-  :first-child {
-    margin-left: -5px;
-  }
+  margin-right: 8px;
   @media screen and (max-width: 768px) {
     font-size: 18px;
   }
@@ -177,6 +190,7 @@ export const MovieRating = styled.span`
 
 export const MovieRatingIcon = styled(StarFilled)`
   color: gold;
+  margin-right: 5px;
 `;
 
 export const MovieDesc = styled.p`

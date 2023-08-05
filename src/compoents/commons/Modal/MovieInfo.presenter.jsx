@@ -10,7 +10,6 @@ import {
   MovieDesc,
   MovieImg,
   MovieImgWrapper,
-  MovieRating,
   MovieRatingIcon,
   MovieRelease,
   MovieTitle,
@@ -23,11 +22,13 @@ import {
   VideoThumbnail,
   SwiperContainer,
   VideoThumbnailBtn,
-  MovieGenreTag,
   VideoThumbnailTitle,
   MovieLike,
   CustomSwiper,
   ModalCardWrapper,
+  MovieContetnsTag,
+  MovieContentsInfoItem,
+  MovieContentsInfo,
 } from "./movieInfo.style";
 import Review from "../review/Review";
 import { optKeyboardFocus } from "../../../libray/optKeyBoard";
@@ -58,7 +59,6 @@ export default function MovieInfoUI({
   likeBtnRef,
   setMypageLikeData,
 }) {
-
   return (
     <ModalWrapper>
       <ModalTitle className="a11y-hidden">영화정보</ModalTitle>
@@ -107,51 +107,66 @@ export default function MovieInfoUI({
             <MovieTitle>
               {videoData.title || videoData.name || videoData.original_name}
             </MovieTitle>
+            <MovieContentsInfo>
+              <MovieContentsInfoItem>
+                <MovieContetnsTag>개봉 : </MovieContetnsTag>
+                <MovieRelease dateTime={videoData.release_date}>
+                  {videoData.release_date
+                    ? videoData.release_date
+                    : videoData.first_air_date}
+                </MovieRelease>
+              </MovieContentsInfoItem>
 
-            <MovieRelease dateTime={videoData.release_date}>
-              개봉 :{" "}
-              {videoData.release_date
-                ? videoData.release_date
-                : videoData.first_air_date}
-            </MovieRelease>
-            {videoData.genres && (
-              <MovieGenreWrapper>
-                <MovieGenreTag>장르 :</MovieGenreTag>
-                <MovieGenre>
-                  {videoData.genres &&
-                    videoData.genres.map(({ name }) => {
-                      return <MovieGenreLi key={name}>{name}</MovieGenreLi>;
-                    })}
-                </MovieGenre>
-              </MovieGenreWrapper>
-            )}
-            {videoData.runtime && (
-              <MovieRunTime>상영시간 : {videoData.runtime}분</MovieRunTime>
-            )}
-            <MovieRating>
-              평점 : <MovieRatingIcon />{" "}
-              {parseFloat(videoData.vote_average).toFixed(2)}
-            </MovieRating>
+              <MovieContentsInfoItem>
+                {videoData.genres && (
+                  <MovieGenreWrapper>
+                    <MovieContetnsTag>장르 : </MovieContetnsTag>
+                    <MovieGenre>
+                      {videoData.genres &&
+                        videoData.genres.map(({ name }) => {
+                          return <MovieGenreLi key={name}>{name}</MovieGenreLi>;
+                        })}
+                    </MovieGenre>
+                  </MovieGenreWrapper>
+                )}
+              </MovieContentsInfoItem>
+              <MovieContentsInfoItem>
+                {videoData.runtime && (
+                  <>
+                    <MovieContetnsTag>상영시간 : </MovieContetnsTag>
+                    <MovieRunTime>{videoData.runtime}분</MovieRunTime>
+                  </>
+                )}
+              </MovieContentsInfoItem>
+              <MovieContentsInfoItem>
+                <MovieContetnsTag>평점 :</MovieContetnsTag> <MovieRatingIcon />
+                {parseFloat(videoData.vote_average).toFixed(2)}
+              </MovieContentsInfoItem>
 
-            <MovieLike>
-              찜
-              <MovieLikeBtn
-                type="button"
-                onClick={onClickLike}
-                like={like}
-                aria-label="찜"
-                onKeyDown={(e) => {
-                  optKeyboardFocus(e, closeBtnRef.current);
-                }}
-                ref={likeBtnRef}
-              />
-            </MovieLike>
+              <MovieContentsInfoItem>
+                <MovieLike>
+                  찜
+                  <MovieLikeBtn
+                    type="button"
+                    onClick={onClickLike}
+                    like={like}
+                    aria-label="찜"
+                    onKeyDown={(e) => {
+                      optKeyboardFocus(e, closeBtnRef.current);
+                    }}
+                    ref={likeBtnRef}
+                  />
+                </MovieLike>
+              </MovieContentsInfoItem>
 
-            <MovieDesc>
-              {videoData.overview
-                ? videoData.overview
-                : "영화에 대한 설명이 없습니다."}
-            </MovieDesc>
+              <MovieContentsInfoItem>
+                <MovieDesc>
+                  {videoData.overview
+                    ? videoData.overview
+                    : "영화에 대한 설명이 없습니다."}
+                </MovieDesc>
+              </MovieContentsInfoItem>
+            </MovieContentsInfo>
 
             <VideoThumbnailTitle>관련 영상</VideoThumbnailTitle>
             <SwiperContainer>
