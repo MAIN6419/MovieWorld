@@ -17,6 +17,7 @@
   word-break: keep-all;
   width: 100%;
   margin-top: 10px;
+  line-height: 1.2;
 }
 .swal2-toast {
   width: calc(100% - 30px) !important;;
