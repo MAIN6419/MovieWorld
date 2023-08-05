@@ -63,7 +63,7 @@ export const Reviewer = styled.span`
 `;
 
 export const ReviewContents = styled.p`
-  color: ${(props) => (props.isSpoiler ? "rgba(189,189,189)" : "#fff")};
+  color: ${(props) => (props.inactive ? "rgba(189,189,189)" : "#fff")};
   margin-left: 10px;
   font-size: 16px;
   margin-bottom: 5px;

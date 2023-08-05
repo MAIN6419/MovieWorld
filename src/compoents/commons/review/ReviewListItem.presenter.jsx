@@ -151,8 +151,10 @@ export default function ReviewListItemUI({
         </EditTextAreaForm>
       ) : (
         <>
-          <ReviewContents isSpoiler={reviewItem.spoiler && !showSpoilerData}>
-            {reviewItem.spoiler
+          <ReviewContents inactive={reviewItem.isBlock||(reviewItem.spoiler && !showSpoilerData)}>
+            {reviewItem.isBlock
+              ? "신고에 의해 블라인드 처리된 리뷰입니다."
+              : reviewItem.spoiler
               ? showSpoilerData
                 ? reviewItem.contents
                 : "스포일러가 포함된 리뷰입니다."
@@ -198,7 +200,7 @@ export default function ReviewListItemUI({
                 </ReviewItemBtn>
               </>
             ) : (
-              <ReviewItemBtn onClick={onClickReport}>신고</ReviewItemBtn>
+              !reviewItem.isBlock&&<ReviewItemBtn onClick={onClickReport}>신고</ReviewItemBtn>
             )}
           </ReviewItemBottom>
         </>
