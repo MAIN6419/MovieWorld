@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   HeaderBar,
   HeaderLink,
@@ -25,6 +25,7 @@ import { useLocation } from "react-router-dom";
 import { resolveWebp } from "../../../../libray/webpSupport";
 import { WebpContext } from "../../../../context/webpContext";
 import { optKeyboardFocus } from "../../../../libray/optKeyBoard";
+import { sweetConfirm } from "../../../../sweetAlert/sweetAlert";
 
 export default function Header() {
   const { user } = useContext(UserContext);
@@ -130,7 +131,12 @@ export default function Header() {
                     <UserMenuItemBtn
                       onClick={() => {
                         setIsUserMenu(false);
-                        logout();
+                        sweetConfirm(
+                          "정말 로그아웃 하시겠습니까?",
+                          "확인",
+                          "취소",
+                          () => logout()
+                        );
                       }}
                       onKeyDown={(e) => {
                         if (e.keyCode === 27) {
