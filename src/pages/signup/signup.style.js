@@ -31,7 +31,7 @@ export const ProgressWrapper = styled.section`
   width: 100%;
   margin-bottom: 80px;
 `;
-export const ProgressTitle = styled.h2``;
+export const ProgressTitle = styled.h3``;
 
 export const ProgressCheckWrapper = styled.div`
   position: relative;
@@ -143,7 +143,7 @@ export const ProfileImgButton = styled.button`
     background: url("assets/icon-uploadImg.svg") no-repeat center / 40px;
   }
   body.webp &::after {
-    background: url("assets/icon-uploadImg.webp") no-repeat center / 40px;
+    background: url("assets/webp/icon-uploadImg.webp") no-repeat center / 40px;
   }
 `;
 
@@ -158,7 +158,7 @@ export const ProfileImgResetBtn = styled.button`
   width: 20px;
   height: 20px;
   top: -10px;
-  right: 120px;
+  right: calc(100% - 70%);
   background: url("assets/icon-close.svg") no-repeat center / 20px;
   body.webp &::after {
     background: url("assets/webp/icon-close.webp") no-repeat center / 20px;
