@@ -12,6 +12,7 @@ import {
 } from "firebase/auth";
 import { db } from "./setting";
 import { sweetToast } from "../sweetAlert/sweetAlert";
+import { isMobile } from "react-device-detect";
 
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
@@ -53,6 +54,7 @@ export const login = async (email, password) => {
 
 export const socialLogin = async (type) => {
   try {
+    if(isMobile) return sweetToast("현재 모바일 소셜로그인이 지원되지 않습니다!", "warning")
     let provider;
     if (type === "google") {
       provider = googleProvider;
@@ -102,7 +104,6 @@ export const socialLogin = async (type) => {
 
 // 로그아웃 API
 export const logout = async () => {
-  if (window.confirm("정말 로그아웃 하시겠습니까?")) {
     try {
       // 로그아웃
       await signOut(auth);
@@ -115,7 +116,6 @@ export const logout = async () => {
       );
       throw error;
     }
-  }
 };
 
 // 유저 데이터 API
