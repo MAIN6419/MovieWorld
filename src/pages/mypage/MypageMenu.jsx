@@ -75,6 +75,7 @@ export default function MypageMenu() {
 
   useEffect(() => {
     setData([]);
+    setHasMore(false);
     fetchFirstPage();
   }, [menu]);
 
