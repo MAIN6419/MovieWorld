@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   editReview,
   removeReview,
@@ -18,6 +18,7 @@ export default function ReviewListItem({
   setUserData,
   setMypageReviewData,
 }) {
+  const { webpSupport } = useContext(WebpContext);
   const rateRef = useRef(null);
   const submitRef = useRef(null);
   const cancelRef = useRef(null);
@@ -77,9 +78,9 @@ export default function ReviewListItem({
       setReviewData(newReviewData);
       setIsEdit(false);
       sweetToast("수정이 완료되었습니다.", "success");
-      setTimeout(()=>{
+      setTimeout(() => {
         editBtnRef.current.focus();
-      },0)
+      }, 0);
     };
 
     sweetConfirm("정말 수정하시겠습니까?", "수정", "취소", cb);
@@ -140,7 +141,7 @@ export default function ReviewListItem({
       onClickReport={onClickReport}
       userData={userData}
       resolveWebp={resolveWebp}
-      WebpContext={WebpContext}
+      webpSupport={webpSupport}
       showSpoilerData={showSpoilerData}
       setShowSpoilerData={setShowSpoilerData}
       rateRef={rateRef}
