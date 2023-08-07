@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Img } from "./progressiveImg.style";
 import { useInView } from "react-intersection-observer";
+import { resolveWebp } from "../../../libray/webpSupport";
+import { WebpContext } from "../../../context/webpContext";
 
 export default function ProgressiveImg({
   placeholderSrc,
@@ -8,6 +10,7 @@ export default function ProgressiveImg({
   styles,
   ...props
 }) {
+  const { webpSupport } = useContext(WebpContext);
   const [imgSrc, setImgSrc] = useState(placeholderSrc || src);
   const [isLazy, setIsLazy] = useState(true);
   const { ref, inView } = useInView();
@@ -20,6 +23,12 @@ export default function ProgressiveImg({
         setImgSrc(src);
         setIsLazy(false);
       };
+      img.onerror = () => {
+        setImgSrc(
+          resolveWebp(webpSupport, "/assets/webp/placeholderImg.webp", "svg")
+        );
+        setIsLazy(false);
+      };
     }
   }, [src, inView]);
 
@@ -30,7 +39,6 @@ export default function ProgressiveImg({
       style={styles}
       loading="lazy"
       alt={props.alt || ""}
-      onError={(e) => (e.target.src = placeholderSrc)}
       ref={ref}
     />
   );
