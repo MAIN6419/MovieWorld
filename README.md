@@ -7,6 +7,7 @@
 #### 배포 URL :  🎞 [MovieWorld](https://movieworlds.site)
 
 ## 🙋‍♂️ 프로젝트 소개
+![thumbnail](https://github.com/MAIN6419/MovieWorld/assets/113427991/bbd6d268-71d5-4be6-9d89-dc4f5af989b9)
 
 - **MovieWorld**는 다양한 영화 정보를 제공하고 리뷰할 수 있는 사이트 입니다.
 - 로그인 없이 다양한 영화 정보를 무료로 제공받아 볼 수 있습니다.
