@@ -25,7 +25,7 @@ import { resolveWebp } from "../../libray/webpSupport";
 import { WebpContext } from "../../context/webpContext";
 
 export default function Search() {
-  const { webpSupported } = useContext(WebpContext);
+  const { webpSupport } = useContext(WebpContext);
   const [keyWord, setKeyword] = useState("");
   const [movieData, setMovieData] = useState([]);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
@@ -106,7 +106,7 @@ export default function Search() {
           keyWord&&<SearchBlank>
             <SearchBlankImg
               src={resolveWebp(
-                webpSupported,
+                webpSupport,
                 "assets/webp/icon-blank.webp",
                 "svg"
               )}
