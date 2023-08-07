@@ -71,8 +71,6 @@ function App() {
     detectWebpSupport();
     if (document.body.classList.contains("webp")) {
       setWebpSupport(true);
-    } else {
-      setWebpSupport(false);
     }
   }, []);
 
