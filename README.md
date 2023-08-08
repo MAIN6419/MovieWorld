@@ -17,6 +17,42 @@
 
 <br>
 
+### 📃 목차 (클릭 시 해당 목차로 이동합니다.)
+- [📆 개발기간](#-개발기간)
+  
+- [⚙ 개발환경](#-개발환경)
+  
+- [🔩 벡엔드 구성](#-벡엔드-구성)
+  
+- [🗜 node_modules](#-node_modules)
+  
+- [🛠 프로젝트 관리](#-프로젝트-관리)
+  
+- [📃 GitHub 컨벤션](#-github-컨벤션)
+  
+- [📍 구현 기능 미리보기](#-구현-기능-미리보기)
+  
+- [🔎 주요 기능 코드 및 설명](#-주요-기능-코드-및-설명)
+  - [customAxios](#1-customaxios)
+    
+  - [API 파일](#2-api-파일)
+    
+  - [리뷰](#3-리뷰-작성-수정-삭제-신고)
+    
+  - [스포일러 체크](#4-리뷰-스포일러-체크-기능)
+    
+  - [무한 스크롤](#5-무한-스크롤)
+    
+  - [검색 디바운싱](#6-검색-디바운싱)
+    
+  - [이미지 최적화](#7-이미지-최적화)
+    
+  - [키보드 포커싱 최적화](#8-웹-접근성-키보드-포커싱-최적화)
+    
+  - [sweetAlert2](#9-sweetalert2)
+    
+- [🔫 트러블 슈팅](#-트러블-슈팅)
+
 ### 📆 개발기간
 **2023. 07.05 ~ 2023. 08.07**
 
@@ -33,7 +69,7 @@
 - 구현 기능들(로그인, 소셜로그인, 회원가입, 이메일|비밀번호 찾기, 검색, 찜, 리뷰 관련 기능, 프로필 변경, 비밀번호 변경, 나의 찜 목록, 나의 리뷰 목록, 로그아웃)은 firebase를 이용하여 구현 하였습니다.
 <br>
 
-### ⛓ nodemoduls
+### ⛓ node_modules
 |모듈명|용도|
 |---|---|
 |axios|서버 통신|
@@ -1013,10 +1049,173 @@ export const sweetConfirm = (
 
 &nbsp;&nbsp; ![sweetAlert2적용](https://github.com/MAIN6419/MovieWorld/assets/113427991/23d0631b-e769-4176-84fc-af92334df97f)
 
+### 🔫 트러블 슈팅
+#### (1) Search 페이지에서 검색 후 요소 클릭 시 스크롤이 올라가는 이슈
+ - 원인 : input창의 focus가 유지된 채로 다른 요소를 클릭 했기 때문에, input 요소의 foucs가 해제 되면서 스크롤이 위로 올라는 문제였습니다.
+ - 해결방안 : input의 검색어 입력이 끝나면 blur 처리를 해주어 문제를 해결하였습니다.
 
+```javascript
+  // 검색 디바운싱 적용 검색어가 있을 경우 검색어에 해당하는 데이터 출력
+  const searchDebounce = useCallback(
+    debounce(async (value) => {
+      if (!value) {
+        fetchFirstData();
+        return;
+      }
+      const data = await fetchSearchMovie(value);
+      setMovieData(data);
+      // 검색이 완료된 이후 input를 blur 처리
+      // blur 처리를 하지 않으면 input의 포커스가 유지된 채 스크롤 내려 다른 요소 클릭 시 
+      // 포커스가 해제되면서 input요소를 찾아 스크롤이 위로 올라 오기 때문 
+      searchInputRef.current.blur();
+    }, 500),
+    []
+  );
+```
 
+- 이슈 해결 전
+  - 스크롤을 내린 후 클릭 시 스크롤이 위로 올라 오는 것을 볼 수 있습니다.
+  
+![search오류수정전](https://github.com/MAIN6419/MovieWorld/assets/113427991/eea7df4d-48c6-402a-87aa-3b3c63c8f482)
 
+- 이슈 해결 후
+  - 스크롤을 내린 후 클릭 시 스크롤이 유지되는 것을 볼 수 있습니다.
+    
+![search오류 해결후](https://github.com/MAIN6419/MovieWorld/assets/113427991/ee0e4f5f-6017-44ae-a717-f09808eba7fb)
+  
+#### (2) Mypage 찜 목록에서 찜 해제 후 다시 추가 시 기존 찜 목록의 정렬과 다르게 정렬 되는 이슈
+- 원인 : firebase의 정렬 기준이 javascript 정렬 기준과 달라서 발생한 문제였습니다.
+- 해결방안 : firebase의 정렬 기준에 맞게 sort 메서드의 정렬 기준을 적용 시켜주는 로직을 추가해주었습니다.
 
+MovieInfo.container 컴포넌트 onClickLike 함수 코드
 
+```javascript
+ const onClickLike = async () => {
+    if (!user) {
+      return sweetToast("로그인 후 이용가능합니다!", "warning");
+    }
+    if (!like) {
+      setLike(true);
+      await addLike(videoData);
+      if (setMypageLikeData) {
+        // firebase 정렬과 같은 순서를 맞춰주기 위해 사용함
+        const patternNumber = /[0-9]/;
+        const patternAlphabet = /[a-zA-Z]/;
+        const patternHangul = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        const orderLevelDesc = [patternNumber, patternAlphabet, patternHangul];
+        const getLevel = (str) => {
+          const index = orderLevelDesc.findIndex((pattern) => pattern.test(str));
+          // orderLevelDesc 배열에서 만족하는 패턴의 인덱스를 반환해줌
+          return index;
+        };
+        setMypageLikeData((prev) =>
+          [...prev, videoData].sort((a, b) => {
+            // 첫번째 문자를 넣어줘서 만족는 패턴의 인덱스를 반환 받음
+            const aLevel = getLevel(a.title.charAt(0));
+            const bLevel = getLevel(b.title.charAt(0));
+            // 시작하는 문자열이 같은 종류일 경우는 유니코드 값으로 사전식 정렬
+            if (aLevel === bLevel) {
+              return a.title.charCodeAt(0) - b.title.charCodeAt(0);
+            }
+            // 문자열이 같은 종류가 아닌 경우 위 패턴에 나온 순서대로 정렬
+            return aLevel - bLevel;
+          })
+        );
+      }
+    } else {
+      setLike(false);
+      removeLike(videoData);
+      if (setMypageLikeData) {
+        setMypageLikeData((prev) =>
+          prev.filter((item) => item.id !== videoData.id)
+        );
+      }
+    }
+  };
+```
 
+- 이슈 해결 전
+  - 찜 목록을 제거 후 다시 추가 하면 정렬 순서가 다르게 적용 되는 것을 볼 수 있습니다.
+    
+![정렬오류수정전](https://github.com/MAIN6419/MovieWorld/assets/113427991/dd3319a7-ed52-4b95-a195-ed417c9bdcc0)
 
+- 이슈 해결 후
+  - 찜 목록을 제거 후 다시 추가 하면 정렬 순서가 동일하게 적용 되는 것을 볼 수 있습니다.
+    
+![정렬오루수정후](https://github.com/MAIN6419/MovieWorld/assets/113427991/ab86b8b8-a017-403b-8a40-c2fb8988bde7)
+
+=> 위 해결 방법으로 해결 했지만 찜 목록의 **데이터가 많아질 경우** 성능 이슈가 발생할 문제가 있어, 추가적인 방법을 생각하였습니다.
+
+=> 찜 목록을 **제한**하는 방식으로 해결하였습니다.
+
+이 방식으로 얻은 장점
+- 사용자가 찜 목록이 많아질 경우 관리가 복잡해지는 문제를 미리 해결할 수 있었습니다.
+- 제한을 두었기 때문에 데이터가 많아져 문제가 발생할 경우가 없어집니다.
+  
+이 방식으로 얻는 단점
+- 사용자가 찜 목록에 제한을 둔다면 불편을 느끼는 사용자가 발생할 수 있습니다.
+- 더 많은 찜 목록을 요구하는 사용자가 발생할 수 있습니다.
+
+MovieInfo.container 컴포넌트 fetchLike 함수, onClickLike 코드
+
+```javascript
+  const fetchLike = async () => {
+    if (user) {
+      const data = await getUser();
+      // 유저 데이터 likeList에서 현재 데이터의 id와 일치하는 찜 데이터가 있는지 확인
+      const isLike =
+        data && data.likeList.find((likeId) => likeId === videoData.id);
+      // 결과를 boolean 형식으로 변환후 like 상태에 적용
+      setLike(!!isLike);
+      // likeList의 길이가 likListLimit 클 때를 비교해서 isExceed 상태에 적용
+      setIsExceed(data.likeList.length > likListLimit);
+    }
+  };
+
+const onClickLike = async () => {
+    if (!user) {
+      return sweetToast("로그인 후 이용가능합니다!", "warning");
+    }
+    // 찜 목록 최대 수를 초과하면 찜 가능을 막는다.
+    if(isExceed) {
+      return sweetToast("최대 찜 목록 수를 초과하였습니다.\n찜 목록 삭제 후 이용해주세요!", "warning");
+    }
+    if (!like) {
+      setLike(true);
+      await addLike(videoData);
+      if (setMypageLikeData) {
+        // firebase 정렬과 같은 순서를 맞춰주기 위해 사용함
+        const patternNumber = /[0-9]/;
+        const patternAlphabet = /[a-zA-Z]/;
+        const patternHangul = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        const orderLevelDesc = [patternNumber, patternAlphabet, patternHangul];
+        const getLevel = (str) => {
+          const index = orderLevelDesc.findIndex((pattern) => pattern.test(str));
+          // orderLevelDesc 배열에서 만족하는 패턴의 인덱스를 반환해줌
+          return index;
+        };
+        setMypageLikeData((prev) =>
+          [...prev, videoData].sort((a, b) => {
+            // 첫번째 문자를 넣어줘서 만족는 패턴의 인덱스를 반환 받음
+            const aLevel = getLevel(a.title.charAt(0));
+            const bLevel = getLevel(b.title.charAt(0));
+            // 시작하는 문자열이 같은 종류일 경우는 유니코드 값으로 사전식 정렬
+            if (aLevel === bLevel) {
+              return a.title.charCodeAt(0) - b.title.charCodeAt(0);
+            }
+            // 문자열이 같은 종류가 아닌 경우 위 패턴에 나온 순서대로 정렬
+            return aLevel - bLevel;
+          })
+        );
+      }
+    } else {
+      setLike(false);
+      removeLike(videoData);
+      if (setMypageLikeData) {
+        setMypageLikeData((prev) =>
+          prev.filter((item) => item.id !== videoData.id)
+        );
+      }
+    }
+  };
+```
