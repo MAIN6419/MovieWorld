@@ -79,15 +79,17 @@ export const BannerBtn = styled.button`
   padding: 5px 20px 5px 30px;
   margin-right: 18px;
   color: black;
-  &.play {
-    background: url("assets/icon-play.svg") no-repeat center left 5px/ 20px #fff;
-  }
-  &.info {
-    background: url("assets/icon-info.svg") no-repeat center left 5px / 20px
-      rgba(109, 109, 110, 0.7);
-    color: #fff;
-    :hover {
-      background-color: ${isMobile ? "" : "rgb(74, 74, 74)"};
+  body.no-webp & {
+    &.play {
+      background: url("assets/icon-play.svg") no-repeat center left 5px/ 20px #fff;
+    }
+    &.info {
+      background: url("assets/icon-info.svg") no-repeat center left 5px / 20px
+        rgba(109, 109, 110, 0.7);
+      color: #fff;
+      :hover {
+        background-color: ${isMobile ? "" : "rgb(74, 74, 74)"};
+      }
     }
   }
   :hover {
@@ -189,7 +191,9 @@ export const CloseBtn = styled.button`
   top: 0;
   right: 20px;
   z-index: 999;
-  background: url("assets/icon-close.svg") no-repeat center / 22px;
+  body.no-webp & {
+    background: url("assets/icon-close.svg") no-repeat center / 22px;
+  }
   body.webp & {
     background: url("assets/webp/icon-close.webp") no-repeat center / 22px;
   }
@@ -201,7 +205,9 @@ export const MobilePlayBtn = styled.button`
   position: absolute;
   width: 50px;
   height: 50px;
-  background: url("assets/icon-mobile-playBtn.svg") no-repeat center / 50px;
+  body.no-webp & {
+    background: url("assets/icon-mobile-playBtn.svg") no-repeat center / 50px;
+  }
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -222,7 +228,9 @@ export const MobileInfoBtn = styled.button`
   transform: translateX(-50%);
   width: 40px;
   height: 40px;
-  background: url("assets/icon-mobile-infoBtn.svg") no-repeat center / 40px;
+  body.no-webp & {
+    background: url("assets/icon-mobile-infoBtn.svg") no-repeat center / 40px;
+  }
   bottom: 20px;
   z-index: 99;
   body.webp & {

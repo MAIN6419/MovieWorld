@@ -153,7 +153,9 @@ export const RemoveBtn = styled.button`
   position: absolute;
   top: 3px;
   right: 3px;
-  background: url("assets/icon-close.svg") no-repeat center / 20px;
+  body.no-webp & {
+    background: url("assets/icon-close.svg") no-repeat center / 20px;
+  }
   body.webp & {
     background: url("assets/webp/icon-close.webp") no-repeat center / 20px;
   }
