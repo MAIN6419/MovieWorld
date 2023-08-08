@@ -904,6 +904,7 @@ export default function ProgressiveImg({
 - detectWebpSupport
   - webpdata에 1x1 픽셀 크기의 WebP 형식의 이미지 데이터를 base64로 인코딩한 문자열을 할당합니다.
   - 이미지 로딩이 성공적으로 완료되거나 에러가 발생했을 때 callback 함수가 실행됩니다.
+  - webp 이미지가 로딩 될 때까지 기다리기 위해 Promise를 이용해 비동기 처리를 해주었습니다.
   - image.src에 webpdata를 할당하여, 생성한 빈 이미지 객체가 해당 WebP 이미지를 로딩하도록 합니다.
   - callback 함수에서는 event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별합니다.
   - 브라우저가 WebP 이미지를 지원하는 경우 document.body 요소의 클래스 리스트에 "webp"를 추가합니다.
@@ -917,23 +918,29 @@ export default function ProgressiveImg({
 
 ```javascript
 export function detectWebpSupport() {
-  const image = new Image();
-  // 1px x 1px WebP 이미지
-  const webpdata = "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=";
-  const callback = (event) => {
-    // event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별
-    const result = event?.type === "load" && image.width === 1;
-    if (result) {
-      document.body.classList.add("webp");
-    }
-    else {
-      document.body.classList.remove("webp");
-    }
-  };
-  image.onerror = callback;
-  image.onload = callback;
-  image.src = webpdata;
-}
+  // webp 이미지가 로딩 될 때까지 기다리기 위해 비동기 처리
+  return new Promise((resolve) => {
+    const image = new Image();
+    // 1px x 1px WebP 이미지
+    const webpdata =
+      "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=";
+
+    const callback = (event) => {
+      // event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별
+      const result = event?.type === "load" && image.width === 1;
+      if (result) {
+        document.body.classList.add("webp");
+        resolve(true); // WebP 지원됨
+      } else {
+        document.body.classList.remove("webp");
+        resolve(false); // WebP 지원되지 않음
+      }
+    };
+
+    image.onerror = callback;
+    image.onload = callback;
+    image.src = webpdata;
+  });
 // webpSupported: webp 지원 유무, img: webp 이미지 경로, fallbackExt: webp 이미지 대체 이미지 형식
 export const resolveWebp = (webpSupported, img, fallbackExt) => {
   // 이미지 포맷
@@ -1218,4 +1225,90 @@ const onClickLike = async () => {
       }
     }
   };
+```
+#### (3) WebpSupport 상태가 제대로 적용되지 않는 현상
+- 원인 : detectWebpSupport 함수에서 webp 이미지 로딩 되기까지 기다리는 비동기 처리를 해주지 않아 발생한 문제였습니다.
+- 해결방안 : detectWebpSupport 함수를 promise를 이용하여 비동기 처리해주어 해결하였습니다.
+
+#### 문제 발생 코드
+
+detectWebpSupport 함수 코드
+```javascript
+export function detectWebpSupport() {
+  const image = new Image();
+  // 1px x 1px WebP 이미지
+  const webpdata = "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=";
+  const callback = (event) => {
+    // event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별
+    const result = event?.type === "load" && image.width === 1;
+    if (result) {
+      document.body.classList.add("webp");
+    }
+    else {
+      document.body.classList.remove("webp");
+    }
+  };
+  image.onerror = callback;
+  image.onload = callback;
+  image.src = webpdata;
+}
+```
+
+App 컴포넌트 중 detectWebpSupport 호출 코드
+```javascript
+useEffect(() => {
+    detectWebpSupport();
+    if (document.body.classList.contains("webp")) {
+      setWebpSupport(true);
+    }
+  }, []);
+```
+<br>
+
+#### 문제 해결 후 코드
+
+detectWebpSupport 함수 코드
+
+```javascript
+export async function detectWebpSupport() {
+  // webp 이미지가 로딩 될 때까지 기다리기 위해 비동기 처리
+  return new Promise((resolve) => {
+    const image = new Image();
+    // 1px x 1px WebP 이미지
+    const webpdata =
+      "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=";
+
+    const callback = (event) => {
+      // event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별
+      const result = event?.type === "load" && image.width === 1;
+      if (result) {
+        document.body.classList.add("webp");
+        resolve(true); // WebP 지원됨
+      } else {
+        document.body.classList.remove("webp");
+        resolve(false); // WebP 지원되지 않음
+      }
+    };
+
+    image.onerror = callback;
+    image.onload = callback;
+    image.src = webpdata;
+  });
+}
+```
+
+App 컴포넌트 중 detectWebpSupport 호출 코드
+```javascript
+  const checkWebp = async() => {
+    const res = await detectWebpSupport();
+    if (res) {
+      setWebpSupport(true);
+    } else {
+      setWebpSupport(false);
+    }
+  }
+
+  useEffect(() => {
+    checkWebp();
+  },[]);
 ```
