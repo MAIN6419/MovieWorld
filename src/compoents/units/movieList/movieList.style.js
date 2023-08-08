@@ -32,25 +32,38 @@ export const MovieItemBtn = styled.button`
 export const SwiperContainer = styled(Swiper)`
   min-height: 208px;
   .swiper-button-next {
-    background: url("assets/icon-nextBtn.svg") no-repeat center left 8px / 15px
-      rgba(255, 255, 255, 0.8);
+    body.no-webp & {
+      background: url("assets/icon-nextBtn.svg") no-repeat center left 8px /
+        15px rgba(255, 255, 255, 0.8);
+    }
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    body.webp & {
+      background: url("assets/webp/icon-nextBtn.webp") no-repeat center left 8px /
+        15px rgba(255, 255, 255, 0.8);
+    }
   }
 
   .swiper-button-prev {
-    background: url("assets/icon-prevBtn.svg") no-repeat center right 8px/ 15px rgba(255, 255, 255, 0.8);
+    body.no-webp & {
+      background: url("assets/icon-prevBtn.svg") no-repeat center right 8px/ 15px
+        rgba(255, 255, 255, 0.8);
+    }
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    body.webp & {
+      background: url("assets/webp/icon-prevBtn.webp") no-repeat center right
+        8px/ 15px rgba(255, 255, 255, 0.8);
+    }
   }
 
   .swiper-button-next::after,
   .swiper-button-prev::after {
     display: none;
   }
-  
+
   &.swiper .swiper-pagination-bullet {
     background: gray !important;
     opacity: 1 !important;

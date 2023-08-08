@@ -96,21 +96,23 @@ export const SocialLoginBtn = styled.button`
   font-weight: 400;
   padding: 15px 0;
   border: px solid #bdbdbd;
-  &.google {
-    background: url("assets/icon-google.svg") no-repeat center left 15px / 24px
-      #fff;
-  }
-  &.facebook {
-    background: url("assets/icon-facebook.svg") no-repeat center left 15px /
-      24px #3a5897;
-  }
-  &.twitter {
-    background: url("assets/icon-twitter.svg") no-repeat center left 15px / 24px
-      #55acee;
-  }
-  &.github {
-    background: url("assets/icon-github.svg") no-repeat center left 15px / 24px
-      #fff;
+  body.no-webp & {
+    &.google {
+      background: url("assets/icon-google.svg") no-repeat center left 15px /
+        24px #fff;
+    }
+    &.facebook {
+      background: url("assets/icon-facebook.svg") no-repeat center left 15px /
+        24px #3a5897;
+    }
+    &.twitter {
+      background: url("assets/icon-twitter.svg") no-repeat center left 15px /
+        24px #55acee;
+    }
+    &.github {
+      background: url("assets/icon-github.svg") no-repeat center left 15px /
+        24px #fff;
+    }
   }
 
   body.webp & {

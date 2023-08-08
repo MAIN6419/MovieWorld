@@ -8,7 +8,9 @@ export const Wrapper = styled.section`
 `;
 
 export const Title = styled.h2`
-  background: url("assets/icon-review.svg") no-repeat left / 25px;
+  body.no-webp & {
+    background: url("assets/icon-review.svg") no-repeat left / 25px;
+  }
   body.webp & {
     background: url("assets/webp/icon-review.webp") no-repeat left / 25px;
   }
@@ -19,7 +21,9 @@ export const Title = styled.h2`
 
   @media screen and (max-width: 400px) {
     font-size: 18px;
-    background: url("assets/icon-review.svg") no-repeat left / 22px;
+    body.no-webp & {
+      background: url("assets/icon-review.svg") no-repeat left / 22px;
+    }
     body.webp & {
       background: url("assets/webp/icon-review.webp") no-repeat left / 22px;
     }
@@ -216,8 +220,10 @@ export const Select = styled.button`
     content: "";
     width: 15px;
     height: 15px;
-    background: url("assets/icon-downArrow.svg") no-repeat center right 0px /
-      15px;
+    body.no-webp & {
+      background: url("assets/icon-downArrow.svg") no-repeat center right 0px /
+        15px;
+    }
     transform: ${(props) =>
       props.active ? "rotate(-180deg)" : "rotate(0deg)"};
     transition: all 0.5s;

@@ -7,7 +7,9 @@ export const Btn = styled.button`
   right: 20px;
   width: 44px;
   height: 44px;
-  background: url("assets/icon-topbutton.svg") no-repeat center / 44px;
+  body.no-webp & {
+    background: url("assets/icon-topbutton.svg") no-repeat center / 44px;
+  }
   color: #fff;
   animation: topBtnfadeIn 1s;
   body.webp & {
@@ -35,12 +37,11 @@ export const Btn = styled.button`
     height: 38px;
     background: url("assets/icon-topbutton.svg") no-repeat center / 38px;
     body.webp & {
-    background: url("assets/webp/icon-topbutton.webp") no-repeat center / 38px;
-  }
-
+      background: url("assets/webp/icon-topbutton.webp") no-repeat center / 38px;
+    }
   }
 `;
 
 export const ModalBtn = styled(Btn)`
-z-index: 999;
-`
+  z-index: 999;
+`;

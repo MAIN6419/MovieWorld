@@ -249,8 +249,10 @@ export const SwiperContainer = styled.div``;
 export const CustomSwiper = styled(Swiper)`
   padding: 5px 0;
   .swiper-button-next {
-    background: url("assets/icon-nextBtn.svg") no-repeat center left 8px / 15px
-      rgba(255, 255, 255, 0.8);
+    body.no-webp & {
+      background: url("assets/icon-nextBtn.svg") no-repeat center left 8px /
+        15px rgba(255, 255, 255, 0.8);
+    }
     body.webp & {
       background: url("assets/webp/icon-nextBtn.webp") no-repeat center left 8px /
         15px rgba(255, 255, 255, 0.8);
@@ -259,8 +261,10 @@ export const CustomSwiper = styled(Swiper)`
     height: 30px;
     border-radius: 50%;
     @media screen and (max-width: 486px) {
-      background: url("assets/icon-nextBtn.svg") no-repeat center left 8px/ 12px
-        rgba(255, 255, 255, 0.8);
+      body.no-webp & {
+        background: url("assets/icon-nextBtn.svg") no-repeat center left 8px/ 12px
+          rgba(255, 255, 255, 0.8);
+      }
       body.webp & {
         background: url("assets/webp/icon-nextBtn.webp") no-repeat center left
           8px / 12px rgba(255, 255, 255, 0.8);
@@ -313,7 +317,9 @@ export const CloseBtn = styled.button`
   top: 8px;
   right: 10px;
   z-index: 999;
-  background: url("assets/icon-close.svg") no-repeat center / 22px;
+  body.no-webp & {
+    background: url("assets/icon-close.svg") no-repeat center / 22px;
+  }
   body.webp & {
     background: url("assets/webp/icon-close.webp") no-repeat center / 22px;
   }

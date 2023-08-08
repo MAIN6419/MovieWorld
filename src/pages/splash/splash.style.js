@@ -1,9 +1,9 @@
 import styled from "styled-components";
-export const Title = styled.h1``
+export const Title = styled.h1``;
 export const Wrapper = styled.div`
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background-color: #333;
@@ -17,7 +17,9 @@ export const SportLight = styled.div`
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: url("assets/icon-camera.svg") no-repeat center / contain;
+  body.no-webp & {
+    background: url("assets/icon-camera.svg") no-repeat center / contain;
+  }
   background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 0px 20px 1px rgba(255, 255, 255, 0.5);
   animation: fadeIn 2s;
@@ -26,10 +28,10 @@ export const SportLight = styled.div`
     background: url("assets/webp/icon-camera.webp") no-repeat center / contain;
   }
   @keyframes fadeIn {
-    from{
+    from {
       opacity: 0;
     }
-    to{
+    to {
       opacity: 1;
     }
   }
@@ -43,16 +45,11 @@ export const Logo = styled.img`
   width: 150px;
   animation: move 1.2s;
   @keyframes move {
-    from{
+    from {
       transform: translateX(-150%);
     }
-    to{
+    to {
       transform: translateX(-50%);
     }
   }
-`
-
-
-
-
-
+`;
