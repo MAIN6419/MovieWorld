@@ -5,7 +5,7 @@ import { resolveWebp } from "../../libray/webpSupport";
 import { WebpContext } from "../../context/webpContext";
 
 export default function Splash() {
-  const { webpSupprot } = useContext(WebpContext);
+  const { webpSupport } = useContext(WebpContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Splash() {
       <Wrapper>
         <SportLight>
           <Logo
-            src={resolveWebp(webpSupprot, "assets/webp/icon-logo.webp", "svg")}
+            src={resolveWebp(webpSupport, "assets/webp/icon-logo.webp", "svg")}
             alt="MovieWorld"
           />
         </SportLight>
