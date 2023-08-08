@@ -130,14 +130,14 @@ export default function MovieInfoUI({
                   </MovieGenreWrapper>
                 )}
               </MovieContentsInfoItem>
-              <MovieContentsInfoItem>
-                {videoData.runtime && (
+              {videoData.runtime !== 0 && (
+                <MovieContentsInfoItem>
                   <>
                     <MovieContetnsTag>상영시간 : </MovieContetnsTag>
                     <MovieRunTime>{videoData.runtime}분</MovieRunTime>
                   </>
-                )}
-              </MovieContentsInfoItem>
+                </MovieContentsInfoItem>
+              )}
               <MovieContentsInfoItem>
                 <MovieContetnsTag>평점 :</MovieContetnsTag> <MovieRatingIcon />
                 {parseFloat(videoData.vote_average).toFixed(2)}
