@@ -20,6 +20,8 @@ export default function MovieInfo({
   const [isPlay, setIsPlay] = useState(false);
   const [videoData, setVideoData] = useState({});
   const [like, setLike] = useState(false);
+  const [isExceed, setIsExceed] = useState(false);
+  const likListLimit = 100;
   const [videoUrl, setVideoUrl] = useState("");
   const isMedium = useMediaQuery({
     query: "(max-width: 780px)and(min-width:501px)",
@@ -38,6 +40,7 @@ export default function MovieInfo({
       const isLike =
         data && data.likeList.find((likeId) => likeId === videoData.id);
       setLike(!!isLike);
+      setIsExceed(data.likeList.length > likListLimit);
     }
   };
 
@@ -81,14 +84,38 @@ export default function MovieInfo({
 
   const onClickLike = async () => {
     if (!user) {
-      sweetToast("로그인 후 이용가능합니다!", "warning");
-      return;
+      return sweetToast("로그인 후 이용가능합니다!", "warning");
+    }
+    if(isExceed) {
+      return sweetToast("최대 찜 목록 수를 초과하였습니다.\n찜 목록 삭제 후 이용해주세요!", "warning");
     }
     if (!like) {
       setLike(true);
       await addLike(videoData);
       if (setMypageLikeData) {
-        setMypageLikeData((prev) => [...prev, videoData]);
+        // firebase 정렬과 같은 순서를 맞춰주기 위해 사용함
+        const patternNumber = /[0-9]/;
+        const patternAlphabet = /[a-zA-Z]/;
+        const patternHangul = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        const orderLevelDesc = [patternNumber, patternAlphabet, patternHangul];
+        const getLevel = (str) => {
+          const index = orderLevelDesc.findIndex((pattern) => pattern.test(str));
+          // orderLevelDesc 배열에서 만족하는 패턴의 인덱스를 반환해줌
+          return index;
+        };
+        setMypageLikeData((prev) =>
+          [...prev, videoData].sort((a, b) => {
+            // 첫번째 문자를 넣어줘서 만족는 패턴의 인덱스를 반환 받음
+            const aLevel = getLevel(a.title.charAt(0));
+            const bLevel = getLevel(b.title.charAt(0));
+            // 시작하는 문자열이 같은 종류일 경우는 유니코드 값으로 사전식 정렬
+            if (aLevel === bLevel) {
+              return a.title.charCodeAt(0) - b.title.charCodeAt(0);
+            }
+            // 문자열이 같은 종류가 아닌 경우 위 패턴에 나온 순서대로 정렬
+            return aLevel - bLevel;
+          })
+        );
       }
     } else {
       setLike(false);
