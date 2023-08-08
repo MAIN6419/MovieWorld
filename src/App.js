@@ -66,13 +66,19 @@ function App() {
       }
     });
   }, []);
+  
+  const checkWebp = async() => {
+    const res = await detectWebpSupport();
+    if (res) {
+      setWebpSupport(true);
+    } else {
+      setWebpSupport(false);
+    }
+  }
 
   useEffect(() => {
-    detectWebpSupport();
-    if (document.body.classList.contains("webp")) {
-      setWebpSupport(true);
-    }
-  }, []);
+    checkWebp();
+  },[]);
 
   return (
     <>
