@@ -10,10 +10,12 @@ import {
   arrayRemove,
   startAfter,
   limit,
+  orderBy,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "./setting";
 import { sweetToast } from "../sweetAlert/sweetAlert";
+
 
 const auth = getAuth();
 
@@ -70,7 +72,7 @@ export const fetchFirstLikeList = async (limitPage) => {
     const likeRef = collection(db, "likeList");
     const userLikedoc = doc(likeRef, userData.uid);
     const userLikeRef = collection(userLikedoc, "like");
-    const q = query(userLikeRef, limit(limitPage));
+    const q = query(userLikeRef, orderBy("title", "asc"),limit(limitPage));
     const res = await getDocs(q);
     return res;
   } catch (error) {
@@ -89,7 +91,7 @@ export const fetchLikeListPage = async (page, limitPage) => {
     const likeRef = collection(db, "likeList");
     const userLikedoc = doc(likeRef, userData.uid);
     const userLikeRef = collection(userLikedoc, "like");
-    const q = query(userLikeRef, startAfter(page), limit(limitPage));
+    const q = query(userLikeRef, orderBy("title", "asc"), startAfter(page), limit(limitPage));
     const res = await getDocs(q);
     return res;
   } catch (error) {
