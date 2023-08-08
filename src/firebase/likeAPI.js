@@ -16,7 +16,7 @@ import { db } from "./setting";
 import { sweetToast } from "../sweetAlert/sweetAlert";
 
 const auth = getAuth();
-const userData = JSON.parse(localStorage.getItem("user")) || {};
+
 // 좋아요 추가 API
 export const addLike = async (movieData) => {
   try {
@@ -33,7 +33,10 @@ export const addLike = async (movieData) => {
 
     return true;
   } catch (error) {
-    sweetToast("알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.", "warning");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -41,7 +44,6 @@ export const addLike = async (movieData) => {
 // 좋아요 제거 API
 export const removeLike = async (movieData) => {
   try {
-    if (auth.currentUser) {
       const likeRef = collection(db, "likeList");
       const userLikedoc = doc(likeRef, auth.currentUser.uid);
       const userLikeRef = collection(userLikedoc, "like");
@@ -52,9 +54,11 @@ export const removeLike = async (movieData) => {
         likeList: arrayRemove(movieData.id),
       });
       return true;
-    }
   } catch (error) {
-    sweetToast("알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.", "warning");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
@@ -62,17 +66,18 @@ export const removeLike = async (movieData) => {
 // 좋아요 목록 API
 export const fetchFirstLikeList = async (limitPage) => {
   try {
+    const userData = JSON.parse(localStorage.getItem("user")) || {};
     const likeRef = collection(db, "likeList");
-    const userLikedoc = doc(
-      likeRef,
-      (userData && userData.uid) || auth.currentUser.uid
-    );
+    const userLikedoc = doc(likeRef, userData.uid);
     const userLikeRef = collection(userLikedoc, "like");
     const q = query(userLikeRef, limit(limitPage));
     const res = await getDocs(q);
     return res;
   } catch (error) {
-    sweetToast("알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.","waring");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+      "waring"
+    );
     throw error;
   }
 };
@@ -80,6 +85,7 @@ export const fetchFirstLikeList = async (limitPage) => {
 // 좋아요 목록 페이징 API
 export const fetchLikeListPage = async (page, limitPage) => {
   try {
+    const userData = JSON.parse(localStorage.getItem("user")) || {};
     const likeRef = collection(db, "likeList");
     const userLikedoc = doc(likeRef, userData.uid);
     const userLikeRef = collection(userLikedoc, "like");
@@ -87,7 +93,10 @@ export const fetchLikeListPage = async (page, limitPage) => {
     const res = await getDocs(q);
     return res;
   } catch (error) {
-    sweetToast("알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.", "warning");
+    sweetToast(
+      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
+      "warning"
+    );
     throw error;
   }
 };
