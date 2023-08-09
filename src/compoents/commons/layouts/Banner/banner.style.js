@@ -104,6 +104,7 @@ export const BannerBtn = styled.button`
     &.info {
       background: url("assets/webp/icon-info.webp") no-repeat center left 5px /
         20px rgba(109, 109, 110, 0.7);
+      color: #fff;
     }
   }
 `;
