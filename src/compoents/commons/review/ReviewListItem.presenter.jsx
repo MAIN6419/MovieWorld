@@ -65,7 +65,7 @@ export default function ReviewListItemUI({
               reviewItem.reviewerImg ||
               resolveWebp(
                 webpSupport,
-                "assets/webp/icon-defaultProfile.webp",
+                "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               )
             }
@@ -73,7 +73,7 @@ export default function ReviewListItemUI({
             onError={(e) =>
               (e.target.src = resolveWebp(
                 webpSupport,
-                "assets/webp/icon-defaultProfile.webp",
+                "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))
             }

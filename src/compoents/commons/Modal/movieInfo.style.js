@@ -318,10 +318,10 @@ export const CloseBtn = styled.button`
   right: 10px;
   z-index: 999;
   body.no-webp & {
-    background: url("assets/icon-close.svg") no-repeat center / 22px;
+    background: url("/assets/icon-close.svg") no-repeat center / 22px;
   }
   body.webp & {
-    background: url("assets/webp/icon-close.webp") no-repeat center / 22px;
+    background: url("/assets/webp/icon-close.webp") no-repeat center / 22px;
   }
 `;
 

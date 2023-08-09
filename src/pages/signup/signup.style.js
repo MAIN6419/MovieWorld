@@ -60,11 +60,11 @@ export const ProgressCheck = styled.div`
   background: ${(props) =>
       props.active
         ? document.body.classList.contains("webp")
-          ? 'url("assets/webp/icon-check-active.webp")'
-          : 'url("assets/icon-check-active.svg")'
+          ? 'url("/assets/webp/icon-check-active.webp")'
+          : 'url("/assets/icon-check-active.svg")'
         : document.body.classList.contains("webp")
-        ? 'url("assets/webp/icon-check.webp")'
-        : 'url("assets/icon-check.svg")'}
+        ? 'url("/assets/webp/icon-check.webp")'
+        : 'url("/assets/icon-check.svg")'}
     no-repeat center / 20px #222;
   transition: all 0.5s;
 
@@ -140,10 +140,10 @@ export const ProfileImgButton = styled.button`
     bottom: 0;
     width: 40px;
     height: 40px;
-    background: url("assets/icon-uploadImg.svg") no-repeat center / 40px;
+    background: url("/assets/icon-uploadImg.svg") no-repeat center / 40px;
   }
   body.webp &::after {
-    background: url("assets/webp/icon-uploadImg.webp") no-repeat center / 40px;
+    background: url("/assets/webp/icon-uploadImg.webp") no-repeat center / 40px;
   }
 `;
 
@@ -159,9 +159,9 @@ export const ProfileImgResetBtn = styled.button`
   height: 20px;
   top: -10px;
   right: calc(100% - 70%);
-  background: url("assets/icon-close.svg") no-repeat center / 20px;
+  background: url("/assets/icon-close.svg") no-repeat center / 20px;
   body.webp &::after {
-    background: url("assets/webp/icon-close.webp") no-repeat center / 20px;
+    background: url("/assets/webp/icon-close.webp") no-repeat center / 20px;
   }
 `;
 export const ProfileImgDescList = styled.ul`

@@ -23,12 +23,12 @@ export const SearchInput = styled.input`
   width: 150px;
   padding-left: 22px;
   body.no-webp & {
-    background: url("assets/icon-search.svg") no-repeat left top 1px / 20px;
+    background: url("/assets/icon-search.svg") no-repeat left top 1px / 20px;
   }
   border: none;
   color: #fff;
   body.webp & {
-    background: url("assets/webp/icon-search.webp") no-repeat left top 1px /
+    background: url("/assets/webp/icon-search.webp") no-repeat left top 1px /
       20px;
   }
   ::placeholder {

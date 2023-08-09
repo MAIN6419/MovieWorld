@@ -143,8 +143,8 @@ export default function MypageMenu() {
                       onError={(e) =>
                         (e.target.src =
                           document.body.className === "webp"
-                            ? "assets/webp/placeholderImg.webp"
-                            : "assets/placeholderImg.png")
+                            ? "/assets/webp/placeholderImg.webp"
+                            : "/assets/placeholderImg.png")
                       }
                       onClick={() => onClickMovieInfo(item)}
                     />

@@ -154,17 +154,17 @@ export const RemoveBtn = styled.button`
   top: 3px;
   right: 3px;
   body.no-webp & {
-    background: url("assets/icon-close.svg") no-repeat center / 20px;
+    background: url("/assets/icon-close.svg") no-repeat center / 20px;
   }
   body.webp & {
-    background: url("assets/webp/icon-close.webp") no-repeat center / 20px;
+    background: url("/assets/webp/icon-close.webp") no-repeat center / 20px;
   }
   @media screen and (max-width: 486px) {
     top: 0;
     right: 0;
-    background: url("assets/icon-close.svg") no-repeat center / 18px;
+    background: url("/assets/icon-close.svg") no-repeat center / 18px;
     body.webp & {
-      background: url("assets/webp/icon-close.webp") no-repeat center / 18px;
+      background: url("/assets/webp/icon-close.webp") no-repeat center / 18px;
     }
   }
 `;

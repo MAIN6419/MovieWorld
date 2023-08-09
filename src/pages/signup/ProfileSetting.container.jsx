@@ -23,7 +23,7 @@ export default function ProfileSetting({
   // 회원가입 버튼 활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
   const [previewImg, setPreviewImg] = useState(
-    resolveWebp(webpSupport, "assets/webp/icon-defaultProfile.webp", "svg")
+    resolveWebp(webpSupport, "/assets/webp/icon-defaultProfile.webp", "svg")
   );
   const [uploadImg, setUploadImg] = useState("");
   const [displayNameValue, displayNameValid, onChangeDislayName] =
@@ -69,7 +69,7 @@ export default function ProfileSetting({
 
   const onClickImgReset = () => {
     setPreviewImg(
-      resolveWebp(webpSupport, "assets/webp/icon-defaultProfile.webp", "svg")
+      resolveWebp(webpSupport, "/assets/webp/icon-defaultProfile.webp", "svg")
     );
     setUploadImg("");
   };

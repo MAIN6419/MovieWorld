@@ -114,7 +114,7 @@ export default function Search() {
             <SearchBlankImg
               src={resolveWebp(
                 webpSupport,
-                "assets/webp/icon-blank.webp",
+                "/assets/webp/icon-blank.webp",
                 "svg"
               )}
             />
@@ -150,7 +150,7 @@ export default function Search() {
                             alt="영화 포스터"
                             onError={(e) =>
                               (e.target.src = resolveWebp(
-                                "assets/webp/placeholderImg.webp",
+                                "/assets/webp/placeholderImg.webp",
                                 "svg"
                               ))
                             }

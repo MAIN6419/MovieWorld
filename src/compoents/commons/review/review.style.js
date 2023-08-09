@@ -9,10 +9,10 @@ export const Wrapper = styled.section`
 
 export const Title = styled.h2`
   body.no-webp & {
-    background: url("assets/icon-review.svg") no-repeat left / 25px;
+    background: url("/assets/icon-review.svg") no-repeat left / 25px;
   }
   body.webp & {
-    background: url("assets/webp/icon-review.webp") no-repeat left / 25px;
+    background: url("/assets/webp/icon-review.webp") no-repeat left / 25px;
   }
   padding-left: 28px;
   font-size: 20px;
@@ -22,10 +22,10 @@ export const Title = styled.h2`
   @media screen and (max-width: 400px) {
     font-size: 18px;
     body.no-webp & {
-      background: url("assets/icon-review.svg") no-repeat left / 22px;
+      background: url("/assets/icon-review.svg") no-repeat left / 22px;
     }
     body.webp & {
-      background: url("assets/webp/icon-review.webp") no-repeat left / 22px;
+      background: url("/assets/webp/icon-review.webp") no-repeat left / 22px;
     }
   }
 `;
@@ -221,7 +221,7 @@ export const Select = styled.button`
     width: 15px;
     height: 15px;
     body.no-webp & {
-      background: url("assets/icon-downArrow.svg") no-repeat center right 0px /
+      background: url("/assets/icon-downArrow.svg") no-repeat center right 0px /
         15px;
     }
     transform: ${(props) =>
@@ -229,7 +229,7 @@ export const Select = styled.button`
     transition: all 0.5s;
   }
   body.webp &::after {
-    background: url("assets/webp/icon-downArrow.webp") no-repeat center right
+    background: url("/assets/webp/icon-downArrow.webp") no-repeat center right
       0px / 15px;
   }
   @media screen and (max-width: 486px) {

@@ -33,28 +33,28 @@ export const SwiperContainer = styled(Swiper)`
   min-height: 208px;
   .swiper-button-next {
     body.no-webp & {
-      background: url("assets/icon-nextBtn.svg") no-repeat center left 8px /
+      background: url("/assets/icon-nextBtn.svg") no-repeat center left 8px /
         15px rgba(255, 255, 255, 0.8);
     }
     width: 30px;
     height: 30px;
     border-radius: 50%;
     body.webp & {
-      background: url("assets/webp/icon-nextBtn.webp") no-repeat center left 8px /
+      background: url("/assets/webp/icon-nextBtn.webp") no-repeat center left 8px /
         15px rgba(255, 255, 255, 0.8);
     }
   }
 
   .swiper-button-prev {
     body.no-webp & {
-      background: url("assets/icon-prevBtn.svg") no-repeat center right 8px/ 15px
+      background: url("/assets/icon-prevBtn.svg") no-repeat center right 8px/ 15px
         rgba(255, 255, 255, 0.8);
     }
     width: 30px;
     height: 30px;
     border-radius: 50%;
     body.webp & {
-      background: url("assets/webp/icon-prevBtn.webp") no-repeat center right
+      background: url("/assets/webp/icon-prevBtn.webp") no-repeat center right
         8px/ 15px rgba(255, 255, 255, 0.8);
     }
   }

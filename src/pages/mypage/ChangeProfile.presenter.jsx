@@ -58,14 +58,14 @@ export default function ChangeProfileUI({
                 previewImg ||
                 resolveWebp(
                   webpSupport,
-                  "assets/webp/icon-defaultProfile.webp",
+                  "/assets/webp/icon-defaultProfile.webp",
                   "svg"
                 )
               }
               onError={(e) =>
                 (e.target.src = resolveWebp(
                   webpSupport,
-                  "assets/webp/icon-defaultProfile.webp",
+                  "/assets/webp/icon-defaultProfile.webp",
                   "svg"
                 ))
               }

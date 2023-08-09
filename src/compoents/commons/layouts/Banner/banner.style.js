@@ -81,10 +81,10 @@ export const BannerBtn = styled.button`
   color: black;
   body.no-webp & {
     &.play {
-      background: url("assets/icon-play.svg") no-repeat center left 5px/ 20px #fff;
+      background: url("/assets/icon-play.svg") no-repeat center left 5px/ 20px #fff;
     }
     &.info {
-      background: url("assets/icon-info.svg") no-repeat center left 5px / 20px
+      background: url("/assets/icon-info.svg") no-repeat center left 5px / 20px
         rgba(109, 109, 110, 0.7);
       color: #fff;
       :hover {
@@ -98,7 +98,7 @@ export const BannerBtn = styled.button`
   }
   body.webp & {
     &.play {
-      background: url("assets/webp/icon-play.webp") no-repeat center left 5px/ 20px
+      background: url("/assets/webp/icon-play.webp") no-repeat center left 5px/ 20px
         #fff;
     }
     &.info {
@@ -193,10 +193,10 @@ export const CloseBtn = styled.button`
   right: 20px;
   z-index: 999;
   body.no-webp & {
-    background: url("assets/icon-close.svg") no-repeat center / 22px;
+    background: url("/assets/icon-close.svg") no-repeat center / 22px;
   }
   body.webp & {
-    background: url("assets/webp/icon-close.webp") no-repeat center / 22px;
+    background: url("/assets/webp/icon-close.webp") no-repeat center / 22px;
   }
 `;
 export const MobileTitleWrapper = styled.div`
@@ -207,7 +207,7 @@ export const MobilePlayBtn = styled.button`
   width: 50px;
   height: 50px;
   body.no-webp & {
-    background: url("assets/icon-mobile-playBtn.svg") no-repeat center / 50px;
+    background: url("/assets/icon-mobile-playBtn.svg") no-repeat center / 50px;
   }
   top: 50%;
   left: 50%;
@@ -215,7 +215,7 @@ export const MobilePlayBtn = styled.button`
   width: 50px;
   z-index: 99;
   body.webp & {
-    background: url("assets/webp/icon-mobile-playBtn.webp") no-repeat center /
+    background: url("/assets/webp/icon-mobile-playBtn.webp") no-repeat center /
       50px;
   }
   @media screen and (max-width: 486px) {
@@ -230,12 +230,12 @@ export const MobileInfoBtn = styled.button`
   width: 40px;
   height: 40px;
   body.no-webp & {
-    background: url("assets/icon-mobile-infoBtn.svg") no-repeat center / 40px;
+    background: url("/assets/icon-mobile-infoBtn.svg") no-repeat center / 40px;
   }
   bottom: 20px;
   z-index: 99;
   body.webp & {
-    background: url("assets/webp/icon-mobile-infoBtn.webp") no-repeat center /
+    background: url("/assets/webp/icon-mobile-infoBtn.webp") no-repeat center /
       40px;
   }
 `;

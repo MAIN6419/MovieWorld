@@ -9,7 +9,7 @@ export default function Blank({ size, text }) {
     <Wrapper>
       <Title className="a11y-hidden">blank data</Title>
       <BlankImg
-        src={resolveWebp(webpSupport, "assets/webp/icon-blank.webp", "svg")}
+        src={resolveWebp(webpSupport, "/assets/webp/icon-blank.webp", "svg")}
         className={size}
         alt=""
       />

@@ -20,7 +20,7 @@ export default function Splash() {
       <Wrapper>
         <SportLight>
           <Logo
-            src={resolveWebp(webpSupport, "assets/webp/icon-logo.webp", "svg")}
+            src={resolveWebp(webpSupport, "/assets/webp/icon-logo.webp", "svg")}
             alt="MovieWorld"
           />
         </SportLight>

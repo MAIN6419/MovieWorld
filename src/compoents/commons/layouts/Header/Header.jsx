@@ -44,7 +44,7 @@ export default function Header() {
       <HeaderTitle>
         <HeaderLogoLink to="/main" onClick={() => setIsUserMenu(false)}>
           <HeaderLogo
-            src={resolveWebp(webpSupport, "assets/webp/icon-logo.webp", "svg")}
+            src={resolveWebp(webpSupport, "/assets/webp/icon-logo.webp", "svg")}
             alt="MovieWorld"
           />
         </HeaderLogoLink>
@@ -54,7 +54,7 @@ export default function Header() {
           <HeaderSearchIcon
             src={resolveWebp(
               webpSupport,
-              "assets/webp/icon-search.webp",
+              "/assets/webp/icon-search.webp",
               "svg"
             )}
             alt="검색"
@@ -66,14 +66,14 @@ export default function Header() {
               user.photoURL ||
               resolveWebp(
                 webpSupport,
-                "assets/webp/icon-defaultProfile.webp",
+                "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               )
             }
             onError={(e) =>
               (e.target.src = resolveWebp(
                 webpSupport,
-                "assets/webp/icon-defaultProfile.webp",
+                "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))
             }
@@ -97,7 +97,7 @@ export default function Header() {
                 <UserMenuSelectIcon
                   src={resolveWebp(
                     webpSupport,
-                    "assets/webp/icon-downArrow.webp",
+                    "/assets/webp/icon-downArrow.webp",
                     "svg"
                   )}
                   active={isUserMenu}

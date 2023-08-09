@@ -98,38 +98,38 @@ export const SocialLoginBtn = styled.button`
   border: px solid #bdbdbd;
   body.no-webp & {
     &.google {
-      background: url("assets/icon-google.svg") no-repeat center left 15px /
+      background: url("/assets/icon-google.svg") no-repeat center left 15px /
         24px #fff;
     }
     &.facebook {
-      background: url("assets/icon-facebook.svg") no-repeat center left 15px /
+      background: url("/assets/icon-facebook.svg") no-repeat center left 15px /
         24px #3a5897;
     }
     &.twitter {
-      background: url("assets/icon-twitter.svg") no-repeat center left 15px /
+      background: url("/assets/icon-twitter.svg") no-repeat center left 15px /
         24px #55acee;
     }
     &.github {
-      background: url("assets/icon-github.svg") no-repeat center left 15px /
+      background: url("/assets/icon-github.svg") no-repeat center left 15px /
         24px #fff;
     }
   }
 
   body.webp & {
     &.google {
-      background: url("assets/webp/icon-google.webp") no-repeat center left 15px /
+      background: url("/assets/webp/icon-google.webp") no-repeat center left 15px /
         24px #fff;
     }
     &.facebook {
-      background: url("assets/webp/icon-facebook.webp") no-repeat center left
+      background: url("/assets/webp/icon-facebook.webp") no-repeat center left
         15px / 24px #3a5897;
     }
     &.twitter {
-      background: url("assets/webp/icon-twitter.webp") no-repeat center left
+      background: url("/assets/webp/icon-twitter.webp") no-repeat center left
         15px / 24px #55acee;
     }
     &.github {
-      background: url("assets/webp/icon-github.webp") no-repeat center left 15px /
+      background: url("/assets/webp/icon-github.webp") no-repeat center left 15px /
         24px #fff;
     }
   }

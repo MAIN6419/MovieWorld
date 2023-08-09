@@ -8,12 +8,12 @@ export const Btn = styled.button`
   width: 44px;
   height: 44px;
   body.no-webp & {
-    background: url("assets/icon-topbutton.svg") no-repeat center / 44px;
+    background: url("/assets/icon-topbutton.svg") no-repeat center / 44px;
   }
   color: #fff;
   animation: topBtnfadeIn 1s;
   body.webp & {
-    background: url("assets/webp/icon-topbutton.webp") no-repeat center / 44px;
+    background: url("/assets/webp/icon-topbutton.webp") no-repeat center / 44px;
   }
   @keyframes topBtnfadeIn {
     from {
@@ -35,9 +35,9 @@ export const Btn = styled.button`
     right: 20px;
     width: 38px;
     height: 38px;
-    background: url("assets/icon-topbutton.svg") no-repeat center / 38px;
+    background: url("/assets/icon-topbutton.svg") no-repeat center / 38px;
     body.webp & {
-      background: url("assets/webp/icon-topbutton.webp") no-repeat center / 38px;
+      background: url("/assets/webp/icon-topbutton.webp") no-repeat center / 38px;
     }
   }
 `;

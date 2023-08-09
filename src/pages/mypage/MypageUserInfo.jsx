@@ -45,7 +45,7 @@ export default function MypageUserInfo() {
               user.photoURL ||
               resolveWebp(
                 webpSupport,
-                "assets/webp/icon-defaultProfile.webp",
+                "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               )
             }
@@ -53,7 +53,7 @@ export default function MypageUserInfo() {
             onError={(e) =>
               (e.target.src = resolveWebp(
                 webpSupport,
-                "assets/webp/icon-defaultProfile.webp",
+                "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))
             }
