@@ -907,7 +907,8 @@ export default function ProgressiveImg({
   - webp 이미지가 로딩 될 때까지 기다리기 위해 Promise를 이용해 비동기 처리를 해주었습니다.
   - image.src에 webpdata를 할당하여, 생성한 빈 이미지 객체가 해당 WebP 이미지를 로딩하도록 합니다.
   - callback 함수에서는 event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별합니다.
-  - 브라우저가 WebP 이미지를 지원하는 경우 document.body 요소의 클래스 리스트에 "webp"를 추가합니다.
+  - 브라우저가 WebP 이미지를 지원하는 경우 document.body 요소의 classList에 "webp"를 추가합니다.
+  - 지원하지 않는 브라우저라면 document.body 요소의 classList에 "no-webp"를 추가합니다.
  
 - resolveWebp
    - 인자 값 webpSupported: webp지원 유무, img : Webp 이미지 경로, fallbackExt : Webp 이미지 형식 대신 사용할 이미지 형식
@@ -917,7 +918,7 @@ export default function ProgressiveImg({
    - 현재 프로젝트에서 사용 중인 이미지 경로 : img/assets/webp/webpImg.webp => img/assets/svgImg.svg
 
 ```javascript
-export function detectWebpSupport() {
+  export async function detectWebpSupport() {
   // webp 이미지가 로딩 될 때까지 기다리기 위해 비동기 처리
   return new Promise((resolve) => {
     const image = new Image();
@@ -932,7 +933,7 @@ export function detectWebpSupport() {
         document.body.classList.add("webp");
         resolve(true); // WebP 지원됨
       } else {
-        document.body.classList.remove("webp");
+        document.body.classList.add("no-webp");
         resolve(false); // WebP 지원되지 않음
       }
     };
@@ -941,8 +942,11 @@ export function detectWebpSupport() {
     image.onload = callback;
     image.src = webpdata;
   });
-// webpSupported: webp 지원 유무, img: webp 이미지 경로, fallbackExt: webp 이미지 대체 이미지 형식
-export const resolveWebp = (webpSupported, img, fallbackExt) => {
+}
+
+  export const resolveWebp = (webpSupported, img, fallbackExt) => {
+  // webpSupported null인 경우는 context 초기 값이므로 return
+  if(webpSupported===null) return;
   // 이미지 포맷
   const ext = img.split(".").pop();
   // webpSupported false, ext가 webp인 경우
@@ -1311,4 +1315,49 @@ App 컴포넌트 중 detectWebpSupport 호출 코드
   useEffect(() => {
     checkWebp();
   },[]);
+```
+#### (4) webp 이미지가 적용될 때 svg 이미지 리소스도 같이 불러오는 문제 
+- 원인 : 기존 코드에서 webp라는 classList가 없을 때 svg 이미지를 불러오도록 했는데, 처음에는 body 태그에 아무런 className이 없기 때문에 svg 이미지가 적용되어서 문제가 발생하였습니다.
+  또한 resolveWebp 함수에서 인자로 받는 webpSupport 값이 context로 저장된 값이기 때문에 초기값이 null 주어져서 조건문에 의해 svg 이미지 경로를 반환하기 때문에 svg 이미지가 적용되는 문제가 발생하였습니다.
+- 해결방안 : webp 이미지를 지원하지 않는다면 **no-webp라는 classList**를 주어 초반 className이 없을 경우에는 svg 이미지가 적용되지 않도록 수정하여 해결하였습니다.
+  resolveWebp함수에서 **webpSupport 값이 null인 경우 retrun** 되도록 처리하여 context가 초기 값(null)일때 svg 이미지가 적용되는 문제를 해결하였습니다.
+
+webpSupport.js 코드
+```javascript
+  export async function detectWebpSupport() {
+  // webp 이미지가 로딩 될 때까지 기다리기 위해 비동기 처리
+  return new Promise((resolve) => {
+    const image = new Image();
+    // 1px x 1px WebP 이미지
+    const webpdata =
+      "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=";
+
+    const callback = (event) => {
+      // event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별
+      const result = event?.type === "load" && image.width === 1;
+      if (result) {
+        document.body.classList.add("webp");
+        resolve(true); // WebP 지원됨
+      } else {
+        document.body.classList.add("no-webp");
+        resolve(false); // WebP 지원되지 않음
+      }
+    };
+
+    image.onerror = callback;
+    image.onload = callback;
+    image.src = webpdata;
+  });
+
+export const resolveWebp = (webpSupported, img, fallbackExt) => {
+  // webpSupported null인 경우는 context 초기 값이므로 return
+  if(webpSupported===null) return;
+  // 이미지 포맷
+  const ext = img.split(".").pop();
+  // webpSupported false, ext가 webp인 경우
+  if (!webpSupported && ext === "webp") {
+    return img.replace("/webp", "").replace(".webp", `.${fallbackExt}`);
+  }
+  return img;
+};
 ```
