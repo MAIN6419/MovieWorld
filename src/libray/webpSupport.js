@@ -24,9 +24,8 @@ export async function detectWebpSupport() {
   });
 }
 // webpSupported: webp 지원 유무, img: webp 이미지 경로, fallbackExt: webp 이미지 대체 이미지 형식
-export const resolveWebp = (webpSupported, img, fallbackExt) => {
-   // webpSupported null인 경우는 context 초기 값이므로 return
-  if(webpSupported===null) return;
+export const resolveWebp = (img, fallbackExt) => {
+   const webpSupported = document.body.classList.contains("webp");
   // 이미지 포맷
   const ext = img.split(".").pop();
   // webpSupported false, ext가 webp인 경우

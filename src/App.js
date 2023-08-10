@@ -15,10 +15,8 @@ import Main from "./pages/main/Main";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import NotFound from "./pages/notFound/NotFound";
 import { detectWebpSupport } from "./libray/webpSupport";
-import { WebpContext } from "./context/webpContext";
 
 function App() {
-  const [webpSupport, setWebpSupport] = useState(null);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || ""
   );
@@ -67,23 +65,14 @@ function App() {
     });
   }, []);
   
-  const checkWebp = async() => {
-    const res = await detectWebpSupport();
-    if (res) {
-      setWebpSupport(true);
-    } else {
-      setWebpSupport(false);
-    }
-  }
 
   useEffect(() => {
-    checkWebp();
+    detectWebpSupport();
   },[]);
 
   return (
     <>
       <UserContext.Provider value={{ user, setUser, refreshUser }}>
-        <WebpContext.Provider value={{ webpSupport }}>
           <Routes>
             <Route
               path="/"
@@ -129,7 +118,6 @@ function App() {
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </WebpContext.Provider>
       </UserContext.Provider>
     </>
   );

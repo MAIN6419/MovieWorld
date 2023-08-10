@@ -12,7 +12,6 @@ import {
   ProfileWrapper,
 } from "./mypage.style";
 import { resolveWebp } from "../../libray/webpSupport";
-import { WebpContext } from "../../context/webpContext";
 import { UserContext } from "../../context/userContext";
 import ChangeProfile from "./ChangeProfile.container";
 import ChangePassword from "./ChangePassword.container";
@@ -20,7 +19,6 @@ import Loading from "../../compoents/commons/loading/Loading";
 
 export default function MypageUserInfo() {
   const { user } = useContext(UserContext);
-  const { webpSupport } = useContext(WebpContext);
   const [isProfileEdit, setIsProfileEdit] = useState(false);
   const [isChangePassword, setIsChangePassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,16 +41,11 @@ export default function MypageUserInfo() {
           <ProfileImg
             src={
               user.photoURL ||
-              resolveWebp(
-                webpSupport,
-                "/assets/webp/icon-defaultProfile.webp",
-                "svg"
-              )
+              resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
             }
             alt="프로필 이미지"
             onError={(e) =>
               (e.target.src = resolveWebp(
-                webpSupport,
                 "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))

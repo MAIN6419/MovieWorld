@@ -133,13 +133,15 @@ export const ProfileImgButton = styled.button`
   border-radius: 50%;
   position: relative;
   border: 2px solid #bdbdbd;
-  ::after {
+  ::after{
     content: "";
     position: absolute;
     right: -10px;
     bottom: 0;
     width: 40px;
     height: 40px;
+  }
+  body.no-webp &::after {
     background: url("/assets/icon-uploadImg.svg") no-repeat center / 40px;
   }
   body.webp &::after {
@@ -159,8 +161,11 @@ export const ProfileImgResetBtn = styled.button`
   height: 20px;
   top: -10px;
   right: calc(100% - 70%);
-  background: url("/assets/icon-close.svg") no-repeat center / 20px;
-  body.webp &::after {
+  body.no-webp &{
+    background: url("/assets/icon-close.svg") no-repeat center / 20px;
+  }
+  
+  body.webp & {
     background: url("/assets/webp/icon-close.webp") no-repeat center / 20px;
   }
 `;

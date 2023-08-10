@@ -23,13 +23,11 @@ import { UserContext } from "../../../../context/userContext";
 import { logout } from "../../../../firebase/loginAPI";
 import { useLocation } from "react-router-dom";
 import { resolveWebp } from "../../../../libray/webpSupport";
-import { WebpContext } from "../../../../context/webpContext";
 import { optKeyboardFocus } from "../../../../libray/optKeyBoard";
 import { sweetConfirm } from "../../../../sweetAlert/sweetAlert";
 
 export default function Header() {
   const { user } = useContext(UserContext);
-  const { webpSupport } = useContext(WebpContext);
   const pathname = useLocation().pathname;
   const menuItemLinkRef = useRef(null);
   const menuItemBtnRef = useRef(null);
@@ -44,7 +42,7 @@ export default function Header() {
       <HeaderTitle>
         <HeaderLogoLink to="/main" onClick={() => setIsUserMenu(false)}>
           <HeaderLogo
-            src={resolveWebp(webpSupport, "/assets/webp/icon-logo.webp", "svg")}
+            src={resolveWebp("/assets/webp/icon-logo.webp", "svg")}
             alt="MovieWorld"
           />
         </HeaderLogoLink>
@@ -52,11 +50,7 @@ export default function Header() {
       <HeaderRight>
         <HeaderSearchLink to="/search" onClick={() => setIsUserMenu(false)}>
           <HeaderSearchIcon
-            src={resolveWebp(
-              webpSupport,
-              "/assets/webp/icon-search.webp",
-              "svg"
-            )}
+            src={resolveWebp("/assets/webp/icon-search.webp", "svg")}
             alt="검색"
           />
         </HeaderSearchLink>
@@ -64,15 +58,10 @@ export default function Header() {
           <UserProfileImg
             src={
               user.photoURL ||
-              resolveWebp(
-                webpSupport,
-                "/assets/webp/icon-defaultProfile.webp",
-                "svg"
-              )
+              resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
             }
             onError={(e) =>
               (e.target.src = resolveWebp(
-                webpSupport,
                 "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))
@@ -95,11 +84,7 @@ export default function Header() {
               <UserNickname>{user.displayName} 님</UserNickname>
               <UserMenuSelect tabIndex="-1">
                 <UserMenuSelectIcon
-                  src={resolveWebp(
-                    webpSupport,
-                    "/assets/webp/icon-downArrow.webp",
-                    "svg"
-                  )}
+                  src={resolveWebp("/assets/webp/icon-downArrow.webp", "svg")}
                   active={isUserMenu}
                   alt="유저 메뉴 버튼"
                 />

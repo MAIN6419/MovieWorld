@@ -6,7 +6,6 @@ import { UserContext } from "../../context/userContext";
 import { isMobile } from "react-device-detect";
 import { history } from "../../history/history";
 import ChangeProfileUI from "./ChangeProfile.presenter";
-import { WebpContext } from "../../context/webpContext";
 import { resolveWebp } from "../../libray/webpSupport";
 import { imgCompression } from "../../libray/imagCompression";
 import { sweetToast } from "../../sweetAlert/sweetAlert";
@@ -16,7 +15,6 @@ export default function ChangeProfile({
   setIsProfileEdit,
   setIsLoading,
 }) {
-  const { webpSupport } = useContext(WebpContext);
   const { refreshUser } = useContext(UserContext);
   const isMoblie = useMediaQuery({
     query: "(max-width:486px)",
@@ -27,8 +25,13 @@ export default function ChangeProfile({
   const cancelBtnRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(user.photoURL);
   const [uploadImg, setUploadImg] = useState("");
-  const [displayNameValue, displayNameValid, onChnageDisplayName, setDisplayNameValue, setDisplayNameValid] =
-    useValidationInput(user.displayName, "displayName", true);
+  const [
+    displayNameValue,
+    displayNameValid,
+    onChnageDisplayName,
+    setDisplayNameValue,
+    setDisplayNameValid,
+  ] = useValidationInput(user.displayName, "displayName", true);
 
   const onClickChangeImg = () => {
     imgInputRef.current.click();
@@ -106,7 +109,7 @@ export default function ChangeProfile({
 
   useEffect(() => {
     imgBtnRef.current.focus();
-    setDisplayNameValid({errorMsg:"", valid: true})
+    setDisplayNameValid({ errorMsg: "", valid: true });
   }, []);
   return (
     <ChangeProfileUI
@@ -123,7 +126,6 @@ export default function ChangeProfile({
       displayNameValid={displayNameValid}
       isMoblie={isMoblie}
       onClickSubmit={onClickSubmit}
-      webpSupport={webpSupport}
       resolveWebp={resolveWebp}
     />
   );

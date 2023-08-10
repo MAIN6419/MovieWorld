@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   SearchMovieImgWrapper,
   SearchMovieItem,
@@ -22,11 +28,9 @@ import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveIm
 import TopButton from "../../compoents/commons/topButton/TopButton";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import { resolveWebp } from "../../libray/webpSupport";
-import { WebpContext } from "../../context/webpContext";
 
 export default function Search() {
-  const { webpSupport } = useContext(WebpContext);
-  const searchInputRef =useRef(null);
+  const searchInputRef = useRef(null);
   const [keyWord, setKeyword] = useState("");
   const [movieData, setMovieData] = useState([]);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
@@ -54,13 +58,12 @@ export default function Search() {
       const data = await fetchSearchMovie(value);
       setMovieData(data);
       // 검색이 완료된 이후 input를 blur 처리
-      // blur 처리를 하지 않으면 input의 포커스가 유지된 채 스크롤 내려 다른 요소 클릭 시 
-      // 포커스가 해제되면서 input요소를 찾아 스크롤이 위로 올라 오기 때문 
+      // blur 처리를 하지 않으면 input의 포커스가 유지된 채 스크롤 내려 다른 요소 클릭 시
+      // 포커스가 해제되면서 input요소를 찾아 스크롤이 위로 올라 오기 때문
       searchInputRef.current.blur();
     }, 500),
     []
   );
-
 
   const fetchAddMovie = async () => {
     const data = await fetchSearchMovie(keyWord, page);
@@ -110,19 +113,17 @@ export default function Search() {
           />
         </SearchForm>
         {!movieData.length ? (
-          keyWord&&<SearchBlank>
-            <SearchBlankImg
-              src={resolveWebp(
-                webpSupport,
-                "/assets/webp/icon-blank.webp",
-                "svg"
-              )}
-            />
-            <SearchBlankText>
-              <SearchBlankKeyword>"{keyWord}"</SearchBlankKeyword>
-              {' 에 대한\n검색 결과가 존재하지 않습니다.'}
-            </SearchBlankText>
-          </SearchBlank>
+          keyWord && (
+            <SearchBlank>
+              <SearchBlankImg
+                src={resolveWebp("/assets/webp/icon-blank.webp", "svg")}
+              />
+              <SearchBlankText>
+                <SearchBlankKeyword>"{keyWord}"</SearchBlankKeyword>
+                {" 에 대한\n검색 결과가 존재하지 않습니다."}
+              </SearchBlankText>
+            </SearchBlank>
+          )
         ) : (
           <>
             <SearchMovieList>

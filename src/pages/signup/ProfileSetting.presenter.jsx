@@ -29,7 +29,6 @@ export default function ProfileSettingUI({
   setProfile,
   setPercentage,
   setNext,
-  webpSupport,
   resolveWebp
 }) {
   return (
@@ -51,7 +50,7 @@ export default function ProfileSettingUI({
             src={previewImg}
             alt="유저 프로필 이미지"
             onError={(e) =>
-              e.target.value = resolveWebp(webpSupport, "/assets/webp/icon-defaultProfile.webp", "svg")
+              e.target.value = resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
             }
           />
         </ProfileImgButton>

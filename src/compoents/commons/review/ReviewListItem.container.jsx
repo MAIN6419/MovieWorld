@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   editReview,
   removeReview,
@@ -6,7 +6,6 @@ import {
 } from "../../../firebase/reviewAPI";
 import ReviewListItemUI from "./ReviewListItem.presenter";
 import { resolveWebp } from "../../../libray/webpSupport";
-import { WebpContext } from "../../../context/webpContext";
 import { sweetConfirm, sweetToast } from "../../../sweetAlert/sweetAlert";
 import { optKeyboardFocus } from "../../../libray/optKeyBoard.js";
 export default function ReviewListItem({
@@ -18,7 +17,6 @@ export default function ReviewListItem({
   setUserData,
   setMypageReviewData,
 }) {
-  const { webpSupport } = useContext(WebpContext);
   const rateRef = useRef(null);
   const submitRef = useRef(null);
   const cancelRef = useRef(null);
@@ -141,7 +139,6 @@ export default function ReviewListItem({
       onClickReport={onClickReport}
       userData={userData}
       resolveWebp={resolveWebp}
-      webpSupport={webpSupport}
       showSpoilerData={showSpoilerData}
       setShowSpoilerData={setShowSpoilerData}
       rateRef={rateRef}

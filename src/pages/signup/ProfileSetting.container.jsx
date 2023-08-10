@@ -4,7 +4,6 @@ import { useValidationInput } from "../../hook/useValidationInput";
 import { UserContext } from "../../context/userContext";
 import ProfileSettingUI from "./ProfileSetting.presenter";
 import { resolveWebp } from "../../libray/webpSupport";
-import { WebpContext } from "../../context/webpContext";
 import { imgCompression } from "../../libray/imagCompression";
 import { sweetToast } from "../../sweetAlert/sweetAlert";
 
@@ -17,13 +16,12 @@ export default function ProfileSetting({
   setPercentage,
   setNext,
 }) {
-  const { webpSupport } = useContext(WebpContext);
   const { refreshUser } = useContext(UserContext);
   const imgInputRef = useRef();
   // 회원가입 버튼 활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
   const [previewImg, setPreviewImg] = useState(
-    resolveWebp(webpSupport, "/assets/webp/icon-defaultProfile.webp", "svg")
+    resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
   );
   const [uploadImg, setUploadImg] = useState("");
   const [displayNameValue, displayNameValid, onChangeDislayName] =
@@ -68,9 +66,7 @@ export default function ProfileSetting({
   };
 
   const onClickImgReset = () => {
-    setPreviewImg(
-      resolveWebp(webpSupport, "/assets/webp/icon-defaultProfile.webp", "svg")
-    );
+    setPreviewImg(resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg"));
     setUploadImg("");
   };
 
@@ -114,6 +110,7 @@ export default function ProfileSetting({
       setProfile={setProfile}
       setPercentage={setPercentage}
       setNext={setNext}
+      resolveWebp={resolveWebp}
     />
   );
 }

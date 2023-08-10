@@ -34,7 +34,6 @@ export default function ChangeProfileUI({
   displayNameValid,
   isMoblie,
   onClickSubmit,
-  webpSupport,
   resolveWebp,
 }) {
   return (
@@ -56,15 +55,10 @@ export default function ChangeProfileUI({
             <ProfileImg
               src={
                 previewImg ||
-                resolveWebp(
-                  webpSupport,
-                  "/assets/webp/icon-defaultProfile.webp",
-                  "svg"
-                )
+                resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
               }
               onError={(e) =>
                 (e.target.src = resolveWebp(
-                  webpSupport,
                   "/assets/webp/icon-defaultProfile.webp",
                   "svg"
                 ))
