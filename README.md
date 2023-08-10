@@ -944,9 +944,8 @@ export default function ProgressiveImg({
   });
 }
 
-  export const resolveWebp = (webpSupported, img, fallbackExt) => {
-  // webpSupported null인 경우는 context 초기 값이므로 return
-  if(webpSupported===null) return;
+  export const resolveWebp = (img, fallbackExt) => {
+  const webpSupported = document.body.classList.contains("webp");
   // 이미지 포맷
   const ext = img.split(".").pop();
   // webpSupported false, ext가 webp인 경우
@@ -1352,6 +1351,22 @@ webpSupport.js 코드
 export const resolveWebp = (webpSupported, img, fallbackExt) => {
   // webpSupported null인 경우는 context 초기 값이므로 return
   if(webpSupported===null) return;
+  // 이미지 포맷
+  const ext = img.split(".").pop();
+  // webpSupported false, ext가 webp인 경우
+  if (!webpSupported && ext === "webp") {
+    return img.replace("/webp", "").replace(".webp", `.${fallbackExt}`);
+  }
+  return img;
+};
+```
+#### (5) 새로고침 시 잠깐 동안 이미지가 나오지 않고 alt가 나오는 현상
+- 원인 : resolveWebp 함수에서 null인 경우 retrun를 하였는데, 이 경우에는 아무 이미지 경로도 반환하지 않기 때문에 이미지가 적용되지 않고, 이미지 alt가 출력되는 문제가 발생하였습니다.
+- 해결방안 : webpSupported를 인자로 받지 않고 함수 안에서 선언하고, 기존 webpSupported를 contextAPI를 이용하여 값을 저장해서 인자 값으로 넘겨주었는데 이를 제거하였습니다.
+
+ ```javascript
+export const resolveWebp = (webpSupported, img, fallbackExt) => {
+  const webpSupported = document.body.classList.contains("webp");
   // 이미지 포맷
   const ext = img.split(".").pop();
   // webpSupported false, ext가 webp인 경우
