@@ -1376,3 +1376,66 @@ export const resolveWebp = (webpSupported, img, fallbackExt) => {
   return img;
 };
 ```
+#### (6) webp 이미지가 적용될 때 svg 이미지 리소스도 같이 불러오는 문제
+- 원인 : 초기 body classList가 없을 때 resolveWebp 함수가 실행되었기 때문에 문제가 발생하였습니다.
+- 해결방안 : detectWebpSupport 함수 비동기 처리를 이용하여 app 컴포넌트에 detectWebpSupport 함수가 실행되고 나서 body의 classList 부여 후 webpChecked 상태를 통해 조건부 렌더링을 걸어주어 body에 classList가 있는 경우에만 렌더링 될 수 있도록 하여 문제를 해결하였습니다.
+
+detectWebpSupport 함수
+```javascript
+export async function detectWebpSupport() {
+  // 이미지가 webp 지원유무를 파악하고 렌더링 될 수 있도록 비동기 처리
+  return new Promise((resolve) => {
+    const image = new Image();
+    // 1px x 1px WebP 이미지
+    const webpdata =
+      "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=";
+
+    const callback = (event) => {
+      // event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별
+      const result = event?.type === "load" && image.width === 1;
+      if (result) {
+        resolve(true); // WebP 지원됨
+      } else {
+        resolve(false); // WebP 지원되지 않음
+      }
+    };
+
+    image.onerror = callback;
+    image.onload = callback;
+    image.src = webpdata;
+  });
+}
+```
+
+App 컴포넌트 
+ ```javascript
+ //                           '
+ //                           '
+ //                           '
+ //                         (생략)
+
+ // webp 지원유무가 확인 되었을때 컴포넌트를 렌더링 시키위해 사용
+  const [webpChecked, setWebpChecked] = useState(false);
+
+  const checkwebp = async () => {
+    const webpSupport = await detectWebpSupport();
+    if (webpSupport) {
+      // webp가 지원된다면 body에 webp classList추가
+      document.body.classList.add("webp");
+    } else {
+      // webp가 지원되지 않는다면 body에 no-webp classList추가
+      document.body.classList.add("no-webp");
+    }
+    // webp 지원유무가 확인되었다면 true로 설정
+    setWebpChecked(true);
+  };
+
+  useEffect(() => {
+    checkwebp();
+  }, []);
+
+ //                         (생략)
+ //                           '
+ //                           '
+ //                           '
+```
