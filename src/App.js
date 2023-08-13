@@ -21,6 +21,26 @@ function App() {
     JSON.parse(localStorage.getItem("user")) || ""
   );
 
+  // webp 지원유무가 확인 되었을때 컴포넌트를 렌더링 시키위해 사용
+  const [webpChecked, setWebpChecked] = useState(false);
+
+  const checkwebp = async () => {
+    const webpSupport = await detectWebpSupport();
+    if (webpSupport) {
+      // webp가 지원된다면 body에 webp classList추가
+      document.body.classList.add("webp");
+    } else {
+      // webp가 지원되지 않는다면 body에 no-webp classList추가
+      document.body.classList.add("no-webp");
+    }
+    // webp 지원유무가 확인되었다면 true로 설정
+    setWebpChecked(true);
+  };
+
+  useEffect(() => {
+    checkwebp();
+  }, []);
+
   const refreshUser = () => {
     const user = getAuth().currentUser;
     localStorage.setItem(
@@ -64,15 +84,15 @@ function App() {
       }
     });
   }, []);
-  
 
   useEffect(() => {
     detectWebpSupport();
-  },[]);
+  }, []);
 
   return (
-    <>
-      <UserContext.Provider value={{ user, setUser, refreshUser }}>
+    webpChecked && (
+      <>
+        <UserContext.Provider value={{ user, setUser, refreshUser }}>
           <Routes>
             <Route
               path="/"
@@ -118,8 +138,9 @@ function App() {
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
-      </UserContext.Provider>
-    </>
+        </UserContext.Provider>
+      </>
+    )
   );
 }
 
