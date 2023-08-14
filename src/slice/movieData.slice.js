@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  fetchAction,
-  fetchComedy,
-  fetchDocumentary,
-  fetchHorror,
-  fetchRomance,
-  fetchTopRated,
-  fetchTrending,
-  fetchVideo,
+  getActionMovies,
+  getComedyMovies,
+  getDocumentaryMovies,
+  getHorrorMovies,
+  getNowPlayingMovie,
+  getRomanceMovies,
+  getTopRatedMovies,
+  getTrendingMovies,
+  getVideoData,
 } from "../api/movie";
 import { sweetToast } from "../sweetAlert/sweetAlert";
 
@@ -16,7 +17,7 @@ export const fetchActionMovies = createAsyncThunk(
   "movieDataSlice/fetchActionMovies",
   async (_, thunkAPI) => {
     try {
-      const data = await fetchAction();
+      const data = await getActionMovies();
       return data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -29,7 +30,7 @@ export const fetchComedyMovies = createAsyncThunk(
   "movieDataSlice/fetchComedyMovies",
   async (_, thunkAPI) => {
     try {
-      const data = await fetchComedy();
+      const data = await getComedyMovies();
       return data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -42,7 +43,7 @@ export const fetchDocumentaryMovies = createAsyncThunk(
   "movieDataSlice/fetchDocumentaryMovies",
   async (_, thunkAPI) => {
     try {
-      const data = await fetchDocumentary();
+      const data = await getDocumentaryMovies();
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -55,7 +56,7 @@ export const fetchHorrorMovies = createAsyncThunk(
   "movieDataSlice/fetchHorrorMovies",
   async (_, thunkAPI) => {
     try {
-      const data = await fetchHorror();
+      const data = await getHorrorMovies();
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -68,7 +69,7 @@ export const fetchRomanceMovies = createAsyncThunk(
   "movieDataSlice/fetchRomanceMovies",
   async (_, thunkAPI) => {
     try {
-      const data = await fetchRomance();
+      const data = await getRomanceMovies();
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -81,7 +82,7 @@ export const fetchTopRatedMovies = createAsyncThunk(
   "movieDataSlice/fetchTopRatedMovies",
   async (_, thunkAPI) => {
     try {
-      const data = await fetchTopRated();
+      const data = await getTopRatedMovies();
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -94,7 +95,20 @@ export const fetchTrendingMovies = createAsyncThunk(
   "movieDataSlice/fetchTrendingMovies",
   async (_, thunkAPI) => {
     try {
-      const data = await fetchTrending();
+      const data = await getTrendingMovies();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+ // 현재 상영중인 영화 목록에서 랜덤으로 하나의 영화를 불러옴
+export const fetchNowPlayingMovie = createAsyncThunk(
+  "movieData/fetchNowPlayingMovie",
+  async (_, thunkAPI) => {
+    try {
+      const data = await getNowPlayingMovie();
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -107,8 +121,8 @@ export const fetchVideoData = createAsyncThunk(
   "movieDataSlice/fetchVideoData",
   async (movieData, thunkAPI) => {
     try {
-      const data = await fetchVideo(movieData.id);
-      // Themovie DB API에서 기존 영화 데이터와 다른 영화 비디오 데이터를 줄때가 있어서 
+      const data = await getVideoData(movieData.id);
+      // Themovie DB API에서 기존 영화 데이터와 다른 영화 비디오 데이터를 줄때가 있어서
       // title, name, original_name으로 기존 영화 데이터와 비디오 데이터를 비교하여 같지 않으면 그냥 기존 영화 데이터를 적용
       if (
         data.title !== movieData.title &&
@@ -137,6 +151,7 @@ export const movieDataSlice = createSlice({
     topRated: { data: [], error: "" },
     trending: { data: [], error: "" },
     videoData: { data: [], error: "" },
+    nowPlayingData: { data: [], error: "" },
   },
   reducers: {
     // 비디오 데이터 초기화
@@ -235,6 +250,18 @@ export const movieDataSlice = createSlice({
     });
     builder.addCase(fetchVideoData.rejected, (state, action) => {
       state.videoData.error = action.payload.message;
+      sweetToast(
+        "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
+        "warning"
+      );
+    });
+
+     // 현재 상영중인 영화 
+    builder.addCase(fetchNowPlayingMovie.fulfilled, (state, action) => {
+      state.nowPlayingData.data = action.payload;
+    });
+    builder.addCase(fetchNowPlayingMovie.rejected, (state, action) => {
+      state.nowPlayingData.error = action.payload.message;
       sweetToast(
         "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
         "warning"

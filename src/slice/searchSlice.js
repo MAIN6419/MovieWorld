@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchSearch } from "../api/movie";
+import {  getSearchData } from "../api/movie";
 import { sweetToast } from "../sweetAlert/sweetAlert";
 
 // 영화 검색 목록 불러오기
@@ -7,7 +7,7 @@ export const fetchSearchMovies = createAsyncThunk(
   "searchSlice/fetchSearchMovies",
   async ({ keyword, page }, thunkAPI) => {
     try {
-      const data = await fetchSearch(keyword, page);
+      const data = await getSearchData(keyword, page);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

@@ -5,7 +5,7 @@ const api_key = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 const language = "ko-KR";
 
 // 영화 비디오 정보가 포함된 데이터를 가져오는 API
-export const fetchVideo = async (id) => {
+export const getVideoData = async (id) => {
     const video = await customAxios.get(
       `movie/${id}`,
       {
@@ -20,7 +20,7 @@ export const fetchVideo = async (id) => {
 };
 
 // Banner 화면에 나타날 영화 정보를 가져오는 API
-export const fetchNowPlaying = async () => {
+export const getNowPlayingMovie = async () => {
     const res = await customAxios.get(`movie/now_playing`, {
       params: {
         api_key,
@@ -29,11 +29,11 @@ export const fetchNowPlaying = async () => {
     });
     const movieId =
       res.data.results[Math.floor(Math.random() * res.data.results.length)].id;
-    return fetchVideo(movieId);
+    return getVideoData(movieId);
 };
 
 // 최신의 영화 정보를 가져오는 API
-export const fetchTrending = async (page = 1) => {
+export const getTrendingMovies = async (page = 1) => {
     const res = await customAxios.get(`/trending/movie/week`, {
       params: {
         api_key,
@@ -45,7 +45,7 @@ export const fetchTrending = async (page = 1) => {
 };
 
 // 영화 순위가 높은 순서대로 영화 정보를 가져오는 API
-export const fetchTopRated = async (page = 1) => {
+export const getTopRatedMovies = async (page = 1) => {
     const res = await customAxios.get("/movie/top_rated", {
       params: {
         api_key,
@@ -57,7 +57,7 @@ export const fetchTopRated = async (page = 1) => {
 };
 
 // Action 영화 정보를 가져오는 API
-export const fetchAction = async (page = 1) => {
+export const getActionMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=28", {
       params: {
         api_key,
@@ -69,7 +69,7 @@ export const fetchAction = async (page = 1) => {
 };
 
 // Comedy 영화 정보를 가져오는 API
-export const fetchComedy = async (page = 1) => {
+export const getComedyMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=35", {
       params: {
         api_key,
@@ -81,7 +81,7 @@ export const fetchComedy = async (page = 1) => {
 };
 
 // Horror 영화 정보를 가져오는 API
-export const fetchHorror = async (page = 1) => {
+export const getHorrorMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=27", {
       params: {
         api_key,
@@ -93,7 +93,7 @@ export const fetchHorror = async (page = 1) => {
 };
 
 // Romance 영화 정보를 가져오는 API
-export const fetchRomance = async (page = 1) => {
+export const getRomanceMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=10749", {
       params: {
         api_key,
@@ -105,7 +105,7 @@ export const fetchRomance = async (page = 1) => {
 };
 
 // Documentary 영화 정보를 가져오는 API
-export const fetchDocumentary = async (page = 1) => {
+export const getDocumentaryMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=99", {
       params: {
         api_key,
@@ -117,7 +117,7 @@ export const fetchDocumentary = async (page = 1) => {
 };
 
 // 검색한 영화 정보를 가져오는 API
-export const fetchSearch = async (keyword, page) => {
+export const getSearchData = async (keyword, page) => {
     const res = await customAxios.get(
       `/search/movie?include_adult=false&query=${keyword}`,
       {

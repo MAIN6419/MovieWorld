@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchTrending } from "../api/movie";
+import { getTrendingMovies } from "../api/movie";
 import { sweetToast } from "../sweetAlert/sweetAlert";
 
 // 최신 영화 데이터 목록 불러오기
@@ -7,7 +7,7 @@ export const fetchTrendingPageMovies = createAsyncThunk(
   "trendingPageSlice/fetchTrendingPageMovies",
   async (page, thunkAPI) => {
     try {
-      const data = await fetchTrending(page);
+      const data = await getTrendingMovies(page);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
