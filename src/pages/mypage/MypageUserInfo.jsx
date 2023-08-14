@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   ProfileEmail,
   ProfileImg,
@@ -12,16 +12,16 @@ import {
   ProfileWrapper,
 } from "./mypage.style";
 import { resolveWebp } from "../../libray/webpSupport";
-import { UserContext } from "../../context/userContext";
 import ChangeProfile from "./ChangeProfile.container";
 import ChangePassword from "./ChangePassword.container";
 import Loading from "../../compoents/commons/loading/Loading";
+import { useSelector } from "react-redux";
 
 export default function MypageUserInfo() {
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.data);
   const [isProfileEdit, setIsProfileEdit] = useState(false);
   const [isChangePassword, setIsChangePassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useSelector(state=>state.user.isLoading);
 
   const onClickProfileEdit = () => {
     setIsProfileEdit(true);
@@ -73,13 +73,11 @@ export default function MypageUserInfo() {
         <ChangeProfile
           user={user}
           setIsProfileEdit={setIsProfileEdit}
-          setIsLoading={setIsLoading}
         />
       )}
       {isChangePassword && (
         <ChangePassword
           setIsChangePassword={setIsChangePassword}
-          setIsLoading={setIsLoading}
         />
       )}
       {isLoading && <Loading />}

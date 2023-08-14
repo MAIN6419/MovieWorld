@@ -1,17 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import { useInView } from "react-intersection-observer";
 import { useMediaQuery } from "react-responsive";
 
-import {
-  fetchFirstLikeList,
-  fetchLikeListPage,
-  removeLike,
-} from "../../firebase/likeAPI";
-import {
-  fetchFirstReviewMovieList,
-  fetchReviewMovieListPage,
-} from "../../firebase/reviewAPI";
+import {} from "../../firebase/reviewAPI";
 
 import {
   InfiniteScrollTarget,
@@ -32,50 +24,43 @@ import Blank from "../../compoents/commons/blank/Blank";
 import Loading from "../../compoents/commons/loading/Loading";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo.container";
 import { sweetToast } from "../../sweetAlert/sweetAlert";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchFirstLikeList,
+  fetchFirstReviewMovieList,
+  fetchLikeListPage,
+  fetchReviewMovieListPage,
+  mypageSlice,
+} from "../../slice/mypageSlice";
+import { fetchRemoveLike } from "../../slice/likeSlice";
 
 export default function MypageMenu() {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.mypage.isLoading);
+  const isBlank = useSelector(state=>state.mypage.isBlank);
+  const data = useSelector((state) => state.mypage.data);
+  const page = useSelector((state) => state.mypage.page);
+  const hasMore = useSelector((state) => state.mypage.hasMore);
+  const limitPage = useSelector((state) => state.mypage.limitPage);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
-  const [page, setPage] = useState("");
-  const [hasMore, setHasMore] = useState(false);
-  const limitPage = 20;
   const [ref, inview] = useInView();
   const [menu, setMenu] = useState("like");
-  // 초기 렌더링 시 Blank 컴포넌트가 잠깐 나오는 현상을 방지하기 위해 사용
-  // isLoading으로 처리하려 했지만 로딩시간이 짧을 경우 깜빡거림 현상으로 인해 UX적으로 안좋아 이 방식 사용
-  const [notData, setNotData] = useState(true);
   const isMoblie = useMediaQuery({ query: "(max-width:486px)" });
 
   const fetchFirstPage = async () => {
-    setNotData(true);
-    const res =
-      menu === "like"
-        ? await fetchFirstLikeList(limitPage)
-        : await fetchFirstReviewMovieList(limitPage);
-    const data = res.docs.map((el) => el.data());
-    setData((prev) => [...prev, ...data]);
-    setPage(res.docs[res.docs.length - 1]);
-    setHasMore(res.docs.length === limitPage);
-    setIsLoading(false);
-    setNotData(false);
+    menu === "like"
+      ? dispatch(fetchFirstLikeList(limitPage))
+      : dispatch(fetchFirstReviewMovieList(limitPage));
   };
 
   const fetchAddData = async () => {
-    const res =
       menu === "like"
-        ? await fetchLikeListPage(page, limitPage)
-        : await fetchReviewMovieListPage(page, limitPage);
-    const data = res.docs.map((el) => el.data());
-    setData((prev) => [...prev, ...data]);
-    setPage(res.docs[res.docs.length - 1]);
-    setHasMore(res.docs.length === limitPage);
+        ? dispatch(fetchLikeListPage({ page, limitPage }))
+        : dispatch(fetchReviewMovieListPage({ page, limitPage }));
   };
 
   useEffect(() => {
-    setData([]);
-    setHasMore(false);
     fetchFirstPage();
   }, [menu]);
 
@@ -113,7 +98,7 @@ export default function MypageMenu() {
             </MovieMenuItem>
           </MovieMenuUl>
         </MovieMenuNav>
-        {!data.length && !notData ? (
+        {isBlank  ? (
           <Blank
             size={isMoblie ? "small" : ""}
             text={
@@ -152,11 +137,10 @@ export default function MypageMenu() {
                       <RemoveBtn
                         type="button"
                         onClick={async () => {
-                          await removeLike(item);
-                          setData((prev) =>
-                            prev.filter((el) => el.id !== item.id)
-                          );
-                          sweetToast("삭제가 완료되었습니다.", "success")
+                          await dispatch(fetchRemoveLike(item.id));
+                          const newData = [...data].filter(el=>el.id!==item.id);
+                          dispatch(mypageSlice.actions.setMypageData(newData));
+                          sweetToast("삭제가 완료되었습니다.", "success");
                         }}
                         aria-label="닫기"
                       />
@@ -176,7 +160,6 @@ export default function MypageMenu() {
         <MovieInfo
           movieData={seletedMovie}
           setIsOpenMovieInfo={setIsOpenMovieInfo}
-          setMypageLikeData={setData}
         />
       )}
       {isLoading && <Loading />}

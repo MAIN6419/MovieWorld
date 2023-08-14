@@ -3,12 +3,15 @@ import React, { useEffect, useRef } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
 
 import { useMediaQuery } from "react-responsive";
-import { changeUserPassword } from "../../firebase/findAccountAPI";
 import { isMobile } from "react-device-detect";
 import { history } from "../../history/history";
 import ChangePasswordUI from "./ChangePassword.presenter";
+import { useDispatch } from "react-redux";
+import { fetchChangeLoginUserPw } from "../../slice/userSlice";
+import { mypageSlice } from "../../slice/mypageSlice";
 
-export default function ChangePassword({ setIsChangePassword, setIsLoading }) {
+export default function ChangePassword({ setIsChangePassword }) {
+  const dispatch = useDispatch();
   const isMoblie = useMediaQuery({
     query: "(max-width:486px)",
   });
@@ -43,9 +46,9 @@ export default function ChangePassword({ setIsChangePassword, setIsLoading }) {
 
   const onClickSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    await changeUserPassword(currentPw, newPw);
-    setIsLoading(false);
+    dispatch(mypageSlice.actions.setIsLoading(true));
+    await dispatch(fetchChangeLoginUserPw({currentPw, newPw}));
+    dispatch(mypageSlice.actions.setIsLoading(false));
   };
 
   useEffect(() => {

@@ -1,21 +1,21 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
-import { updateUserProfile } from "../../firebase/profileAPI";
 import { useMediaQuery } from "react-responsive";
-import { UserContext } from "../../context/userContext";
 import { isMobile } from "react-device-detect";
 import { history } from "../../history/history";
 import ChangeProfileUI from "./ChangeProfile.presenter";
 import { resolveWebp } from "../../libray/webpSupport";
 import { imgCompression } from "../../libray/imagCompression";
 import { sweetToast } from "../../sweetAlert/sweetAlert";
+import { useDispatch } from "react-redux";
+import { fetchChangeProfile, userSlice } from "../../slice/userSlice";
+import { mypageSlice } from "../../slice/mypageSlice";
 
 export default function ChangeProfile({
   user,
   setIsProfileEdit,
-  setIsLoading,
 }) {
-  const { refreshUser } = useContext(UserContext);
+  const dispatch = useDispatch();
   const isMoblie = useMediaQuery({
     query: "(max-width:486px)",
   });
@@ -25,13 +25,8 @@ export default function ChangeProfile({
   const cancelBtnRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(user.photoURL);
   const [uploadImg, setUploadImg] = useState("");
-  const [
-    displayNameValue,
-    displayNameValid,
-    onChnageDisplayName,
-    setDisplayNameValue,
-    setDisplayNameValid,
-  ] = useValidationInput(user.displayName, "displayName", true);
+  const [displayNameValue, displayNameValid, onChnageDisplayName, setDisplayNameValue, setDisplayNameValid] =
+    useValidationInput(user.displayName, "displayName", true);
 
   const onClickChangeImg = () => {
     imgInputRef.current.click();
@@ -86,11 +81,11 @@ export default function ChangeProfile({
     if (user.displayName === displayNameValue && user.photoURL === previewImg) {
       return sweetToast("수정 사항이 없습니다!", "warning");
     }
-    setIsLoading(true);
-    await updateUserProfile(uploadImg, displayNameValue);
-    setIsLoading(false);
+    dispatch(mypageSlice.actions.setIsLoading(true));
     onClickCancel();
-    refreshUser();
+    await dispatch(fetchChangeProfile({uploadImg, displayNameValue}))
+    dispatch(mypageSlice.actions.setIsLoading(false));
+    dispatch(userSlice.actions.refreshUser())
   };
 
   useEffect(() => {
@@ -109,7 +104,7 @@ export default function ChangeProfile({
 
   useEffect(() => {
     imgBtnRef.current.focus();
-    setDisplayNameValid({ errorMsg: "", valid: true });
+    setDisplayNameValid({errorMsg:"", valid: true})
   }, []);
   return (
     <ChangeProfileUI
