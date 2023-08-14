@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -17,20 +17,18 @@ import { SwiperSlide } from "swiper/react";
 import ProgressiveImg from "../../commons/progressiveImg/ProgressiveImg";
 import { useMovieInfo } from "../../../hook/useMovieInfo";
 import { useMediaQuery } from "react-responsive";
-export default function MovieList({ title, fetchMoive }) {
-  const isSmall = useMediaQuery({ query: "(max-width:500px)" });
+import { useDispatch, useSelector } from "react-redux";
 
-  const [movieData, setMovieData] = useState([]);
+export default function MovieList({ title, type, fetchMoive }) {
+  const isSmall = useMediaQuery({ query: "(max-width:500px)" });
+  // type 값을 이용하여 해당되는 영화데이터를 가져옴
+  const movieData = useSelector((state) => state.movieData[type].data);
+  const dispatch = useDispatch();
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
 
-  const fetchData = async () => {
-    const data = await fetchMoive();
-    setMovieData(data);
-  };
-
   useEffect(() => {
-    fetchData();
+    dispatch(fetchMoive());
   }, []);
 
   return (
@@ -48,8 +46,7 @@ export default function MovieList({ title, fetchMoive }) {
               slidesPerView: 7,
               slidesPerGroup: 7,
             },
-            1378:
-             {
+            1378: {
               slidesPerView: 6,
               slidesPerGroup: 6,
             },
@@ -97,7 +94,7 @@ export default function MovieList({ title, fetchMoive }) {
                     <ProgressiveImg
                       placeholderSrc={`https://image.tmdb.org/t/p/w45/${data.poster_path}`}
                       src={`https://image.tmdb.org/t/p/${
-                        isSmall? "w185" : "w342"
+                        isSmall ? "w185" : "w342"
                       }${data.poster_path}`}
                       styles={{
                         objectFit: "contain",

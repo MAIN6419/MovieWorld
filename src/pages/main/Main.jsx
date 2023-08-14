@@ -1,32 +1,57 @@
 import React from "react";
 import { Wrapper } from "./main.style";
 import MovieList from "../../compoents/units/movieList/MovieList";
+import TopButton from "../../compoents/commons/topButton/TopButton";
 import {
   fetchActionMovies,
   fetchComedyMovies,
-  fetchDocumentMovies,
+  fetchDocumentaryMovies,
   fetchHorrorMovies,
   fetchRomanceMovies,
-  fetchTopRated,
-  fetchTrending,
-} from "../../api/movie";
-import TopButton from "../../compoents/commons/topButton/TopButton";
+  fetchTopRatedMovies,
+  fetchTrendingMovies,
+} from "../../slice/movieData.slice";
 
 export default function Main() {
   return (
     <>
       <Wrapper>
-        <MovieList title={"Trending Now"} fetchMoive={fetchTrending} />
-        <MovieList title={"Top Rated"} fetchMoive={fetchTopRated} />
-        <MovieList title={"Action Movies"} fetchMoive={fetchActionMovies} />
-        <MovieList title={"Comedy Movies"} fetchMoive={fetchComedyMovies} />
-        <MovieList title={"Romance Movies"} fetchMoive={fetchRomanceMovies} />
-        <MovieList title={"Horror Movies"} fetchMoive={fetchHorrorMovies} />
+        <MovieList
+          title={"Trending Now"}
+          type="trending"
+          fetchMoive={fetchTrendingMovies}
+        />
+        <MovieList
+          title={"Top Rated"}
+          type="topRated"
+          fetchMoive={fetchTopRatedMovies}
+        />
+        <MovieList
+          title={"Action Movies"}
+          type={"action"}
+          fetchMoive={fetchActionMovies}
+        />
+        <MovieList
+          title={"Comedy Movies"}
+          type={"comedy"}
+          fetchMoive={fetchComedyMovies}
+        />
+        <MovieList
+          title={"Romance Movies"}
+          type={"romance"}
+          fetchMoive={fetchRomanceMovies}
+        />
+        <MovieList
+          title={"Horror Movies"}
+          type={"horror"}
+          fetchMoive={fetchHorrorMovies}
+        />
         <MovieList
           title={"Documentary Movies"}
-          fetchMoive={fetchDocumentMovies}
+          type={"documentary"}
+          fetchMoive={fetchDocumentaryMovies}
         />
-        <TopButton/>
+        <TopButton />
       </Wrapper>
     </>
   );
