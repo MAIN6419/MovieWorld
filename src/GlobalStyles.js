@@ -10,9 +10,18 @@ const GlobalStyles = createGlobalStyle`
     background-color: #111;
     padding-top: 67px;
     -webkit-tap-highlight-color : rgba(0,0,0,0);
-    ::-webkit-scrollbar{
-      display: none;
-    }
+    ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: #fff;
+
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, 0.1);
+  }
     @media screen and (max-width: 486px) {
       padding-top: 58px;
   }
