@@ -13,7 +13,6 @@ import { sweetToast } from "../sweetAlert/sweetAlert";
 const auth = getAuth();
 // 이메일 찾기 API
 export const findEmail = async (displayName, phone) => {
-  try {
     const userRef = collection(db, "user");
     const q = query(
       userRef,
@@ -27,18 +26,10 @@ export const findEmail = async (displayName, phone) => {
       sweetToast("일치하는 정보가 없습니다!", "warning");
       return false;
     }
-  } catch (error) {
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // 비밀번호 변경 API
 export const changePassword = async (email, phone) => {
-  try {
     const userRef = collection(db, "user");
     const q = query(
       userRef,
@@ -58,18 +49,10 @@ export const changePassword = async (email, phone) => {
       sweetToast("일치하는 정보가 없습니다!", "warning");
       return false;
     }
-  } catch (error) {
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시 후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // 로그인 상태에서 비밀번호 변경 API
-export async function changeUserPassword(currentPassword, newPassword) {
-  try {
+export async function changeLoginUserPw(currentPassword, newPassword) {
     const user = auth.currentUser;
     const credential = EmailAuthProvider.credential(
       user.email,
@@ -90,15 +73,4 @@ export async function changeUserPassword(currentPassword, newPassword) {
       "warning"
     );
     await signOut(auth);
-  } catch (error) {
-    if (error.message.includes("auth/wrong-password")) {
-      sweetToast("현재 비밀번호가 일치하지 않습니다!", "warning");
-      return;
-    } else if(error.message.includes("auth/too-many-requests")){
-      sweetToast("비밀번호 변경 시도가 많아 일시적으로 비밀번호 변경이 제한됩니다!", "warning");
-      return;
-    } else {
-      throw error;
-    }
-  }
 }
