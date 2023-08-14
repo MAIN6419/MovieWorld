@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
 import FindAccountUI from "./FindAccount.presenter";
-import { changePassword, findEmail } from "../../firebase/findAccountAPI";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChangePassowrd, fetchFindEmail, userSlice } from "../../slice/userSlice";
+
 export default function FindAccount() {
+  const dispatch = useDispatch();
+  const findEmailValue = useSelector(state=>state.user.findEmailValue);
+  const findPasswordValue = useSelector(state=>state.user.findPasswordValue);
   const [
     displayNameValue,
     displayNameValid,
@@ -19,13 +24,11 @@ export default function FindAccount() {
 
   const [disabled, setDisabled] = useState(false);
   const [findPasswordMenu, setFindPasswordMenu] = useState(false);
-  const [findEmailValue, setFindEmailValue] = useState("");
-  const [findPasswordValue, setFindPasswordValue] = useState("");
 
   const onClickFindEmailMenu = () => {
     setFindPasswordMenu(false);
     setDisabled(false);
-    setFindPasswordValue("");
+    dispatch(userSlice.actions.resetFindAccountValue());
     setEmailValue("");
     setEmailValid({ errorMsg: "", valid: false });
     setPhoneValue("");
@@ -35,7 +38,7 @@ export default function FindAccount() {
   const onClickFindPwMenu = () => {
     setFindPasswordMenu(true);
     setDisabled(false);
-    setFindEmailValue("");
+    dispatch(userSlice.actions.resetFindAccountValue());
     setDisplayNameValue("");
     setDisplayNameValid({ errorMsg: "", valid: false });
     setPhoneValue("");
@@ -44,22 +47,12 @@ export default function FindAccount() {
 
   const onClickFindEmail = async (e) => {
     e.preventDefault();
-    const res = await findEmail(displayNameValue, phoneValue.replace(/-/g, ""));
-    if (res) {
-      setFindEmailValue(res);
-    }
-    setDisplayNameValue("");
-    setPhoneValue("");
+    dispatch(fetchFindEmail({displayNameValue, phoneValue: phoneValue.replace(/-/g, "")}))
   };
 
   const onClickFindPassword = async (e) => {
     e.preventDefault();
-    const res = await changePassword(emailValue, phoneValue.replace(/-/g, ""));
-    if (res) {
-      setFindPasswordValue(res);
-    }
-    setEmailValue("");
-    setPhoneValue("");
+    dispatch(fetchChangePassowrd({emailValue, phoneValue: phoneValue.replace(/-/g, "")}))
   };
 
   // 전체 input이 유효하다면 버튼 활성화
@@ -78,6 +71,10 @@ export default function FindAccount() {
       }
     }
   }, [displayNameValid, emailValid, phoneValid]);
+
+  useEffect(()=>{
+    dispatch(userSlice.actions.resetFindAccountValue());
+  },[])
 
   return (
     <FindAccountUI
