@@ -35,7 +35,6 @@ export default function SignupUI({
   onChangePhone,
   phoneValid,
   disabled,
-  setIsLoading,
   setProfile,
   setPercentage,
   setNext,
@@ -131,18 +130,17 @@ export default function SignupUI({
           </SignupForm>
         ) : (
           <ProfileSetting
-            setIsLoading={setIsLoading}
             setProfile={setProfile}
             emailValue={emailValue}
             passwordValue={passwordValue}
             phoneValue={phoneValue}
             setPercentage={setPercentage}
             setNext={setNext}
+            isLoading={isLoading}
           />
         )}
       </Wrapper>
-
-      {isLoading && <Loading />}
+      {isLoading&&<Loading/>}
     </>
   );
 }

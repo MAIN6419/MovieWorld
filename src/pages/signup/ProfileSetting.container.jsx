@@ -1,22 +1,23 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { signup } from "../../firebase/signupAPI";
+import React, { useEffect, useRef, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
-import { UserContext } from "../../context/userContext";
 import ProfileSettingUI from "./ProfileSetting.presenter";
 import { resolveWebp } from "../../libray/webpSupport";
 import { imgCompression } from "../../libray/imagCompression";
 import { sweetToast } from "../../sweetAlert/sweetAlert";
+import { useDispatch } from "react-redux";
+import { fetchSignup } from "../../slice/signupSlice";
 
 export default function ProfileSetting({
-  setIsLoading,
   emailValue,
   passwordValue,
   phoneValue,
   setProfile,
   setPercentage,
   setNext,
+  isLoading,
 }) {
-  const { refreshUser } = useContext(UserContext);
+  const dispatch = useDispatch();
+
   const imgInputRef = useRef();
   // 회원가입 버튼 활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
@@ -72,16 +73,15 @@ export default function ProfileSetting({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    await signup(
-      displayNameValue,
-      uploadImg,
-      emailValue,
-      passwordValue,
-      phoneValue.replace(/-/g, "")
+    dispatch(
+      fetchSignup({
+        displayNameValue,
+        uploadImg,
+        emailValue,
+        passwordValue,
+        phoneValue: phoneValue.replace(/-/g, ""),
+      })
     );
-    setIsLoading(false);
-    refreshUser();
   };
 
   useEffect(() => {

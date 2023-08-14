@@ -15,6 +15,7 @@ import {
 } from "./signup.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
+import Loading from "../../compoents/commons/loading/Loading";
 
 export default function ProfileSettingUI({
   handleSubmit,
@@ -29,7 +30,8 @@ export default function ProfileSettingUI({
   setProfile,
   setPercentage,
   setNext,
-  resolveWebp
+  resolveWebp,
+
 }) {
   return (
     <SignupForm onSubmit={handleSubmit}>

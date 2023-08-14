@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
 import SignupUI from "./Signup.presenter";
+import { useSelector } from "react-redux";
 
 export default function Signup() {
+  const isLoading = useSelector((state) => state.signup.isLoading);
   const [defaultInfo, setDefaultInfo] = useState(false);
   const [profile, setProfile] = useState(false);
   const [percentage, setPercentage] = useState("0%");
@@ -37,7 +39,6 @@ export default function Signup() {
 
   // 회원가입 버튼 활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
 
   // 비밀번호 확인 onChange 별도 생성 => useValidInput에서 처리하지 못하기 때문
   const onChangePasswordChk = (e) => {
@@ -89,7 +90,6 @@ export default function Signup() {
       onChangePhone={onChangePhone}
       phoneValid={phoneValid}
       disabled={disabled}
-      setIsLoading={setIsLoading}
       setProfile={setProfile}
       setPercentage={setPercentage}
       setNext={setNext}
