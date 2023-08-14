@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   SearchMovieImgWrapper,
   SearchMovieItem,
@@ -21,30 +15,42 @@ import {
   SearchMovieBtn,
 } from "./search.style";
 import { debounce } from "lodash";
-import { fetchSearchMovie, fetchTrending } from "../../api/movie";
 import MovieInfo from "../../compoents/commons/Modal/MovieInfo.container";
 import { useInView } from "react-intersection-observer";
 import ProgressiveImg from "../../compoents/commons/progressiveImg/ProgressiveImg";
 import TopButton from "../../compoents/commons/topButton/TopButton";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import { resolveWebp } from "../../libray/webpSupport";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSearchMovies, searchSlice } from "../../slice/searchSlice";
+import {
+  fetchTrendingPageMovies,
+  trendingPageSlice,
+} from "../../slice/tredingPageSlice";
 
 export default function Search() {
   const searchInputRef = useRef(null);
-  const [keyWord, setKeyword] = useState("");
-  const [movieData, setMovieData] = useState([]);
+  const dispatch = useDispatch();
+  // 검색어 유무에 따라 다른 데이터를 보여주기 위해서 type를 관리
+  const [type, setType] = useState("trendingPage");
+  // 현재 페이지를 관리
+  const page = useSelector((state) => state[type].page);
+  // 다음 페이지가 있는지 확인
+  const hasMore = useSelector((state) => state[type].hasMore);
+  const [keyword, setkeyword] = useState("");
+  const movieData = useSelector((state) => state[type].data);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
-
+  // 무한 스크롤 이용하기 위한 hook
+  // ref는 관찰대상, inView 현재 관찰대상이 화면에 나타나지를 반환
   const [ref, inVeiw] = useInView(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [isFirst, setIsFirst] = useState(true);
-  const onChangeKeyword = (e) => {
+  // 검색어가 있는 없는지를 파악
+  const isBlank = useSelector((state) => state.isBlank);
+  const onChangekeyword = (e) => {
     if (e.target.value.length === 1 && e.target.value === " ") {
       return;
     }
-    setKeyword(e.target.value);
+    setkeyword(e.target.value);
     searchDebounce(e.target.value);
   };
 
@@ -52,53 +58,38 @@ export default function Search() {
   const searchDebounce = useCallback(
     debounce(async (value) => {
       if (!value) {
-        fetchFirstData();
+        // 검색을 모두 지운 경우에는 Trending Movie의 정보를 출력해야 하기 때문에
+        // 기존의 trending의 값들을 모두 초기화 시키고, type를 변경해서 trending 데이터를 출력
+        dispatch(trendingPageSlice.actions.resetTrending());
+        setType("trendingPage");
         return;
       }
-      const data = await fetchSearchMovie(value);
-      setMovieData(data);
-      // 검색이 완료된 이후 input를 blur 처리
-      // blur 처리를 하지 않으면 input의 포커스가 유지된 채 스크롤 내려 다른 요소 클릭 시
-      // 포커스가 해제되면서 input요소를 찾아 스크롤이 위로 올라 오기 때문
+      // 검색어가 있을 경웅에는 Search Movie의 데이터를 출력해야 하기 때문에
+      // 기존의 Search의 값들을 모두 초기화 시키고, type를 변경시켜 search 데이터를 출력
+      setType("search");
+      dispatch(searchSlice.actions.resetSearch());
       searchInputRef.current.blur();
     }, 500),
     []
   );
 
-  const fetchAddMovie = async () => {
-    const data = await fetchSearchMovie(keyWord, page);
-    setPage((prev) => prev + 1);
-    setMovieData((prev) => [...prev, ...data]);
-    setHasMore(data.length === 20);
-  };
-
-  // 검색어가 없을때 Trending Movie 출력
-  const fetchData = async () => {
-    const data = await fetchTrending(page);
-    setPage((prev) => prev + 1);
-    setMovieData((prev) => [...prev, ...data]);
-    setHasMore(data.length === 20);
-  };
-
-  const fetchFirstData = async () => {
-    const data = await fetchTrending();
-    setPage(2);
-    setMovieData(data);
-    setHasMore(data.length === 20);
-  };
-
   useEffect(() => {
-    if (isFirst) {
-      setIsFirst(false);
-      fetchFirstData();
-      return;
+    // 검색어가 있는 경우에는 search Movie 데이터를 무한 스크롤 처리
+    if (hasMore && inVeiw && keyword) {
+      dispatch(fetchSearchMovies({ keyword, page }));
     }
-    if (hasMore && inVeiw && keyWord) {
-      fetchAddMovie();
-    } else if (hasMore && inVeiw && !keyWord) {
-      fetchData();
+    // 검색어가 있는 경우에는 trending Movie 데이터를 무한 스크롤 처리
+    else if (hasMore && inVeiw && !keyword) {
+      dispatch(fetchTrendingPageMovies(page));
     }
-  }, [inVeiw, keyWord]);
+  }, [inVeiw, keyword]);
+
+  // 새로고침시 스크롤이 위로 가도록 설정
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    };
+  }, []);
 
   return (
     <>
@@ -107,23 +98,21 @@ export default function Search() {
           <SearchLabel className="a11y-hidden">검색</SearchLabel>
           <SearchInput
             placeholder="검색"
-            value={keyWord}
-            onChange={onChangeKeyword}
+            value={keyword}
+            onChange={onChangekeyword}
             ref={searchInputRef}
           />
         </SearchForm>
-        {!movieData.length ? (
-          keyWord && (
-            <SearchBlank>
-              <SearchBlankImg
-                src={resolveWebp("/assets/webp/icon-blank.webp", "svg")}
-              />
-              <SearchBlankText>
-                <SearchBlankKeyword>"{keyWord}"</SearchBlankKeyword>
-                {" 에 대한\n검색 결과가 존재하지 않습니다."}
-              </SearchBlankText>
-            </SearchBlank>
-          )
+        {isBlank && keyword ? (
+          <SearchBlank>
+            <SearchBlankImg
+              src={resolveWebp("/assets/webp/icon-blank.webp", "svg")}
+            />
+            <SearchBlankText>
+              <SearchBlankKeyword>"{keyword}"</SearchBlankKeyword>
+              {" 에 대한\n검색 결과가 존재하지 않습니다."}
+            </SearchBlankText>
+          </SearchBlank>
         ) : (
           <>
             <SearchMovieList>

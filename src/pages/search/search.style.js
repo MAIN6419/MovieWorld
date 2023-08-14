@@ -22,6 +22,7 @@ export const SearchLabel = styled.label``;
 export const SearchInput = styled.input`
   width: 150px;
   padding-left: 22px;
+  background: none;
   body.no-webp & {
     background: url("/assets/icon-search.svg") no-repeat left top 1px / 20px;
   }
