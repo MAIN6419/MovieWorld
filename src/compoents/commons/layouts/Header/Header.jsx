@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   HeaderBar,
   HeaderLink,
@@ -19,15 +19,16 @@ import {
   UserMenuSelect,
   UserMenuSelectIcon,
 } from "./header.style";
-import { UserContext } from "../../../../context/userContext";
-import { logout } from "../../../../firebase/loginAPI";
 import { useLocation } from "react-router-dom";
 import { resolveWebp } from "../../../../libray/webpSupport";
 import { optKeyboardFocus } from "../../../../libray/optKeyBoard";
 import { sweetConfirm } from "../../../../sweetAlert/sweetAlert";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLogout } from "../../../../slice/userSlice";
 
 export default function Header() {
-  const { user } = useContext(UserContext);
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user.data);
   const pathname = useLocation().pathname;
   const menuItemLinkRef = useRef(null);
   const menuItemBtnRef = useRef(null);
@@ -50,18 +51,26 @@ export default function Header() {
       <HeaderRight>
         <HeaderSearchLink to="/search" onClick={() => setIsUserMenu(false)}>
           <HeaderSearchIcon
-            src={resolveWebp("/assets/webp/icon-search.webp", "svg")}
+            src={resolveWebp(
+              "/assets/webp/icon-search.webp",
+              "svg"
+            )}
             alt="검색"
           />
         </HeaderSearchLink>
-        {user && user.displayName && (
+        {userData && userData.displayName && (
           <UserProfileImg
             src={
-              user.photoURL ||
-              resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
+              userData.photoURL ||
+              resolveWebp(
+                
+                "/assets/webp/icon-defaultProfile.webp",
+                "svg"
+              )
             }
             onError={(e) =>
               (e.target.src = resolveWebp(
+              
                 "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))
@@ -70,7 +79,7 @@ export default function Header() {
           />
         )}
         <HeaderLinks>
-          {user && user.displayName ? (
+          {userData && userData.displayName ? (
             <UserNicknameWrapper
               tabIndex="0"
               onClick={onClickUserMenu}
@@ -81,10 +90,13 @@ export default function Header() {
                 }
               }}
             >
-              <UserNickname>{user.displayName} 님</UserNickname>
+              <UserNickname>{userData.displayName} 님</UserNickname>
               <UserMenuSelect tabIndex="-1">
                 <UserMenuSelectIcon
-                  src={resolveWebp("/assets/webp/icon-downArrow.webp", "svg")}
+                  src={resolveWebp(
+                    "/assets/webp/icon-downArrow.webp",
+                    "svg"
+                  )}
                   active={isUserMenu}
                   alt="유저 메뉴 버튼"
                 />
@@ -120,7 +132,7 @@ export default function Header() {
                           "정말 로그아웃 하시겠습니까?",
                           "확인",
                           "취소",
-                          () => logout()
+                          () => dispatch(fetchLogout())
                         );
                       }}
                       onKeyDown={(e) => {
