@@ -103,7 +103,7 @@ export const fetchTrendingMovies = createAsyncThunk(
   }
 );
 
- // 현재 상영중인 영화 목록에서 랜덤으로 하나의 영화를 불러옴
+// 현재 상영중인 영화 목록에서 랜덤으로 하나의 영화를 불러옴
 export const fetchNowPlayingMovie = createAsyncThunk(
   "movieData/fetchNowPlayingMovie",
   async (_, thunkAPI) => {
@@ -157,6 +157,9 @@ export const movieDataSlice = createSlice({
     // 비디오 데이터 초기화
     resetVideoData: (state, action) => {
       state.videoData = { data: [], error: "" };
+    },
+    resetNowPlayingData: (state, action) => {
+      state.nowPlayingData = { data: [], error: "" };
     },
   },
   extraReducers: (builder) => {
@@ -256,7 +259,7 @@ export const movieDataSlice = createSlice({
       );
     });
 
-     // 현재 상영중인 영화 
+    // 현재 상영중인 영화
     builder.addCase(fetchNowPlayingMovie.fulfilled, (state, action) => {
       state.nowPlayingData.data = action.payload;
     });

@@ -21,12 +21,15 @@ import {
 import MovieInfo from "../../Modal/MovieInfo.container";
 import { useMediaQuery } from "react-responsive";
 
-import {  sweetToast } from "../../../../sweetAlert/sweetAlert";
+import { sweetToast } from "../../../../sweetAlert/sweetAlert";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNowPlayingMovie } from "../../../../slice/movieData.slice";
+import {
+  fetchNowPlayingMovie,
+  movieDataSlice,
+} from "../../../../slice/movieData.slice";
 export default function Banner() {
   const dispatch = useDispatch();
-  const movieData = useSelector(state=>state.movieData.nowPlayingData.data);
+  const movieData = useSelector((state) => state.movieData.nowPlayingData.data);
   const isMedium = useMediaQuery({
     query: "(max-width:786px)and(min-width:501px)",
   });
@@ -54,7 +57,8 @@ export default function Banner() {
   };
 
   useEffect(() => {
-   dispatch(fetchNowPlayingMovie())
+    dispatch(movieDataSlice.actions.resetNowPlayingData());
+    dispatch(fetchNowPlayingMovie());
   }, []);
 
   useEffect(() => {
