@@ -61,7 +61,16 @@ export const ModalCard = styled.div`
   background: #111;
   overflow-y: scroll;
   ::-webkit-scrollbar {
-    display: none;
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: #fff;
+
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, 0.1);
   }
   :focus {
     outline: none;
