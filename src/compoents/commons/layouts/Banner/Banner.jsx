@@ -22,21 +22,19 @@ import MovieInfo from "../../Modal/MovieInfo.container";
 import { useMediaQuery } from "react-responsive";
 
 import {  sweetToast } from "../../../../sweetAlert/sweetAlert";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNowPlayingMovie } from "../../../../slice/movieData.slice";
 export default function Banner() {
+  const dispatch = useDispatch();
+  const movieData = useSelector(state=>state.movieData.nowPlayingData.data);
   const isMedium = useMediaQuery({
     query: "(max-width:786px)and(min-width:501px)",
   });
   const isSmall = useMediaQuery({ query: "(max-width:500px)" });
   const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
-  const [movieData, setMovieData] = useState([]);
   const [isPlay, setIsPlay] = useState(false);
   const [isOpenMovieInfo, setIsOpenMovieInfo] = useState(false);
   const iframeRef = useRef(null);
-
-  const fetchData = async () => {
-    const data = await fetchNowPlaying();
-    setMovieData(data);
-  };
 
   const onClickPlay = () => {
     if (!movieData.videos.results.length) {
@@ -56,7 +54,7 @@ export default function Banner() {
   };
 
   useEffect(() => {
-    fetchData();
+   dispatch(fetchNowPlayingMovie())
   }, []);
 
   useEffect(() => {
