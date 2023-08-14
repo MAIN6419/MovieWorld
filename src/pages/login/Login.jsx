@@ -16,25 +16,26 @@ import {
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import { useValidationInput } from "../../hook/useValidationInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-import { login, socialLogin } from "../../firebase/loginAPI";
 import Loading from "../../compoents/commons/loading/Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLogin, fetchSocialLogin } from "../../slice/userSlice";
+
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state=>state.user.isLoading);
   const [disabled, setDisabled] = useState(true);
   const emailRef = useRef(null);
   const [emailValue, emailValid, onChangeEmail, setEmailValue] =
     useValidationInput("", "email", false);
-  const [passowordValue, passwordValid, onChangePassword, setPasswordValue] =
+  const [passwordValue, passwordValid, onChangePassword, setPasswordValue] =
     useValidationInput("", "password");
-  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (emailValid.valid && passwordValid.valid) {
-      setIsLoading(true);
-      await login(emailValue, passowordValue);
+      dispatch(fetchLogin({emailValue, passwordValue}));
       setEmailValue("");
       setPasswordValue("");
-      setIsLoading(false);
     }
   };
 
@@ -76,7 +77,7 @@ export default function Login() {
               placeholder={"Password"}
               type={"password"}
               onChange={onChangePassword}
-              value={passowordValue}
+              value={passwordValue}
             />
             {passwordValid.errorMsg && (
               <ErrorMsg message={passwordValid.errorMsg} />
@@ -101,7 +102,7 @@ export default function Login() {
               <SocialLoginBtn
                 className="google"
                 type="button"
-                onClick={() => socialLogin("google")}
+                onClick={() => dispatch(fetchSocialLogin("google"))}
               >
                 구글 계정으로 로그인
               </SocialLoginBtn>
@@ -110,7 +111,7 @@ export default function Login() {
               <SocialLoginBtn
                 className="github"
                 type="button"
-                onClick={() => socialLogin("github")}
+                onClick={() => dispatch(fetchSocialLogin("github"))}
               >
                 깃 허브 계정으로 로그인
               </SocialLoginBtn>
