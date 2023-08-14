@@ -22,23 +22,17 @@ import TopButton from "../../compoents/commons/topButton/TopButton";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import { resolveWebp } from "../../libray/webpSupport";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSearchMovies, searchSlice } from "../../slice/searchSlice";
-import {
-  fetchTrendingPageMovies,
-  trendingPageSlice,
-} from "../../slice/tredingPageSlice";
+import { fetchSearchMovies, fetchTrendingPageMovies, searchSlice } from "../../slice/searchSlice";
 
 export default function Search() {
   const searchInputRef = useRef(null);
   const dispatch = useDispatch();
-  // 검색어 유무에 따라 다른 데이터를 보여주기 위해서 type를 관리
-  const [type, setType] = useState("trendingPage");
   // 현재 페이지를 관리
-  const page = useSelector((state) => state[type].page);
+  const page = useSelector((state) => state.search.page);
   // 다음 페이지가 있는지 확인
-  const hasMore = useSelector((state) => state[type].hasMore);
+  const hasMore = useSelector((state) => state.search.hasMore);
   const [keyword, setkeyword] = useState("");
-  const movieData = useSelector((state) => state[type].data);
+  const movieData = useSelector((state) => state.search.data);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
   // 무한 스크롤 이용하기 위한 hook
@@ -58,15 +52,9 @@ export default function Search() {
   const searchDebounce = useCallback(
     debounce(async (value) => {
       if (!value) {
-        // 검색을 모두 지운 경우에는 Trending Movie의 정보를 출력해야 하기 때문에
-        // 기존의 trending의 값들을 모두 초기화 시키고, type를 변경해서 trending 데이터를 출력
-        dispatch(trendingPageSlice.actions.resetTrending());
-        setType("trendingPage");
+        dispatch(searchSlice.actions.resetSearch());
         return;
       }
-      // 검색어가 있을 경웅에는 Search Movie의 데이터를 출력해야 하기 때문에
-      // 기존의 Search의 값들을 모두 초기화 시키고, type를 변경시켜 search 데이터를 출력
-      setType("search");
       dispatch(searchSlice.actions.resetSearch());
       searchInputRef.current.blur();
     }, 500),
