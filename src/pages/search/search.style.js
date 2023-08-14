@@ -4,9 +4,12 @@ import styled from "styled-components";
 export const SearchWrapper = styled.main`
   position: relative;
   padding: 20px 0;
-  width: calc(60%);
+  width: 60%;
   height: 100vh;
   margin: 0 auto;
+  @media screen and (max-width: 786px) {
+    width: calc(100% - 25px);
+  }
 `;
 export const SearchForm = styled.form`
   padding: 5px 10px;
@@ -50,6 +53,15 @@ export const SearchMovieList = styled.ul`
   color: white;
   gap: 30px;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  @media screen and (max-width: 1470px) {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+  @media screen and (max-width: 1007px) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  @media screen and (max-width: 400px) {
+    grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
+  }
 `;
 
 export const SearchMovieItem = styled.li`
