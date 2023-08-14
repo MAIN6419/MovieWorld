@@ -45,7 +45,7 @@ export default function MovieInfoUI({
   modalCardRef,
   isPlay,
   setIsPlay,
-  like,
+  islike,
   videoUrl,
   videoData,
   isMedium,
@@ -57,7 +57,6 @@ export default function MovieInfoUI({
   iframeRef,
   closeBtnRef,
   likeBtnRef,
-  setMypageLikeData,
 }) {
   return (
     <ModalWrapper>
@@ -149,7 +148,7 @@ export default function MovieInfoUI({
                   <MovieLikeBtn
                     type="button"
                     onClick={onClickLike}
-                    like={like}
+                    like={islike}
                     aria-label="찜"
                     onKeyDown={(e) => {
                       optKeyboardFocus(e, closeBtnRef.current);
@@ -219,7 +218,7 @@ export default function MovieInfoUI({
           <Review
             movieData={videoData}
             filterRef={filterRef}
-            setMypageReviewData={setMypageLikeData}
+            modalCardRef={modalCardRef}
           />
 
           <CloseBtn
