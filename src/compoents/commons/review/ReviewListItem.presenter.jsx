@@ -62,11 +62,16 @@ export default function ReviewListItemUI({
           <ReviewerImg
             src={
               reviewItem.reviewerImg ||
-              resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
+              resolveWebp(
+                
+                "/assets/webp/icon-defaultProfile.webp",
+                "svg"
+              )
             }
             alt="유저 프로필 이미지"
             onError={(e) =>
               (e.target.src = resolveWebp(
+                
                 "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))
@@ -145,11 +150,7 @@ export default function ReviewListItemUI({
         </EditTextAreaForm>
       ) : (
         <>
-          <ReviewContents
-            inactive={
-              reviewItem.isBlock || (reviewItem.spoiler && !showSpoilerData)
-            }
-          >
+          <ReviewContents inactive={reviewItem.isBlock||(reviewItem.spoiler && !showSpoilerData)}>
             {reviewItem.isBlock
               ? "신고에 의해 블라인드 처리된 리뷰입니다."
               : reviewItem.spoiler
@@ -181,7 +182,7 @@ export default function ReviewListItemUI({
             >
               {setDateFormate(reviewItem.createdAt.seconds * 1000)}
             </ReviewCreatedAt>
-            {userData.displayName === reviewItem.reviewer ? (
+            {userData&&userData.displayName === reviewItem.reviewer ? (
               <>
                 <ReviewItemBtn
                   type="button"
@@ -198,9 +199,7 @@ export default function ReviewListItemUI({
                 </ReviewItemBtn>
               </>
             ) : (
-              !reviewItem.isBlock && (
-                <ReviewItemBtn onClick={onClickReport}>신고</ReviewItemBtn>
-              )
+              !reviewItem.isBlock&&<ReviewItemBtn onClick={onClickReport}>신고</ReviewItemBtn>
             )}
           </ReviewItemBottom>
         </>

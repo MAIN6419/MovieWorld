@@ -1,64 +1,54 @@
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useEffect } from "react";
 import ReviewList from "./ReviewList.container";
 import { Title, Wrapper } from "./review.style";
 import ReviewForm from "./ReviewForm.container";
-import { UserContext } from "../../../context/userContext";
-import { getUser } from "../../../firebase/loginAPI";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchIsReview, reviewSlice } from "../../../slice/reviewSlice";
 
-const Review = ({ movieData, filterRef, setMypageReviewData }) => {
-  const { user } = useContext(UserContext);
-  const [userData, setUserData] = useState({});
-  const [showSpoilerData, setShowSpoilerData] = useState(false);
-  const [reviewData, setReviewData] = useState([]);
-  const [page, setPage] = useState("");
-  const [filter, setFilter] = useState({ target: "createdAt", order: "desc" });
-  const [hasMore, setHasMore] = useState(false);
-  const limitPage = 5;
-
-  const fecthUserData = async () => {
-    if (user) {
-      const data = await getUser();
-      setUserData(data);
-    }
-  };
+const Review = ({
+  movieData,
+  filterRef,
+  modalCardRef,
+}) => {
+  const dispatch = useDispatch();
+  const userData = useSelector(state=>state.user.data);
+  const filter = useSelector((state) => state.review.filter);
+  const page = useSelector((state) => state.review.page);
+  const hasMore = useSelector((state) => state.review.hasMore);
+  const limitPage = useSelector((state) => state.review.limitPage);
+  const reviewData = useSelector((state) => state.review.reviewData);
+  const isReview = useSelector((state) => state.review.isReview);
 
   useEffect(() => {
-    fecthUserData();
-  }, [reviewData]);
+    if (userData) {
+      dispatch(fetchIsReview(movieData.id));
+    }
+  }, []);
 
   return (
     <Wrapper>
       <Title>리뷰</Title>
       <ReviewForm
         movieData={movieData}
-        setMypageReviewData={setMypageReviewData}
         reviewData={reviewData}
         page={page}
         filter={filter}
-        showSpoilerData={showSpoilerData}
-        setPage={setPage}
-        setHasMore={setHasMore}
-        setReviewData={setReviewData}
+        dispatch={dispatch}
+        reviewSlice={reviewSlice}
         limitPage={limitPage}
-        userData={userData}
+        isReview={isReview}
       />
       <ReviewList
         movieData={movieData}
-        setMypageReviewData={setMypageReviewData}
         filterRef={filterRef}
         reviewData={reviewData}
-        setReviewData={setReviewData}
         page={page}
-        setPage={setPage}
         filter={filter}
-        setFilter={setFilter}
-        showSpoilerData={showSpoilerData}
-        setShowSpoilerData={setShowSpoilerData}
+        dispatch={dispatch}
+        reviewSlice={reviewSlice}
         hasMore={hasMore}
-        setHasMore={setHasMore}
         limitPage={limitPage}
-        userData={userData}
-        setUserData={setUserData}
+        modalCardRef={modalCardRef}
       />
     </Wrapper>
   );

@@ -23,13 +23,10 @@ export default function ReviewListUI({
   oldestFilterRef,
   ratingFilterRef,
   reviewData,
-  setReviewData,
-  userData,
-  setUserData,
   movieData,
-  setMypageReviewData,
   infinityScrollRef,
-  isSmall
+  isSmall,
+  modalCardRef,
 }) {
   return (
     <>
@@ -118,10 +115,7 @@ export default function ReviewListUI({
                   reviewData={reviewData}
                   reviewDataList={reviewData}
                   movieId={movieData.id}
-                  setReviewData={setReviewData}
-                  userData={userData}
-                  setUserData={setUserData}
-                  setMypageReviewData={setMypageReviewData}
+                  modalCardRef={modalCardRef}
                 />
               );
             })}

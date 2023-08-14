@@ -1,28 +1,27 @@
 import { v4 as uuidv4 } from "uuid";
-import React, { useContext, useState } from "react";
-import { UserContext } from "../../../context/userContext";
+import React, { useState } from "react";
 import { Timestamp } from "firebase/firestore";
-import {
-  addReview,
-  fetchAddReviewData,
-  fetchFirstReview,
-} from "../../../firebase/reviewAPI";
 import ReviewFormUI from "./ReviewForm.presenter";
 import { sweetToast } from "../../../sweetAlert/sweetAlert";
+import { useSelector } from "react-redux";
+import {
+  fetchAddReview,
+  fetchAddReviewData,
+  fetchFirstReviewData,
+} from "../../../slice/reviewSlice";
+import { mypageSlice } from "../../../slice/mypageSlice";
+
 export default function ReviewForm({
-  setMypageReviewData,
   movieData,
   reviewData,
   page,
   filter,
-  showSpoilerData,
-  setPage,
-  setHasMore,
-  setReviewData,
+  dispatch,
   limitPage,
-  userData,
+  isReview,
 }) {
-  const { user } = useContext(UserContext);
+  const mypageData = useSelector((state) => state.mypage.data);
+  const userData = useSelector((state) => state.user.data);
   const [reviewValue, setReivewValue] = useState("");
   const [rating, setRating] = useState(0);
   const [textCount, setTextCount] = useState(0);
@@ -38,10 +37,7 @@ export default function ReviewForm({
 
   const onClickSubmit = async (e) => {
     e.preventDefault();
-    if (user) {
-      const isReview = userData.reviewList.find(
-        (data) => data === movieData.id
-      );
+    if (userData) {
       if (isReview) {
         sweetToast("이미 리뷰한 영화입니다!", "warning");
         setReivewValue("");
@@ -57,33 +53,29 @@ export default function ReviewForm({
           createdAt: Timestamp.fromDate(new Date()),
           spoiler,
         };
-        await addReview(movieData, newReviewData);
-        if (setMypageReviewData) {
-          setMypageReviewData((prev) => [...prev, movieData]);
+        dispatch(fetchAddReview({ movieData, newReviewData }));
+
+        if (mypageData) {
+          const newData = [...mypageData, movieData];
+          dispatch(mypageSlice.actions.setMypageData(newData));
         }
         if (reviewData.length) {
           // 댓글 추가후 이전 데이터들도 같이 불러오기 위해서 사용(스크롤 유지)
-          const { res, data } = await fetchAddReviewData(
-            movieData.id,
-            page,
-            filter,
-            showSpoilerData
+          dispatch(
+            fetchAddReviewData({
+              movieId: movieData.id,
+              page,
+              filter,
+            })
           );
-          setPage(res.docs[res.docs.length - 1]);
-          setHasMore(res.docs.length / limitPage >= 0);
-          setReviewData(data);
-          sweetToast("리뷰가 작성되었습니다.", "success");
         } else {
-          const { res, data } = await fetchFirstReview(
-            movieData.id,
-            limitPage,
-            filter,
-            showSpoilerData
+          dispatch(
+            fetchFirstReviewData({
+              movieId: movieData.id,
+              limitPage,
+              filter,
+            })
           );
-          setPage(res.docs[res.docs.length - 1]);
-          setHasMore(res.docs.length / limitPage >= 0);
-          setReviewData(data);
-          sweetToast("리뷰가 작성되었습니다.", "success");
         }
       }
     } else {

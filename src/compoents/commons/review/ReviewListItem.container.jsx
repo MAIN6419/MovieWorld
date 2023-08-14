@@ -8,15 +8,18 @@ import ReviewListItemUI from "./ReviewListItem.presenter";
 import { resolveWebp } from "../../../libray/webpSupport";
 import { sweetConfirm, sweetToast } from "../../../sweetAlert/sweetAlert";
 import { optKeyboardFocus } from "../../../libray/optKeyBoard.js";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEditReview, fetchRemoveReview, fetchReportReview } from "../../../slice/reviewSlice";
+import { getUser } from "../../../firebase/loginAPI";
+import { mypageSlice } from "../../../slice/mypageSlice";
 export default function ReviewListItem({
   reviewData,
   reviewItem,
   movieId,
-  setReviewData,
-  userData,
-  setUserData,
-  setMypageReviewData,
 }) {
+  const dispatch = useDispatch();
+  const mypageData = useSelector((state) => state.mypage.data);
+  const userData = useSelector((state) => state.user.data);
   const rateRef = useRef(null);
   const submitRef = useRef(null);
   const cancelRef = useRef(null);
@@ -62,61 +65,52 @@ export default function ReviewListItem({
         contents: editValue,
         spoiler: editSpoiler,
       };
-      editReview(movieId, editData);
-      let newReviewData = [...reviewData];
-      newReviewData.forEach((item) => {
+      const newReviewData = reviewData.map((item) => {
         if (item.id === reviewItem.id) {
-          item.reviewer = userData.displayName;
-          item.reviewerImg = userData.photoURL;
-          item.rating = editRating;
-          item.contents = editValue;
-          item.spoiler = editSpoiler;
+          return {
+            ...item,
+            reviewer: userData.displayName,
+            reviewerImg: userData.photoURL,
+            rating: editRating,
+            contents: editValue,
+            spoiler: editSpoiler,
+          };
         }
+        return item;
       });
-      setReviewData(newReviewData);
+      dispatch(fetchEditReview({ movieId, editData, newReviewData }));
       setIsEdit(false);
-      sweetToast("수정이 완료되었습니다.", "success");
       setTimeout(() => {
         editBtnRef.current.focus();
       }, 0);
     };
-
     sweetConfirm("정말 수정하시겠습니까?", "수정", "취소", cb);
   };
 
   const onClickRemove = () => {
     const cb = () => {
-      removeReview(movieId, reviewItem.id);
-      setReviewData((prev) => prev.filter((item) => item.id !== reviewItem.id));
-      let newUserData = { ...userData };
-      newUserData = userData.reviewList.filter((review) => review !== movieId);
-      setUserData(newUserData);
-      if (setMypageReviewData) {
-        setMypageReviewData((prev) => prev.filter((el) => el.id !== movieId));
+      dispatch(fetchRemoveReview({ movieId, reviewId: reviewItem.id }));
+      if (mypageData) {
+        const newData = [...mypageData].filter((el) => el.id !== movieId);
+        dispatch(mypageSlice.actions.setMypageData(newData));
       }
-      sweetToast("삭제가 완료되었습니다.", "success");
     };
     sweetConfirm("정말 삭제하시겠습니까?", "삭제", "취소", cb);
   };
 
-  const onClickReport = () => {
+  const onClickReport = async () => {
     if (!userData.uid) {
       sweetToast("로그인 후 이용가능합니다!", "warning");
       return;
     }
+    const user = await getUser();
+    const isReport = user.reportList.find(id=>id===reviewItem.id);
+    if (isReport) {
+      sweetToast("이미 신고한 리뷰입니다.", "warning");
+      return;
+    }
     const cb = async () => {
-      const isReport = userData.reportList.find(
-        (report) => report === reviewItem.id
-      );
-      if (isReport) {
-        sweetToast("이미 신고한 리뷰입니다.", "warning");
-        return;
-      }
-      await reviewReport(movieId, reviewItem);
-      const newUserData = { ...userData };
-      newUserData.reportList.push(reviewItem.id);
-      setUserData(newUserData);
-      sweetToast("신고가 완료되었습니다.", "success");
+      dispatch(fetchReportReview({ movieId, reviewData: reviewItem }));
     };
     sweetConfirm("정말 신고하시겠습니까?", "확인", "취소", cb);
   };
