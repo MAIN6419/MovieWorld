@@ -30,7 +30,7 @@
   
 - [📃 GitHub 컨벤션](#-github-컨벤션)
   
-- [📍 구현 기능 미리보기](#-구현-기능-미리보기)
+- [📍 구현 기능 미리보기](#-구현-기능-미리보기--제목-클릭-시-해당-기능-상세설명으로-이동됩니다-)
   
 - [🔎 주요 기능 코드 및 설명](#-주요-기능-코드-및-설명)
   - [customAxios](#1-customaxios)
@@ -52,16 +52,22 @@
   - [sweetAlert2](#9-sweetalert2)
     
 - [🔫 트러블 슈팅](#-트러블-슈팅)
+  
+  <br>
 
 ### 📆 개발기간
-**2023. 07.05 ~ 2023. 08.07**
+**개발완료: 2023.07.05 ~ 2023.08.07**
+
+**오류, 수정사항 수정 및 Redux 적용 : 2023. 08.07 ~ 2023. 08.15**
+
+🔗[Redux-toolkit Slice, Store 구성 및 설명](https://github.com/MAIN6419/MovieWorld/wiki/Redux-Slice-Store-%EC%BD%94%EB%93%9C-%EB%B0%8F-%EC%84%A4%EB%AA%85)
 
 <br>
 
 ### ⚙ 개발환경
 |프론트엔드|벡엔드|디자인|배포, 관리|
 |---|---|---|---|
-|<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/styled-components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=pink">|<img src ="https://img.shields.io/badge/theMovieDB-01B4E4.svg?&style=for-the-badge&logo=themoviedatabase&logoColor=black"/> <img src ="https://img.shields.io/badge/firebase-FFCA28.svg?&style=for-the-badge&logo=firebase&logoColor=black"/>|<img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">|<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">|
+|<img alt="Html" src ="https://img.shields.io/badge/HTML5-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/> <img alt="CSS" src ="https://img.shields.io/badge/CSS3-1572B6.svg?&style=for-the-badge&logo=CSS3&logoColor=white"/> <img alt="JavaScript" src ="https://img.shields.io/badge/JavaScriipt-F7DF1E.svg?&style=for-the-badge&logo=JavaScript&logoColor=black"/> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/styled-components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=pink"> <img src="https://img.shields.io/badge/redux-toolkit-764ABC?style=for-the-badge&logo=redux&logoColor=fff">|<img src ="https://img.shields.io/badge/theMovieDB-01B4E4.svg?&style=for-the-badge&logo=themoviedatabase&logoColor=black"/> <img src ="https://img.shields.io/badge/firebase-FFCA28.svg?&style=for-the-badge&logo=firebase&logoColor=black"/>|<img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" width=120>|<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">|
 <br>
 
 ### 🔩 벡엔드 구성
@@ -80,6 +86,8 @@
 |react-intersetion-observer|무한 스크롤 구현|
 |react-responsive|반응형 구현|
 |react-device-detect|반응형 구현|
+|redux|상태관리|
+|redux-toolkit|redux 편의성, redux-toolkit thunk 사용|
 |uuid|고유 아이디 생성|
 |swiper|슬라이더 구현|
 |sweetAlert|alert, confirm 커스텀|
@@ -121,26 +129,26 @@
 
 <br>
 
-### 📍 구현 기능 미리보기
-|시작 화면|로그인|소셜 로그인|
+### 📍 구현 기능 미리보기 ( 제목 클릭 시 해당 기능 상세설명으로 이동됩니다. )
+|[🔗시작 화면](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#splash-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗로그인](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗소셜 로그인](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---|---|
 |![splash](https://github.com/MAIN6419/MovieWorld/assets/113427991/f76eb405-15c2-492b-a4a1-18026542ada0)|![로그인](https://github.com/MAIN6419/MovieWorld/assets/113427991/29100817-5dfb-4c80-8864-b9c5fc205d94)|![소셜로그인](https://github.com/MAIN6419/MovieWorld/assets/113427991/49532fab-92ff-4a90-b888-eecabec9328c)|
 
-|메인 페이지|영화정보-리뷰(작성, 수정, 삭제, 신고)|영화정보-찜, 관련영상|
+|[🔗메인 페이지](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗영화정보-리뷰(작성,수정,삭제,신고)](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗영화정보-찜, 관련영상](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|
 |:---:|:---:|:---:|
 |![메인페이지](https://github.com/MAIN6419/MovieWorld/assets/113427991/f0a290a2-2747-466a-bc88-aad4bab06e7d)|![영화정보-리뷰(작성,수정,삭제,신고)](https://github.com/MAIN6419/MovieWorld/assets/113427991/d34bff8b-264e-45bc-a5b7-61ad4ff302b5)|![영화정보-찜,관련영상](https://github.com/MAIN6419/MovieWorld/assets/113427991/85e8329e-d2b9-4035-8ab2-ad811129888d)|
 
 
-|영화정보-스포일러, 필터|마이페이지-찜 목록|마이페이지-리뷰 목록|
+|[🔗영화정보-스포일러, 필터](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗마이페이지-찜 목록](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-리뷰 목록](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---|---|
 |![영화정보-스포일러,필터](https://github.com/MAIN6419/MovieWorld/assets/113427991/92a112c9-e7f9-49c5-a694-f37279f6c18f)|![검색페이지](https://github.com/MAIN6419/MovieWorld/assets/113427991/53cfc978-b692-4423-b519-596fb2d24154)|![마이페이지-찜](https://github.com/MAIN6419/MovieWorld/assets/113427991/6618aaa4-33eb-490f-aad3-4ff61804cfdf)|
 
 
-|마이페이지-찜|마이페이지-프로필변경|마이페이지-비밀번호변경|
+|[🔗마이페이지-찜](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-프로필변경](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-비밀번호변경](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---|---|
 ![마이페이지-리뷰](https://github.com/MAIN6419/MovieWorld/assets/113427991/219bf865-cb1c-47da-bc38-25cfe2e92ddc)|![마이페이지-프로필변경](https://github.com/MAIN6419/MovieWorld/assets/113427991/2b7ce702-b9d8-4553-a9f3-bbeb3bf5daed)|![마이페이지-비밀번호변경](https://github.com/MAIN6419/MovieWorld/assets/113427991/60e8e763-fd62-4b92-93f1-02244aeca31e)|
 
-|로그아웃|404 페이지|
+|[🔗로그아웃](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%95%84%EC%9B%83)|[🔗404 페이지](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#404-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---
 |![로그아웃](https://github.com/MAIN6419/MovieWorld/assets/113427991/b68cd800-f3dc-4515-8be1-a2cd917393ff)|![404](https://github.com/MAIN6419/MovieWorld/assets/113427991/b433b410-d52b-42ed-8f0a-442bed365709)|
 
@@ -160,9 +168,8 @@ export const customAxios = axios.create({
  
 #### (2) API 파일
 사용할 API를 하나의 파일로 만들어서 코드 중복 사용을 피하고, 코드를 단축 시켜, 유지보수를 용이하게 하였습니다.
-
+movieAPI
 ``` javascript
-import { sweetToast } from "../sweetAlert/sweetAlert";
 import { customAxios } from "./customAxios";
 
 // api_key, language params로 설정
@@ -170,10 +177,9 @@ const api_key = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 const language = "ko-KR";
 
 // 영화 비디오 정보가 포함된 데이터를 가져오는 API
-export const fetchVideo = async (id, mediaType) => {
-  try {
+export const getVideoData = async (id) => {
     const video = await customAxios.get(
-      `${mediaType === "tv" ? "tv" : "movie"}/${id}`,
+      `movie/${id}`,
       {
         params: {
           api_key,
@@ -183,19 +189,10 @@ export const fetchVideo = async (id, mediaType) => {
       }
     );
     return video.data;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // Banner 화면에 나타날 영화 정보를 가져오는 API
-export const fetchNowPlaying = async () => {
-  try {
+export const getNowPlayingMovie = async () => {
     const res = await customAxios.get(`movie/now_playing`, {
       params: {
         api_key,
@@ -204,21 +201,12 @@ export const fetchNowPlaying = async () => {
     });
     const movieId =
       res.data.results[Math.floor(Math.random() * res.data.results.length)].id;
-    return fetchVideo(movieId);
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
+    return getVideoData(movieId);
 };
 
 // 최신의 영화 정보를 가져오는 API
-export const fetchTrending = async (page = 1) => {
-  try {
-    const res = await customAxios.get(`/trending/all/week`, {
+export const getTrendingMovies = async (page = 1) => {
+    const res = await customAxios.get(`/trending/movie/week`, {
       params: {
         api_key,
         language,
@@ -226,19 +214,10 @@ export const fetchTrending = async (page = 1) => {
       },
     });
     return res.data.results;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // 영화 순위가 높은 순서대로 영화 정보를 가져오는 API
-export const fetchTopRated = async (page = 1) => {
-  try {
+export const getTopRatedMovies = async (page = 1) => {
     const res = await customAxios.get("/movie/top_rated", {
       params: {
         api_key,
@@ -247,19 +226,10 @@ export const fetchTopRated = async (page = 1) => {
       },
     });
     return res.data.results;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // Action 영화 정보를 가져오는 API
-export const fetchActionMovies = async (page = 1) => {
-  try {
+export const getActionMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=28", {
       params: {
         api_key,
@@ -268,19 +238,10 @@ export const fetchActionMovies = async (page = 1) => {
       },
     });
     return res.data.results;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // Comedy 영화 정보를 가져오는 API
-export const fetchComedyMovies = async (page = 1) => {
-  try {
+export const getComedyMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=35", {
       params: {
         api_key,
@@ -289,19 +250,10 @@ export const fetchComedyMovies = async (page = 1) => {
       },
     });
     return res.data.results;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // Horror 영화 정보를 가져오는 API
-export const fetchHorrorMovies = async (page = 1) => {
-  try {
+export const getHorrorMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=27", {
       params: {
         api_key,
@@ -310,19 +262,10 @@ export const fetchHorrorMovies = async (page = 1) => {
       },
     });
     return res.data.results;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // Romance 영화 정보를 가져오는 API
-export const fetchRomanceMovies = async (page = 1) => {
-  try {
+export const getRomanceMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=10749", {
       params: {
         api_key,
@@ -331,19 +274,10 @@ export const fetchRomanceMovies = async (page = 1) => {
       },
     });
     return res.data.results;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
-// Document 영화 정보를 가져오는 API
-export const fetchDocumentMovies = async (page = 1) => {
-  try {
+// Documentary 영화 정보를 가져오는 API
+export const getDocumentaryMovies = async (page = 1) => {
     const res = await customAxios.get("/discover/movie?with_genres=99", {
       params: {
         api_key,
@@ -352,21 +286,12 @@ export const fetchDocumentMovies = async (page = 1) => {
       },
     });
     return res.data.results;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 
 // 검색한 영화 정보를 가져오는 API
-export const fetchSearchMovie = async (keyword, page) => {
-  try {
+export const getSearchData = async (keyword, page) => {
     const res = await customAxios.get(
-      `/search/multi?include_adult=false&query=${keyword}`,
+      `/search/movie?include_adult=false&query=${keyword}`,
       {
         params: {
           api_key,
@@ -376,15 +301,9 @@ export const fetchSearchMovie = async (keyword, page) => {
       }
     );
     return res.data.results;
-  } catch (error) {
-    console.error(error.response.data.status_message);
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
+
+
 ```
 
 <br>
