@@ -72,7 +72,7 @@
 
 ### 🔩 벡엔드 구성
 - TheMovieDBAPI를 통해 영화정보를 받아오도록 하였습니다.
-- 구현 기능들(로그인, 소셜로그인, 회원가입, 이메일|비밀번호 찾기, 검색, 찜, 리뷰 관련 기능, 프로필 변경, 비밀번호 변경, 나의 찜 목록, 나의 리뷰 목록, 로그아웃)은 firebase를 이용하여 구현 하였습니다.
+- 구현 기능들(로그인, 소셜로그인, 회원가입, 이메일|비밀번호 찾기, 찜, 리뷰 관련 기능, 프로필 변경, 비밀번호 변경, 나의 찜 목록, 나의 리뷰 목록, 로그아웃)은 firebase를 이용하여 구현 하였습니다.
 <br>
 
 ### ⛓ node_modules
@@ -129,6 +129,7 @@
 
 <br>
 
+
 ### 📍 구현 기능 미리보기 ( 제목 클릭 시 해당 기능 상세설명으로 이동됩니다. )
 |[🔗시작 화면](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#splash-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗로그인](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗소셜 로그인](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---|---|
@@ -147,16 +148,18 @@
 |[🔗마이페이지-찜](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-프로필변경](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-비밀번호변경](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---|---|
 ![마이페이지-리뷰](https://github.com/MAIN6419/MovieWorld/assets/113427991/219bf865-cb1c-47da-bc38-25cfe2e92ddc)|![마이페이지-프로필변경](https://github.com/MAIN6419/MovieWorld/assets/113427991/2b7ce702-b9d8-4553-a9f3-bbeb3bf5daed)|![마이페이지-비밀번호변경](https://github.com/MAIN6419/MovieWorld/assets/113427991/60e8e763-fd62-4b92-93f1-02244aeca31e)|
-
+<div align="center">
+  
 |[🔗로그아웃](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%95%84%EC%9B%83)|[🔗404 페이지](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#404-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---
 |![로그아웃](https://github.com/MAIN6419/MovieWorld/assets/113427991/b68cd800-f3dc-4515-8be1-a2cd917393ff)|![404](https://github.com/MAIN6419/MovieWorld/assets/113427991/b433b410-d52b-42ed-8f0a-442bed365709)|
 
+</div>
 <br>
 
 ### 🔎 주요 기능 코드 및 설명
 #### (1) customAxios
-axios를 custom하여 baseURL를 설정해서 baseURL 중복 사용을 피하고, 코드를 단축시켰습니다.
+axios를 custom하여 baseURL를 설정하여 URL 중복 설정을 피하고, 코드를 단축시켰습니다.
 ``` javascript
 import axios from "axios";
 
@@ -168,7 +171,7 @@ export const customAxios = axios.create({
  
 #### (2) API 파일
 사용할 API를 하나의 파일로 만들어서 코드 중복 사용을 피하고, 코드를 단축 시켜, 유지보수를 용이하게 하였습니다.
-movieAPI
+movieAPI 
 ``` javascript
 import { customAxios } from "./customAxios";
 
@@ -302,8 +305,6 @@ export const getSearchData = async (keyword, page) => {
     );
     return res.data.results;
 };
-
-
 ```
 
 <br>
@@ -332,14 +333,13 @@ export const getSearchData = async (keyword, page) => {
 - #### 리뷰작성 API의 세 가지 처리
   - reviewList docs 중 해당 영화에 subColletion 아래 docs에 리뷰 데이터를 생성 
   - 마이페이지의 리뷰목록에서 해당 영화 데이터를 불러오기 위해 리뷰한 user 문서의 아래 subCollection인 reviewListMovieInfo 아래 docs에 리뷰한 영화의 정보를 저장 
-  - 해당 유저가 리뷰한 영화인지 안한 영화 인지를 파악하기 위해 유저 db에 reviewList에 리뷰한 movieID를 추가
+  - 해당 유저가 해당 영화의 리뷰 유무 파악하기 위해 유저 db에 reviewList에 리뷰한 movieID를 추가
   
 => 위 세 가지 작업들은 순서가 상관없기 때문에 빠른 처리를 위해 `promise.all`를 이용하여 비동기 작업들을 병렬처리하였습니다.
 
 ```javascript
 // 리뷰 작성 API
 export const addReview = async (movieData, reviewData) => {
-  try {
     // reviewList 해당 영화에 리뷰 데이터 추가
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieData.id));
@@ -378,13 +378,6 @@ export const addReview = async (movieData, reviewData) => {
       addUserReviewListPromise,
       addUserReivewPromise,
     ]);
-  } catch (error) {
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 ````
 
@@ -394,7 +387,6 @@ export const addReview = async (movieData, reviewData) => {
 ```javascript
 // 리뷰 삭제 API
 export const removeReview = async (movieId, reviewId) => {
-  try {
      // reviewList 해당 영화에 리뷰 데이터 삭제
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
@@ -425,22 +417,14 @@ export const removeReview = async (movieId, reviewId) => {
       deleteUserReviewListPromise,
       deleteUserReviewPromise,
     ]);
-  } catch (error) {
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 ```
 - #### 리뷰 수정
-   - reviewList 하위의 해당되는 subColletion의 docs field의 rating, contents, spoiler 값을 수정
+   - reviewList 하위의 해당되는 subColletion docs field의 rating, contents, spoiler 값을 수정
 
 ```javascript
 // 리뷰 수정 API
 export const editReview = async (movieId, editData) => {
-  try {
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
     const reviewRef = collection(reviewDoc, "review");
@@ -451,13 +435,6 @@ export const editReview = async (movieId, editData) => {
       contents: editData.contents,
       spoiler: editData.spoiler,
     });
-  } catch (error) {
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 ```
 
@@ -468,7 +445,6 @@ export const editReview = async (movieId, editData) => {
 ```javascript
 // 리뷰 신고 API
 export const reviewReport = async (movieId, reviewData) => {
-  try {
     // reviewList 컬렉션의 해당 docsId(movieId)의 subCollection의 docsId(reviewId) 해당되는 데이터
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieId));
@@ -488,13 +464,6 @@ export const reviewReport = async (movieId, reviewData) => {
       reportList: arrayUnion(reviewData.id),
     });
     await Promise.all[(reportReviewPromise, addReportListPromise)];
-  } catch (error) {
-    sweetToast(
-      "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
-      "warning"
-    );
-    throw error;
-  }
 };
 ```
 
@@ -713,7 +682,7 @@ export default function MypageMenu() {
 - 필요한 이미지 크기 보다 더 큰 이미지를 사용하는 것은 리소스 낭비가 됩니다.
 - 이미지 리소스 낭비를 최소화 하기 위해 사용할 크기에 맞게 이미지 크기를 최소화 하였습니다.
 - 이미지 형식은 svg 형식의 이미지를 이용하였습니다.
-  - svg 형식 이미지는 간단한 이미지인 경우 png 형식보다 svg 이미지가 작으며, svg 형식은 레티나 디스플레이에서도 깨지는 현상이 없기 때문에 레티나 디스플레이를 고려할 필요가 없어 svg 형식의 이미지를 사용하였습니다.
+  - svg 형식 이미지는 간단한 이미지인 경우 png 형식보다 이미지 용량이 작으며, 레티나 디스플레이에서도 이미지가 깨지는 현상이 없습니다.
     
 #### ② imageCompression 라이브러리를 이용하여 이미지 압축
 - 서버에 이미지를 전송할 시 필요한 이미지 만큼만 최소로 압축하여 이미지 리소스 낭비를 줄일 수 있도록 하였습니다.
@@ -816,25 +785,25 @@ export default function ProgressiveImg({
 - Webp 이미지 형식은 구 브라우저는 지원하지 않기 때문에 점진적 향상 기법을 이용하여 다르게 처리해 주었습니다.
 - Webp 이미지가 지원이 된다면 body 태그에 webp라는 className를 추가해주었습니다.
 - body className를 통해 이미지 형식이 다르게 적용되도록 처리하였습니다.
-- 구 브라우저에서는 기존에 저장된 svg 형식이 적용되도록 처리하였습니다.
+- 구 브라우저에서는 svg 이미지 형식이 적용되도록 처리하였습니다.
 - Webp가 지원되는 브라우저에서너 Webp 이미지가 적용되도록 처리하였습니다.
 - detectWebpSupport, resolveWebp 함수를 만들어 이를 적용시켜 주었습니다.
  
 - detectWebpSupport
   - webpdata에 1x1 픽셀 크기의 WebP 형식의 이미지 데이터를 base64로 인코딩한 문자열을 할당합니다.
   - 이미지 로딩이 성공적으로 완료되거나 에러가 발생했을 때 callback 함수가 실행됩니다.
-  - webp 이미지가 로딩 될 때까지 기다리기 위해 Promise를 이용해 비동기 처리를 해주었습니다.
+  - webp 이미지가 로딩 되고, webp이미지 지원여부 확인을 기다리기 위해 Promise를 이용해 비동기 처리를 해주었습니다.
   - image.src에 webpdata를 할당하여, 생성한 빈 이미지 객체가 해당 WebP 이미지를 로딩하도록 합니다.
   - callback 함수에서는 event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별합니다.
   - 브라우저가 WebP 이미지를 지원하는 경우 document.body 요소의 classList에 "webp"를 추가합니다.
   - 지원하지 않는 브라우저라면 document.body 요소의 classList에 "no-webp"를 추가합니다.
  
 - resolveWebp
-   - 인자 값 webpSupported: webp지원 유무, img : Webp 이미지 경로, fallbackExt : Webp 이미지 형식 대신 사용할 이미지 형식
+   - webpSupported: webp지원 유무, img : Webp 이미지 경로, fallbackExt : Webp 이미지 형식 대신 사용할 이미지 형식
    - ext에 이미지 형식을 저장합니다.
    - webpSupported가 false인 경우, ext이 webp인 경우에 webp이미지 경로 대신 webp 대신 사용할 이미지 형식 경로를 반환합니다.
-   - replace 메서드를 이용해서 /webp 제거 후, .webp를 대체할 이미지 형식으로 교체합니다.
-   - 현재 프로젝트에서 사용 중인 이미지 경로 : img/assets/webp/webpImg.webp => img/assets/svgImg.svg
+   - replace 메서드를 이용해서 이미지경로를 수정합니다. /webp 제거 후, .webp를 대체할 이미지 형식으로 교체합니다.
+   - 현재 프로젝트에서 사용 중인 이미지 경로 예시 : img/assets/webp/webpImg.webp => img/assets/svgImg.svg
 
 ```javascript
   export async function detectWebpSupport() {
@@ -895,7 +864,7 @@ export default function ProgressiveImg({
   - nextTarget이 필요없는 경우에는 previousTarget만 적용되도록 else if문 nextTarget && 조건을 추가해주었습니다.
   - previousTarget은 필요없는 경우가 없기 때문에 생략되는 경우를 고려하지 않았습니다.
     - nextTarget만 있는 경우에도 previousTarget이 필요 => e.preventDefault() 처리로 이전 요소 포커싱(shift+tab)이 작동하지 않고 nextTarget.focus() 작동되기 때문입니다.
-    - 이전 요소, 다음 요소 포커스 이동시 tab키가 같이 쓰이기 때문입니다.
+    - 이전 요소(shift + tab), 다음 요소(tab) 포커스 이동시 tab키가 같이 쓰이기 때문입니다.
     - shift+tab키를 누르는 경우도 별도의 조건 처리가 필요합니다.
 - esc 키를 누를 경우 모달창이 닫히도록 처리하였습니다.
 - 또한 selector 메뉴가 활성화 되면 포커싱이 벗어나지 않도록 처리하였으며, esc키를 누르면 닫히도록 처리 하였습니다.
@@ -1280,8 +1249,8 @@ export const resolveWebp = (webpSupported, img, fallbackExt) => {
 };
 ```
 #### (5) 새로고침 시 잠깐 동안 이미지가 나오지 않고 alt가 나오는 현상
-- 원인 : resolveWebp 함수에서 null인 경우 retrun를 하였는데, 이 경우에는 아무 이미지 경로도 반환하지 않기 때문에 이미지가 적용되지 않고, 이미지 alt가 출력되는 문제가 발생하였습니다.
-- 해결방안 : webpSupported를 인자로 받지 않고 함수 안에서 선언하고, 기존 webpSupported를 contextAPI를 이용하여 값을 저장해서 인자 값으로 넘겨주었는데 이를 제거하였습니다.
+- 원인 : resolveWebp 함수에서 webpSupported가 null인 경우 함수를 바로 retrun 하였는데, 이 경우에는 아무 이미지 경로도 반환하지 않기 때문에 이미지가 적용되지 않고, 이미지 alt가 출력되는 문제가 발생하였습니다.
+- 해결방안 : webpSupported를 인자로 받지 않고 함수 안에서 선언하였습니다.
 
  ```javascript
 export const resolveWebp = (webpSupported, img, fallbackExt) => {
