@@ -78,7 +78,6 @@ export const getReviewListPage = async (movieId, page, filter) => {
 
 // 리뷰 작성 API
 export const addReview = async (movieData, reviewData) => {
-    console.log(movieData, reviewData)
     // reviewList 해당 영화에 리뷰 데이터 추가
     const reviewListRef = collection(db, "reviewList");
     const reviewDoc = doc(reviewListRef, String(movieData.id));
