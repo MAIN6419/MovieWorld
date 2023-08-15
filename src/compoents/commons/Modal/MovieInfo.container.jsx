@@ -105,7 +105,7 @@ export default function MovieInfo({
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(fetchVideoData(movieData));
   }, []);
 
