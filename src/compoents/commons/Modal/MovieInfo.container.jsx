@@ -11,7 +11,7 @@ import {
   fetchRemoveLike,
   likeSlice,
 } from "../../../slice/likeSlice";
-import { fetchVideoData } from "../../../slice/movieData.slice";
+import { fetchVideoData, movieDataSlice } from "../../../slice/movieData.slice";
 import { mypageSlice } from "../../../slice/mypageSlice";
 
 export default function MovieInfo({
@@ -105,7 +105,8 @@ export default function MovieInfo({
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    dispatch(movieDataSlice.actions.resetVideoData());
     dispatch(fetchVideoData(movieData));
   }, []);
 
