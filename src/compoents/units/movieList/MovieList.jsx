@@ -91,7 +91,7 @@ export default function MovieList({ title, type, fetchMoive }) {
                       }
                     }}
                   >
-                    <ProgressiveImg
+                    {data.poster_path&&<ProgressiveImg
                       placeholderSrc={`https://image.tmdb.org/t/p/w45/${data.poster_path}`}
                       src={`https://image.tmdb.org/t/p/${
                         isSmall ? "w185" : "w342"
@@ -105,7 +105,7 @@ export default function MovieList({ title, type, fetchMoive }) {
                         borderRadius: "5px",
                       }}
                       alt="영화 포스터"
-                    />
+                    />}
                   </MovieItemBtn>
                 </SwiperSlide>
               );
