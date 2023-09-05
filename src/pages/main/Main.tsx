@@ -9,8 +9,8 @@ import {
   fetchHorrorMovies,
   fetchRomanceMovies,
   fetchTopRatedMovies,
-  fetchTrendingMovies,
-} from "../../slice/movieData.slice";
+  fetchTrendingMovies
+} from "../../slice/movieDataslice";
 
 export default function Main() {
   return (
@@ -18,12 +18,12 @@ export default function Main() {
       <Wrapper>
         <MovieList
           title={"Trending Now"}
-          type="trending"
+          type='trending'
           fetchMoive={fetchTrendingMovies}
         />
         <MovieList
           title={"Top Rated"}
-          type="topRated"
+          type='topRated'
           fetchMoive={fetchTopRatedMovies}
         />
         <MovieList
