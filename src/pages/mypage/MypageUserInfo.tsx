@@ -9,19 +9,20 @@ import {
   ProfileNameWrapper,
   ProfileNickname,
   ProfileTitle,
-  ProfileWrapper,
+  ProfileWrapper
 } from "./mypage.style";
 import { resolveWebp } from "../../libray/webpSupport";
 import ChangeProfile from "./ChangeProfile.container";
 import ChangePassword from "./ChangePassword.container";
 import Loading from "../../compoents/commons/loading/Loading";
 import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 export default function MypageUserInfo() {
-  const user = useSelector((state) => state.user.data);
+  const user = useSelector((state: RootState) => state.user.data);
   const [isProfileEdit, setIsProfileEdit] = useState(false);
   const [isChangePassword, setIsChangePassword] = useState(false);
-  const isLoading = useSelector(state=>state.user.isLoading);
+  const isLoading = useSelector((state: RootState) => state.user.isLoading);
 
   const onClickProfileEdit = () => {
     setIsProfileEdit(true);
@@ -43,8 +44,8 @@ export default function MypageUserInfo() {
               user.photoURL ||
               resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
             }
-            alt="프로필 이미지"
-            onError={(e) =>
+            alt='프로필 이미지'
+            onError={(e: any) =>
               (e.target.src = resolveWebp(
                 "/assets/webp/icon-defaultProfile.webp",
                 "svg"
@@ -70,15 +71,10 @@ export default function MypageUserInfo() {
         </ProfileMenu>
       </ProfileWrapper>
       {isProfileEdit && (
-        <ChangeProfile
-          user={user}
-          setIsProfileEdit={setIsProfileEdit}
-        />
+        <ChangeProfile user={user} setIsProfileEdit={setIsProfileEdit} />
       )}
       {isChangePassword && (
-        <ChangePassword
-          setIsChangePassword={setIsChangePassword}
-        />
+        <ChangePassword setIsChangePassword={setIsChangePassword} />
       )}
       {isLoading && <Loading />}
     </>
