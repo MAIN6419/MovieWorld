@@ -14,31 +14,31 @@ export default function Footer() {
       <FooterContents>
         <FooterMenu>
           <FooterMenuLi>
-            <FooterMenuLink>회사소개</FooterMenuLink>
+            <FooterMenuLink to="#">회사소개</FooterMenuLink>
           </FooterMenuLi>
           <FooterMenuLi>
-            <FooterMenuLink>이용약관</FooterMenuLink>
+            <FooterMenuLink to="#">이용약관</FooterMenuLink>
           </FooterMenuLi>
           <FooterMenuLi>
-            <FooterMenuLink>고객센터</FooterMenuLink>
+            <FooterMenuLink to="#">고객센터</FooterMenuLink>
           </FooterMenuLi>
           <FooterMenuLi>
-            <FooterMenuLink>고용센터</FooterMenuLink>
+            <FooterMenuLink to="#">고용센터</FooterMenuLink>
           </FooterMenuLi>
           <FooterMenuLi>
-            <FooterMenuLink>법적고지</FooterMenuLink>
+            <FooterMenuLink to="#">법적고지</FooterMenuLink>
           </FooterMenuLi>
           <FooterMenuLi>
-            <FooterMenuLink>공지사항</FooterMenuLink>
+            <FooterMenuLink to="#">공지사항</FooterMenuLink>
           </FooterMenuLi>
           <FooterMenuLi>
-            <FooterMenuLink>미디어 센터</FooterMenuLink>
+            <FooterMenuLink to="#">미디어 센터</FooterMenuLink>
           </FooterMenuLi>
           <FooterMenuLi>
-            <FooterMenuLink>위치안내</FooterMenuLink>
+            <FooterMenuLink to="#">위치안내</FooterMenuLink>
           </FooterMenuLi>
           <FooterMenuLi>
-            <FooterMenuLink>광고문의</FooterMenuLink>
+            <FooterMenuLink to="#">광고문의</FooterMenuLink>
           </FooterMenuLi>
         </FooterMenu>
       </FooterContents>
