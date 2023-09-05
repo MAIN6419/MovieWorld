@@ -1,18 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { ModalBtn } from "./topButton.style";
 
-export default function ModalTopbutton({ modalRef }) {
+interface IProps {
+  modalRef: RefObject<HTMLElement>
+}
+export default function ModalTopbutton({ modalRef }:IProps) {
   const [isShow, setIsShow] = useState(false);
-  const topBtnRef = useRef(null);
+  const topBtnRef = useRef<HTMLButtonElement>(null);
 
   const scrollToTop = () => {
-    modalRef.current.scroll({
+    modalRef.current?.scroll({
       top: 0,
       behavior: "smooth",
     });
   };
 
   const handleScroll = () => {
+    if(!modalRef.current) return;
     if (modalRef.current.scrollTop > 500) {
       setIsShow(true);
     } else if(topBtnRef.current){
@@ -24,7 +28,7 @@ export default function ModalTopbutton({ modalRef }) {
   };
 
   useEffect(() => {
-    modalRef.current.addEventListener("scroll", handleScroll);
+    modalRef.current?.addEventListener("scroll", handleScroll);
   }, []);
   return (
     <>
