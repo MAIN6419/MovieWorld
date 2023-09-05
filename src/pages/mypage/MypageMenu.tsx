@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useMovieInfo } from "../../hook/useMovieInfo";
 import { useInView } from "react-intersection-observer";
 import { useMediaQuery } from "react-responsive";
-
-import {} from "../../firebase/reviewAPI";
-
 import {
   InfiniteScrollTarget,
   MoiveListWrapper,
@@ -33,15 +30,17 @@ import {
   mypageSlice,
 } from "../../slice/mypageSlice";
 import { fetchRemoveLike } from "../../slice/likeSlice";
+import { AppDispatch, RootState } from '../../store/store';
+import { IMovieData } from '../../api/movieAPIType';
 
 export default function MypageMenu() {
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.mypage.isLoading);
-  const isBlank = useSelector(state=>state.mypage.isBlank);
-  const data = useSelector((state) => state.mypage.data);
-  const page = useSelector((state) => state.mypage.page);
-  const hasMore = useSelector((state) => state.mypage.hasMore);
-  const limitPage = useSelector((state) => state.mypage.limitPage);
+  const dispatch = useDispatch<AppDispatch>();
+  const isLoading = useSelector((state: RootState) => state.mypage.isLoading);
+  const isBlank = useSelector((state: RootState)=>state.mypage.isBlank);
+  const data = useSelector((state: RootState) => state.mypage.data);
+  const page = useSelector((state: RootState) => state.mypage.page);
+  const hasMore = useSelector((state: RootState) => state.mypage.hasMore);
+  const limitPage = useSelector((state: RootState) => state.mypage.limitPage);
   const [isOpenMovieInfo, setIsOpenMovieInfo, seletedMovie, onClickMovieInfo] =
     useMovieInfo(false);
   const [ref, inview] = useInView();
@@ -55,9 +54,9 @@ export default function MypageMenu() {
   };
 
   const fetchAddData = async () => {
-      menu === "like"
-        ? dispatch(fetchLikeListPage({ page, limitPage }))
-        : dispatch(fetchReviewMovieListPage({ page, limitPage }));
+      menu === "like" 
+        ? typeof page !=="number"&&dispatch(fetchLikeListPage({ page, limitPage }))
+        : typeof page !=="number"&&dispatch(fetchReviewMovieListPage({ page, limitPage }));
   };
 
   useEffect(() => {
@@ -112,7 +111,7 @@ export default function MypageMenu() {
             {data.map((item, idx) => {
               return (
                 <MovieItem key={item.id + idx}>
-                  <MovieImgWrapper tabIndex="0">
+                  <MovieImgWrapper tabIndex={0}>
                     <ProgressiveImg
                       placeholderSrc={`https://image.tmdb.org/t/p/w45/${item.backdrop_path}`}
                       src={`https://image.tmdb.org/t/p/w300/${item.backdrop_path}`}
@@ -125,13 +124,13 @@ export default function MypageMenu() {
                         borderRadius: "5px",
                       }}
                       alt="영화 포스터"
-                      onError={(e) =>
+                      onError={(e: any) =>
                         (e.target.src =
                           document.body.className === "webp"
                             ? "/assets/webp/placeholderImg.webp"
                             : "/assets/placeholderImg.png")
                       }
-                      onClick={() => onClickMovieInfo(item)}
+                      onClick={() => onClickMovieInfo(item as IMovieData)}
                     />
                     {menu === "like" && (
                       <RemoveBtn
