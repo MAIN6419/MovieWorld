@@ -7,7 +7,7 @@ import {
 import { db } from "./setting";
 
 // 중복검사 API
-export const duplication = async (duplicationValue, duplicationTarget) => {
+export const duplication = async (duplicationValue:string, duplicationTarget:string) => {
   const userRef = collection(db, "user");
   const q = query(
     userRef,

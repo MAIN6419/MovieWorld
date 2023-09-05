@@ -2,19 +2,25 @@ import { collection, doc, setDoc } from "firebase/firestore";
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  updateProfile,
+  updateProfile
 } from "firebase/auth";
 import { db, storage } from "./setting";
 import {
   uploadBytes,
   getDownloadURL,
-  ref as storageRef,
+  ref as storageRef
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 
 const auth = getAuth();
 // 회원가입 API
-export const signup = async (displayName, file, email, password, phone) => {
+export const signup = async (
+  displayName: string,
+  file: File | "",
+  email: string,
+  password: string,
+  phone: string
+) => {
   const res = await createUserWithEmailAndPassword(auth, email, password);
   const fileName = file && `${uuidv4()}_${file.name}`;
   const uploadImgURLRes =
@@ -23,10 +29,10 @@ export const signup = async (displayName, file, email, password, phone) => {
       storageRef(storage, `images/profile/${fileName}`),
       file
     ));
-  const photoURL = file && (await getDownloadURL(uploadImgURLRes.ref));
+  const photoURL = file && uploadImgURLRes && (await getDownloadURL(uploadImgURLRes.ref));
   await updateProfile(res.user, {
     displayName,
-    photoURL,
+    photoURL
   });
 
   const user = collection(db, "user");
@@ -39,12 +45,12 @@ export const signup = async (displayName, file, email, password, phone) => {
     likeList: [],
     reviewList: [],
     reportList: [],
-    photoFileName: fileName || "",
+    photoFileName: fileName || ""
   });
   return {
     uid: res.user.uid,
     email: res.user.email,
     displayName: res.user.displayName,
-    photoURL: res.user.photoURL || "",
+    photoURL: res.user.photoURL || ""
   };
 };

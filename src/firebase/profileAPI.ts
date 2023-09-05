@@ -6,13 +6,14 @@ import {
   getDownloadURL,
   ref as storageRef,
   deleteObject,
+  UploadResult,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { getUser } from "./loginAPI";
 
 const auth = getAuth();
 // 유저 프로필 수정 API
-export const updateUserProfile = async (file, displayName) => {
+export const updateUserProfile = async (file:File | "", displayName:string) => {
     const fileName = file && `${uuidv4()}_${file.name}`;
     const res =
       file &&
@@ -21,13 +22,14 @@ export const updateUserProfile = async (file, displayName) => {
         file
       ));
     const user = await getUser();
-    const uploadfileUrl = file && (await getDownloadURL(res.ref));
+    if(!auth.currentUser) return;
+    const uploadfileUrl = file && (await getDownloadURL((res as UploadResult).ref));
     const updateUser = doc(db, `user/${auth.currentUser.uid}`);
     const promises = [];
 
     // 1. 닉네임과 이미지 파일이 모두 변경된 경우
     if (displayName && file) {
-      if (user.photoFileName) {
+      if (user?.photoFileName) {
         promises.push(
           deleteObject(
             storageRef(storage, `images/profile/${String(user.photoFileName)}`)
@@ -57,7 +59,7 @@ export const updateUserProfile = async (file, displayName) => {
 
     // 3. 이미지만 변경된 경우
     else if (!displayName && file) {
-      if (user.photoFileName) {
+      if (user?.photoFileName) {
         promises.push(
           deleteObject(
             storageRef(storage, `images/profile/${String(user.photoFileName)}`)

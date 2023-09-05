@@ -18,11 +18,11 @@ const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
 const twitterProvider = new TwitterAuthProvider();
 const githubProvider = new GithubAuthProvider();
-const userData = JSON.parse(localStorage.getItem("user")) || {};
 
 // 로그인 API
-export const login = async (email, password) => {
+export const login = async (email:string, password:string) => {
     await signInWithEmailAndPassword(auth, email, password);
+    if(!auth.currentUser) return;
     sweetToast(
       `${auth.currentUser.displayName}님 환영합니다.`,
       "success",
@@ -30,7 +30,7 @@ export const login = async (email, password) => {
     );
 };
 
-export const socialLogin = async (type) => {
+export const socialLogin = async (type: string) => {
     let provider;
     if (type === "google") {
       provider = googleProvider;
@@ -41,6 +41,7 @@ export const socialLogin = async (type) => {
     } else if (type === "github") {
       provider = githubProvider;
     }
+    if(!provider) return;
     const result = await signInWithPopup(auth, provider);
     if (result) {
       const user = result.user;
@@ -79,9 +80,10 @@ export const logout = async () => {
 // 유저 데이터 API
 export const getUser = async () => {
   try {
+    if(!auth.currentUser) return;
     const userRef = doc(
       db,
-      `user/${(userData && userData.uid) || auth.currentUser.uid}`
+      `user/${auth.currentUser.uid}`
     );
     const res = await getDoc(userRef);
     const data = res.data();
