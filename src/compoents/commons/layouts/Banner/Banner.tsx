@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { fetchNowPlaying } from "../../../../api/movie";
 import {
   BannerBtns,
   BannerContents,
@@ -26,10 +25,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchNowPlayingMovie,
   movieDataSlice,
-} from "../../../../slice/movieData.slice";
+} from "../../../../slice/movieDataslice";
+import { AppDispatch, RootState } from '../../../../store/store';
+
 export default function Banner() {
-  const dispatch = useDispatch();
-  const movieData = useSelector((state) => state.movieData.nowPlayingData.data);
+  const dispatch = useDispatch<AppDispatch>();
+  const movieData = useSelector((state: RootState) => state.movieData.nowPlayingData.data);
   const isMedium = useMediaQuery({
     query: "(max-width:786px)and(min-width:501px)",
   });
@@ -37,7 +38,7 @@ export default function Banner() {
   const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
   const [isPlay, setIsPlay] = useState(false);
   const [isOpenMovieInfo, setIsOpenMovieInfo] = useState(false);
-  const iframeRef = useRef(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const onClickPlay = () => {
     if (!movieData.videos.results.length) {
@@ -63,7 +64,7 @@ export default function Banner() {
 
   useEffect(() => {
     if (isPlay && movieData.videos.results.length) {
-      iframeRef.current.focus();
+      iframeRef.current&&iframeRef.current.focus();
     }
   }, [isPlay]);
 
@@ -83,9 +84,9 @@ export default function Banner() {
                 className="bannerIframe"
                 src={`https://www.youtube.com/embed/${movieData.videos.results[0].key}?autoplay=1&enablejsapi=1&mute=1&loop=1&playlist=${movieData.videos.results[0].key}`}
                 title="YouTube video player"
-                frameborder="0"
+                // frameborder={0}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
-                allowfullscreen
+                // allowfullscreen
               />
             </Container>
           </IframeWrapper>
