@@ -19,18 +19,19 @@ import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import Loading from "../../compoents/commons/loading/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLogin, fetchSocialLogin } from "../../slice/userSlice";
+import { AppDispatch, RootState } from '../../store/store';
 
 
 export default function Login() {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(state=>state.user.isLoading);
+  const dispatch = useDispatch<AppDispatch>();
+  const isLoading = useSelector((state: RootState)=>state.user.isLoading);
   const [disabled, setDisabled] = useState(true);
-  const emailRef = useRef(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const [emailValue, emailValid, onChangeEmail, setEmailValue] =
     useValidationInput("", "email", false);
   const [passwordValue, passwordValid, onChangePassword, setPasswordValue] =
-    useValidationInput("", "password");
-  const handleSubmit = async (e) => {
+    useValidationInput("", "password", false);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (emailValid.valid && passwordValid.valid) {
       dispatch(fetchLogin({emailValue, passwordValue}));
@@ -40,7 +41,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    emailRef.current.focus();
+    emailRef.current&&emailRef.current.focus();
   }, []);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function Login() {
             <UserInput
               label_hidden={true}
               label={"이메일"}
-              id={"input-email"}
+              inputId={"input-email"}
               placeholder={"Email"}
               type={"text"}
               value={emailValue}
@@ -73,7 +74,7 @@ export default function Login() {
             <UserInput
               label_hidden={true}
               label={"비밀번호"}
-              id={"input-password"}
+              inputId={"input-password"}
               placeholder={"Password"}
               type={"password"}
               onChange={onChangePassword}
