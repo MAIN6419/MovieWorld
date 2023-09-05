@@ -53,7 +53,7 @@ export const ProgressCheck = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: ${(props) =>
+  border: ${(props: {active: boolean}) =>
     props.active ? "2px solid #627af5" : "2px solid #bdbdbd"};
 
   flex-shrink: 0;
@@ -84,11 +84,11 @@ export const ProgressBar = styled.div`
   ::after {
     position: absolute;
     content: "";
-    width: ${(props) => (props.percentage ? props.percentage : "0")};
+    width: ${(props: {percentage: string}) => (props.percentage ? props.percentage : "0")};
     height: 2px;
     background-color: #627af5;
     transition: all 0.5s;
-    transition-delay: ${(props) => (props.percentage === "50%" ? "0.3s" : "")};
+    transition-delay: ${(props: {percentage: string}) => (props.percentage === "50%" ? "0.3s" : "")};
 
     @media screen and (max-width: 431px) {
       width: ${(props) => (props.percentage ? props.percentage : "0")};

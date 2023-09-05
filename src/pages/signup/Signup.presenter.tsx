@@ -10,12 +10,48 @@ import {
   SignupBtn,
   SignupForm,
   Title,
-  Wrapper,
+  Wrapper
 } from "./signup.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import ProfileSetting from "./ProfileSetting.container";
 import Loading from "../../compoents/commons/loading/Loading";
+
+interface IProps {
+  defaultInfo: boolean;
+  percentage: string;
+  profile: boolean;
+  next: boolean;
+  emailValue: string;
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  emailValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  passwordValue: string;
+  onChangePassowrd: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  passowrdValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  passowrdChkValue: string;
+  onChangePasswordChk: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  passwordChkValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  phoneValue: string;
+  onChangePhone: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  phoneValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  disabled: boolean;
+  setProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  setPercentage: React.Dispatch<React.SetStateAction<string>>;
+  setNext: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
+}
 
 export default function SignupUI({
   defaultInfo,
@@ -38,24 +74,24 @@ export default function SignupUI({
   setProfile,
   setPercentage,
   setNext,
-  isLoading,
-}) {
+  isLoading
+}: IProps) {
   return (
     <>
       <Wrapper>
         <Title>회원가입</Title>
         <ProgressWrapper>
-          <ProgressTitle className="a11y-hidden">회원가입 진행바</ProgressTitle>
+          <ProgressTitle className='a11y-hidden'>회원가입 진행바</ProgressTitle>
           <ProgressCheckWrapper>
             <ProgressCheck
-              className="defalut"
+              className='defalut'
               active={defaultInfo}
             ></ProgressCheck>
             <ProgressCheckText>기본정보 입력</ProgressCheckText>
           </ProgressCheckWrapper>
           <ProgressBar percentage={percentage}></ProgressBar>
           <ProgressCheckWrapper>
-            <ProgressCheck className="profile" active={profile}></ProgressCheck>
+            <ProgressCheck className='profile' active={profile}></ProgressCheck>
             <ProgressCheckText>프로필 설정</ProgressCheckText>
           </ProgressCheckWrapper>
         </ProgressWrapper>
@@ -63,9 +99,9 @@ export default function SignupUI({
           <SignupForm>
             <InputWrapper>
               <UserInput
-                type="text"
+                type='text'
                 label={"이메일"}
-                id={"input-email"}
+                inputId={"input-email"}
                 placeholder={"이메일 주소를 입력해주세요."}
                 value={emailValue}
                 onChange={onChangeEmail}
@@ -76,9 +112,9 @@ export default function SignupUI({
             </InputWrapper>
             <InputWrapper>
               <UserInput
-                type="password"
+                type='password'
                 label={"비밀번호"}
-                id={"input-password"}
+                inputId={"input-password"}
                 placeholder={"8-16자 특수문자, 숫자, 영문 포함"}
                 value={passwordValue}
                 onChange={onChangePassowrd}
@@ -91,9 +127,9 @@ export default function SignupUI({
             </InputWrapper>
             <InputWrapper>
               <UserInput
-                type="password"
+                type='password'
                 label={"비밀번호 확인"}
-                id={"input-passwordChk"}
+                inputId={"input-passwordChk"}
                 placeholder={"비밀번호 확인을 입력해주세요."}
                 value={passowrdChkValue}
                 onChange={onChangePasswordChk}
@@ -106,9 +142,9 @@ export default function SignupUI({
             </InputWrapper>
             <InputWrapper>
               <UserInput
-                type="text"
+                type='text'
                 label={"휴대폰"}
-                id={"input-phone"}
+                inputId={"input-phone"}
                 placeholder={"휴대폰 번호를 입력해주세요. ( - 제외 )"}
                 value={phoneValue
                   .replace(/[^0-9]/g, "")
@@ -121,7 +157,7 @@ export default function SignupUI({
               )}
             </InputWrapper>
             <SignupBtn
-              type="button"
+              type='button'
               disabled={disabled}
               onClick={() => setNext(true)}
             >
@@ -136,11 +172,10 @@ export default function SignupUI({
             phoneValue={phoneValue}
             setPercentage={setPercentage}
             setNext={setNext}
-            isLoading={isLoading}
           />
         )}
       </Wrapper>
-      {isLoading&&<Loading/>}
+      {isLoading && <Loading />}
     </>
   );
 }

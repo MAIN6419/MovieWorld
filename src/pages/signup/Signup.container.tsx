@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
 import SignupUI from "./Signup.presenter";
 import { useSelector } from "react-redux";
+import { RootState } from '../../store/store';
 
 export default function Signup() {
-  const isLoading = useSelector((state) => state.signup.isLoading);
+  const isLoading = useSelector((state: RootState) => state.signup.isLoading);
   const [defaultInfo, setDefaultInfo] = useState(false);
   const [profile, setProfile] = useState(false);
   const [percentage, setPercentage] = useState("0%");
@@ -18,17 +19,18 @@ export default function Signup() {
   );
   const [passwordValue, passowrdValid, onChangePassowrd] = useValidationInput(
     "",
-    "password"
+    "password",
+    true
   );
 
   // 비밀번호 유효성 input
   const [
     passowrdChkValue,
     passwordChkValid,
-    _,
+    ,
     setPasswordChkValue,
     setPasswordChkValid,
-  ] = useValidationInput("", "password");
+  ] = useValidationInput("", "password", true);
 
   // 휴대폰 유효성 input
   const [phoneValue, phoneValid, onChangePhone] = useValidationInput(
@@ -41,7 +43,7 @@ export default function Signup() {
   const [disabled, setDisabled] = useState(true);
 
   // 비밀번호 확인 onChange 별도 생성 => useValidInput에서 처리하지 못하기 때문
-  const onChangePasswordChk = (e) => {
+  const onChangePasswordChk = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordChkValue(e.target.value.trim());
     if (passwordValue !== e.target.value) {
       setPasswordChkValid({
