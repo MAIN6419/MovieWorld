@@ -11,11 +11,34 @@ import {
   PasswordInputWrapper,
   PasswordLabel,
   InputDesc,
-  InputDescList,
+  InputDescList
 } from "./changePassword.style";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { optKeyboardFocus } from "../../libray/optKeyBoard";
 
+interface IProps {
+  onClickcancel: () => void;
+  onClickSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  onChangeCurrentPW: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  currentPwValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  isMoblie: boolean;
+  onChangeNewPW: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  newPwValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  onChangePasswordChk: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  newPwChkValid:  {
+    errorMsg: string;
+    valid: boolean;
+  };
+  currentPwRef: React.RefObject<HTMLInputElement>;
+  submitBtnRef: React.RefObject<HTMLButtonElement>;
+  cancelBtnRef: React.RefObject<HTMLButtonElement>;
+}
 export default function ChangePasswordUI({
   onClickcancel,
   onClickSubmit,
@@ -28,12 +51,12 @@ export default function ChangePasswordUI({
   newPwChkValid,
   currentPwRef,
   submitBtnRef,
-  cancelBtnRef,
-}) {
+  cancelBtnRef
+}: IProps) {
   return (
     <ModalWrapper>
       <Dim onClick={onClickcancel}>
-        <span className="a11y-hidden">dim</span>
+        <span className='a11y-hidden'>dim</span>
       </Dim>
       <ModalCard
         onKeyDown={(e) => {
@@ -45,12 +68,12 @@ export default function ChangePasswordUI({
         <Title>비밀번호 변경</Title>
         <PasswordForm onSubmit={onClickSubmit}>
           <PasswordInputWrapper>
-            <PasswordLabel htmlFor="input-currentPw">
+            <PasswordLabel htmlFor='input-currentPw'>
               현재 비밀번호
             </PasswordLabel>
             <PasswordInput
-              id="input-currentPw"
-              type="password"
+              id='input-currentPw'
+              type='password'
               onChange={onChangeCurrentPW}
               maxLength={16}
               ref={currentPwRef}
@@ -67,10 +90,10 @@ export default function ChangePasswordUI({
           </PasswordInputWrapper>
 
           <PasswordInputWrapper>
-            <PasswordLabel htmlFor="input-newPw">새 비밀번호</PasswordLabel>
+            <PasswordLabel htmlFor='input-newPw'>새 비밀번호</PasswordLabel>
             <PasswordInput
-              id="input-newPw"
-              type="password"
+              id='input-newPw'
+              type='password'
               onChange={onChangeNewPW}
               maxLength={16}
             />
@@ -83,12 +106,12 @@ export default function ChangePasswordUI({
           </PasswordInputWrapper>
 
           <PasswordInputWrapper>
-            <PasswordLabel htmlFor="input-newPwChk">
+            <PasswordLabel htmlFor='input-newPwChk'>
               새 비밀번호 확인
             </PasswordLabel>
             <PasswordInput
-              id="input-newPwChk"
-              type="password"
+              id='input-newPwChk'
+              type='password'
               onChange={onChangePasswordChk}
               maxLength={16}
             />
@@ -112,11 +135,11 @@ export default function ChangePasswordUI({
             </InputDesc>
           </InputDescList>
           <PasswordChangeBtns>
-            <PasswordChangeBtn type="submit" ref={submitBtnRef}>
+            <PasswordChangeBtn type='submit' ref={submitBtnRef}>
               확인
             </PasswordChangeBtn>
             <PasswordChangeBtn
-              type="button"
+              type='button'
               onClick={onClickcancel}
               ref={cancelBtnRef}
               onKeyDown={(e) => {
