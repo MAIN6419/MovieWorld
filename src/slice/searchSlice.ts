@@ -1,43 +1,57 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getSearchData, getTrendingMovies } from "../api/movie";
 import { sweetToast } from "../sweetAlert/sweetAlert";
+import { IMovieData } from "../api/movieAPIType";
+import { DocumentData, QuerySnapshot } from "firebase/firestore";
+
+interface IKnownError {
+  message: string;
+}
 
 // 최신 영화 데이터 목록 불러오기
-export const fetchTrendingPageMovies = createAsyncThunk(
-  "trendingPageSlice/fetchTrendingPageMovies",
-  async (page, thunkAPI) => {
-    try {
-      const data = await getTrendingMovies(page);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
+export const fetchTrendingPageMovies = createAsyncThunk<
+  IMovieData[],
+  number | QuerySnapshot<DocumentData>,
+  { rejectValue: IKnownError }
+>("trendingPageSlice/fetchTrendingPageMovies", async (page, thunkAPI) => {
+  try {
+    const data = await getTrendingMovies(page);
+    return data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error);
   }
-);
+});
 
 // 영화 검색 목록 불러오기
-export const fetchSearchMovies = createAsyncThunk(
-  "searchSlice/fetchSearchMovies",
-  async ({ keyword, page }, thunkAPI) => {
-    try {
-      const data = await getSearchData(keyword, page);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
+export const fetchSearchMovies = createAsyncThunk<
+  IMovieData[],
+  { keyword: string; page: number | QuerySnapshot<DocumentData> },
+  { rejectValue: IKnownError }
+>("searchSlice/fetchSearchMovies", async ({ keyword, page }, thunkAPI) => {
+  try {
+    const data = await getSearchData(keyword, page);
+    return data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error);
   }
-);
+});
 
 export const searchSlice = createSlice({
   name: "searchSlice",
-  initialState: { data: [], page: 1, hasMore: true, isBlank: false, error: "" },
+  initialState: {
+    data: [] as IMovieData[],
+    page: 1 as number | QuerySnapshot<DocumentData>,
+    hasMore: true,
+    isBlank: false,
+    error: ""
+  },
   reducers: {
     resetSearch: (state) => {
       state.data = [];
       state.page = 1;
       state.hasMore = true;
       state.isBlank = false;
-    },
+    }
   },
   extraReducers: (builder) => {
     // 최신 영화 목록 페이지
@@ -48,10 +62,14 @@ export const searchSlice = createSlice({
       // API에서 1page 당 20개의 데이터 제공
       // 20으로 나누었을때 나머지가 0이 아니라면 다음 페이지가 없으므로 이를 이용하여 다음페이지가 있는지를 파악
       state.hasMore = state.data.length % 20 === 0;
-      state.page = state.page + 1;
+      if (typeof state.page === "number") {
+        state.page = state.page + 1;
+      }
     });
     builder.addCase(fetchTrendingPageMovies.rejected, (state, action) => {
-      state.error = action.payload.message;
+      if (action.payload) {
+        state.error = action.payload.message;
+      }
       sweetToast(
         "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
         "warning"
@@ -62,14 +80,18 @@ export const searchSlice = createSlice({
       state.isBlank = action.payload.length === 0;
       state.data = [...state.data, ...action.payload];
       state.hasMore = state.data.length % 20 === 0;
-      state.page = state.page + 1;
+      if (typeof state.page === "number") {
+        state.page = state.page + 1;
+      }
     });
     builder.addCase(fetchSearchMovies.rejected, (state, action) => {
-      state.error = action.payload.message;
+      if (action.payload) {
+        state.error = action.payload.message;
+      }
       sweetToast(
         "알 수 없는 에러가 발생하였습니다.\n잠시후 다시 시도해 주세요.",
         "warning"
       );
     });
-  },
+  }
 });

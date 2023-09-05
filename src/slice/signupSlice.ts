@@ -2,9 +2,22 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { signup } from "../firebase/signupAPI";
 import { userSlice } from "./userSlice";
 import { sweetToast } from "../sweetAlert/sweetAlert";
-
+interface IKnownError {
+  message: string;
+}
+interface ISignupParms {
+  displayNameValue: string;
+  uploadImg: File | "";
+  emailValue: string;
+  passwordValue: string;
+  phoneValue: string;
+}
 // 회원가입
-export const fetchSignup = createAsyncThunk(
+export const fetchSignup = createAsyncThunk<
+  void,
+  ISignupParms,
+  { rejectValue: IKnownError }
+>(
   "signupSlice/fetchSignup",
   async (
     { displayNameValue, uploadImg, emailValue, passwordValue, phoneValue },
@@ -19,7 +32,7 @@ export const fetchSignup = createAsyncThunk(
         phoneValue
       );
       thunkAPI.dispatch(userSlice.actions.refreshUser());
-    } catch (error) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -29,8 +42,9 @@ export const signupSlice = createSlice({
   name: "signupSlice",
   initialState: {
     isLoading: false,
-    error: "",
+    error: ""
   },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchSignup.pending, (state) => {
       state.isLoading = true;
@@ -40,7 +54,9 @@ export const signupSlice = createSlice({
     });
     builder.addCase(fetchSignup.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.payload.toString();
+      if (action.payload) {
+        state.error = action.payload.toString();
+      }
       if (state.error.includes("email-already-in-use")) {
         sweetToast("이미 사용중인 이메일 입니다!", "warning");
       } else {
@@ -50,5 +66,5 @@ export const signupSlice = createSlice({
         );
       }
     });
-  },
+  }
 });

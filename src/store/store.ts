@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { userSlice } from "../slice/userSlice";
 import { searchSlice } from "../slice/searchSlice";
-import { movieDataSlice } from "../slice/movieData.slice";
+import { movieDataSlice } from "../slice/movieDataslice";
 import { likeSlice } from "../slice/likeSlice";
 import { reviewSlice } from "../slice/reviewSlice";
 import { signupSlice } from "../slice/signupSlice";
@@ -16,9 +16,11 @@ export const store = configureStore({
     review: reviewSlice.reducer,
     login: reviewSlice.reducer,
     signup: signupSlice.reducer,
-    mypage: mypageSlice.reducer,
+    mypage: mypageSlice.reducer
   },
   middleware: getDefaultMiddleware({
-    serializableCheck: false,
-  }),
+    serializableCheck: false
+  })
 });
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
