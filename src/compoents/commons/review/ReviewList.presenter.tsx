@@ -10,6 +10,25 @@ import {
 } from "./review.style";
 import ReviewListItem from "./ReviewListItem.container";
 import Blank from "../blank/Blank";
+import { IReviewData } from '../../../firebase/firebaseAPIType';
+import { IVideoData } from '../../../api/movieAPIType';
+
+interface IProps{
+  filterRef: React.RefObject<HTMLButtonElement>,
+  isOpenSelect: boolean,
+  setIsOpenSelect: React.Dispatch<React.SetStateAction<boolean>>,
+  onClickSelect:()=>void,
+  selectValue: string,
+  onClickOpction: (e:React.MouseEvent<HTMLButtonElement>)=> void,
+  newestFilterRef: React.RefObject<HTMLButtonElement>,
+  optKeyboardFocus: (e: React.KeyboardEvent<HTMLElement>, previousTarget: HTMLElement | null, nextTarget?: HTMLElement | null) => void,
+  oldestFilterRef: React.RefObject<HTMLButtonElement>,
+  ratingFilterRef: React.RefObject<HTMLButtonElement>,
+  reviewData: IReviewData[],
+  movieData: IVideoData,
+  infinityScrollRef: (node?: Element | null | undefined) => void,
+  isSmall: boolean,
+}
 
 export default function ReviewListUI({
   filterRef,
@@ -25,9 +44,8 @@ export default function ReviewListUI({
   reviewData,
   movieData,
   infinityScrollRef,
-  isSmall,
-  modalCardRef,
-}) {
+  isSmall
+}: IProps) {
   return (
     <>
       <SelectWrapper>
@@ -113,9 +131,7 @@ export default function ReviewListUI({
                   key={item.id}
                   reviewItem={item}
                   reviewData={reviewData}
-                  reviewDataList={reviewData}
                   movieId={movieData.id}
-                  modalCardRef={modalCardRef}
                 />
               );
             })}

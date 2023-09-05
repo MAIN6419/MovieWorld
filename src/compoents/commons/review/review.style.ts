@@ -84,7 +84,8 @@ export const ToggleSwitch = styled.label`
   width: 50px;
   height: 26px;
   border-radius: 30px;
-  background-color: ${(props) => (props.toggle ? "#f03d3d" : "#fff")};
+  background-color: ${(props: { toggle: boolean }) =>
+    props.toggle ? "#f03d3d" : "#fff"};
   box-shadow: 0 0 16px 3px rgba(0 0 0 / 15%);
   cursor: pointer;
   position: relative;
@@ -104,15 +105,18 @@ export const ToggleButton = styled.span`
   height: 15px;
   position: absolute;
   top: 50%;
-  left: ${(props) => (props.toggle ? "calc(100% - 19px)" : "4px")};
+  left: ${(props: { toggle: boolean }) =>
+    props.toggle ? "calc(100% - 19px)" : "4px"};
   transform: translateY(-50%);
   border-radius: 50%;
-  background-color: ${(props) => (props.toggle ? "#fff" : "#f03d3d")};
+  background-color: ${(props: { toggle: boolean }) =>
+    props.toggle ? "#fff" : "#f03d3d"};
   transition: all 0.3s;
   @media screen and (max-width: 486px) {
     width: 10px;
     height: 10px;
-    left: ${(props) => (props.toggle ? "calc(100% - 14px)" : "4px")};
+    left: ${(props: { toggle: boolean }) =>
+      props.toggle ? "calc(100% - 14px)" : "4px"};
   }
 `;
 
@@ -224,7 +228,7 @@ export const Select = styled.button`
       background: url("/assets/icon-downArrow.svg") no-repeat center right 0px /
         15px;
     }
-    transform: ${(props) =>
+    transform: ${(props: { active: boolean }) =>
       props.active ? "rotate(-180deg)" : "rotate(0deg)"};
     transition: all 0.5s;
   }

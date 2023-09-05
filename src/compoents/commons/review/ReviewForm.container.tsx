@@ -1,15 +1,37 @@
 import { v4 as uuidv4 } from "uuid";
 import React, { useState } from "react";
-import { Timestamp } from "firebase/firestore";
+import {
+  DocumentData,
+  OrderByDirection,
+  QuerySnapshot,
+  Timestamp
+} from "firebase/firestore";
 import ReviewFormUI from "./ReviewForm.presenter";
 import { sweetToast } from "../../../sweetAlert/sweetAlert";
 import { useSelector } from "react-redux";
 import {
   fetchAddReview,
   fetchAddReviewData,
-  fetchFirstReviewData,
+  fetchFirstReviewData
 } from "../../../slice/reviewSlice";
 import { mypageSlice } from "../../../slice/mypageSlice";
+import { IVideoData } from "../../../api/movieAPIType";
+import { IReviewData } from "../../../firebase/firebaseAPIType";
+import { AnyAction, Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "../../../store/store";
+
+interface IProps {
+  movieData: IVideoData;
+  reviewData: IReviewData[];
+  page: QuerySnapshot<DocumentData>;
+  filter: {
+    target: string;
+    order: OrderByDirection | undefined;
+  };
+  dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
+  limitPage: number;
+  isReview: boolean;
+}
 
 export default function ReviewForm({
   movieData,
@@ -18,16 +40,16 @@ export default function ReviewForm({
   filter,
   dispatch,
   limitPage,
-  isReview,
-}) {
-  const mypageData = useSelector((state) => state.mypage.data);
-  const userData = useSelector((state) => state.user.data);
+  isReview
+}: IProps) {
+  const mypageData = useSelector((state: RootState) => state.mypage.data);
+  const userData = useSelector((state: RootState) => state.user.data);
   const [reviewValue, setReivewValue] = useState("");
   const [rating, setRating] = useState(0);
   const [textCount, setTextCount] = useState(0);
   const [spoiler, setSpoiler] = useState(false);
 
-  const onChangeReview = (e) => {
+  const onChangeReview = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length === 1 && e.target.value === " ") {
       return;
     }
@@ -35,7 +57,7 @@ export default function ReviewForm({
     setTextCount(e.target.value.length);
   };
 
-  const onClickSubmit = async (e) => {
+  const onClickSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (userData) {
       if (isReview) {
@@ -51,7 +73,7 @@ export default function ReviewForm({
           rating,
           contents: reviewValue,
           createdAt: Timestamp.fromDate(new Date()),
-          spoiler,
+          spoiler
         };
         dispatch(fetchAddReview({ movieData, newReviewData }));
 
@@ -65,7 +87,7 @@ export default function ReviewForm({
             fetchAddReviewData({
               movieId: movieData.id,
               page,
-              filter,
+              filter
             })
           );
         } else {
@@ -73,7 +95,7 @@ export default function ReviewForm({
             fetchFirstReviewData({
               movieId: movieData.id,
               limitPage,
-              filter,
+              filter
             })
           );
         }

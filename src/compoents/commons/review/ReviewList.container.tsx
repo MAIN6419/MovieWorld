@@ -6,7 +6,24 @@ import { useMediaQuery } from "react-responsive";
 import {
   fetchFirstReviewData,
   fetchReviewListPage,
+  reviewSlice,
 } from "../../../slice/reviewSlice";
+import { IVideoData } from '../../../api/movieAPIType';
+import { IReviewData } from '../../../firebase/firebaseAPIType';
+import { DocumentData, OrderByDirection, QuerySnapshot } from 'firebase/firestore';
+import { AnyAction, Dispatch, ThunkDispatch } from '@reduxjs/toolkit';
+
+interface IProps {
+  movieData: IVideoData,
+  reviewData: IReviewData[],
+  page: QuerySnapshot<DocumentData>,
+  hasMore: boolean,
+  filterRef: React.RefObject<HTMLButtonElement>,
+  filter: {target: string, order: OrderByDirection|undefined},
+  dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
+  limitPage: number,
+  modalCardRef: React.RefObject<HTMLDivElement>,
+}
 
 export default function ReviewList({
   movieData,
@@ -16,30 +33,29 @@ export default function ReviewList({
   filterRef,
   filter,
   dispatch,
-  reviewSlice,
   limitPage,
   modalCardRef,
-}) {
+}: IProps) {
   const isSmall = useMediaQuery({ query: "(max-width:501px)" });
   const [isOpenSelect, setIsOpenSelect] = useState(false);
   const [selectValue, setSelectValue] = useState("최신순");
-  const newestFilterRef = useRef(null);
-  const oldestFilterRef = useRef(null);
-  const ratingFilterRef = useRef(null);
+  const newestFilterRef = useRef<HTMLButtonElement>(null);
+  const oldestFilterRef = useRef<HTMLButtonElement>(null);
+  const ratingFilterRef = useRef<HTMLButtonElement>(null);
   const [ref, inview] = useInView();
 
   const onClickSelect = () => {
     setIsOpenSelect(!isOpenSelect);
   };
 
-  const onClickOpction = (e) => {
-    if (e.target.id === "new") {
+  const onClickOpction = (e:React.MouseEvent<HTMLButtonElement>) => {
+    if (e.currentTarget.id === "new") {
       dispatch(
         reviewSlice.actions.changeFilter({ target: "createdAt", order: "desc" })
       );
       setSelectValue("최신순");
       onClickSelect();
-    } else if (e.target.id === "old") {
+    } else if (e.currentTarget.id === "old") {
       dispatch(
         reviewSlice.actions.changeFilter({ target: "createdAt", order: "asc" })
       );
@@ -61,7 +77,7 @@ export default function ReviewList({
     );
     // 필터가 바뀌면 스크롤이 올라가도록 설정
     // 무한스크롤 동작을 위해 inview가 변할 수 있도록 하기 위해서
-    if (modalCardRef.current.scrollTop > 700) {
+    if (modalCardRef.current&&modalCardRef.current.scrollTop > 700) {
       modalCardRef.current.scrollTo({ top: 700 });
     }
   }, [movieData, filter]);

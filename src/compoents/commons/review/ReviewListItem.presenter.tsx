@@ -18,7 +18,7 @@ import {
   Reviewer,
   ReviewerImg,
   ReviewerWrapper,
-  ShowSpoilerBtn,
+  ShowSpoilerBtn
 } from "./reviewListItem.style";
 import { setDateFormate } from "../../../libray/setDateFormate";
 import { sweetConfirm } from "../../../sweetAlert/sweetAlert";
@@ -27,8 +27,39 @@ import {
   ToggleCheckbox,
   ToggleSwitch,
   ToggleSwithTag,
-  ToggleWrapper,
+  ToggleWrapper
 } from "./review.style";
+import { IReviewData, IUserData } from "../../../firebase/firebaseAPIType";
+
+interface IProps {
+  reviewItem: IReviewData;
+  isEdit: boolean;
+  editRating: number;
+  setEditRating: React.Dispatch<React.SetStateAction<number>>;
+  onClickEdit: (e: React.FormEvent) => void;
+  editValue: string;
+  onChangeEditValue: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  editTextCount: number;
+  editSpoiler: boolean;
+  setEditSpoiler: React.Dispatch<React.SetStateAction<boolean>>;
+  onClickCancelEdit: () => void;
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  onClickRemove: () => void;
+  onClickReport: () => void;
+  userData: IUserData;
+  resolveWebp: (img: string, fallbackExt: string) => string;
+  showSpoilerData: boolean;
+  setShowSpoilerData: React.Dispatch<React.SetStateAction<boolean>>;
+  rateRef: React.RefObject<HTMLDivElement>;
+  submitRef: React.RefObject<HTMLButtonElement>;
+  cancelRef: React.RefObject<HTMLButtonElement>;
+  editBtnRef: React.RefObject<HTMLButtonElement>;
+  optKeyboardFocus: (
+    e: React.KeyboardEvent<HTMLElement>,
+    previousTarget: HTMLElement | null,
+    nextTarget?: HTMLElement | null
+  ) => void;
+}
 
 export default function ReviewListItemUI({
   reviewItem,
@@ -53,25 +84,20 @@ export default function ReviewListItemUI({
   submitRef,
   cancelRef,
   editBtnRef,
-  optKeyboardFocus,
-}) {
+  optKeyboardFocus
+}: IProps) {
   return (
     <ReviewItem>
-      <ReviewerWrapper className="reviewerWrapper" isEdit={isEdit}>
+      <ReviewerWrapper className='reviewerWrapper' isEdit={isEdit}>
         {!isEdit && (
           <ReviewerImg
             src={
               reviewItem.reviewerImg ||
-              resolveWebp(
-                
-                "/assets/webp/icon-defaultProfile.webp",
-                "svg"
-              )
+              resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
             }
-            alt="유저 프로필 이미지"
+            alt='유저 프로필 이미지'
             onError={(e) =>
-              (e.target.src = resolveWebp(
-                
+              (e.currentTarget.src = resolveWebp(
                 "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))
@@ -81,7 +107,7 @@ export default function ReviewListItemUI({
         {!isEdit && <Reviewer>{reviewItem.reviewer}</Reviewer>}
         <ReviewItemRateWrapper
           ref={rateRef}
-          tabIndex={isEdit ? "0" : "-1"}
+          tabIndex={isEdit ? 0 : -1}
           onKeyDown={(e) => optKeyboardFocus(e, cancelRef.current)}
         >
           <ReviewItemRate
@@ -94,24 +120,24 @@ export default function ReviewListItemUI({
         {isEdit && (
           <ToggleWrapper>
             <ToggleCheckbox
-              type="checkbox"
-              id="toggle-edit"
-              className="a11y-hidden"
-              tabIndex="-1"
+              type='checkbox'
+              id='toggle-edit'
+              className='a11y-hidden'
+              tabIndex={-1}
               onClick={() => setEditSpoiler(!editSpoiler)}
             />
             <ToggleSwithTag>스포일러 체크</ToggleSwithTag>
             <ToggleSwitch
-              htmlFor="toggle-edit"
-              className="toggleSwitch"
+              htmlFor='toggle-edit'
+              className='toggleSwitch'
               toggle={editSpoiler}
-              tabIndex="0"
+              tabIndex={0}
               onKeyDown={(e) => {
                 if (e.keyCode === 13) setEditSpoiler(!editSpoiler);
               }}
             >
               <ToggleButton
-                className="toggleButton"
+                className='toggleButton'
                 toggle={editSpoiler}
               ></ToggleButton>
             </ToggleSwitch>
@@ -120,23 +146,23 @@ export default function ReviewListItemUI({
       </ReviewerWrapper>
       {isEdit ? (
         <EditTextAreaForm onSubmit={(e) => onClickEdit(e)}>
-          <EditTextAreaLabel className="a11y-hidden">
+          <EditTextAreaLabel className='a11y-hidden'>
             수정 입력창
           </EditTextAreaLabel>
           <EditTextArea
             value={editValue}
             onChange={onChangeEditValue}
-            placeholder="개인정보를 공용 및 요청하거나 명예훼손, 무단 광고, 불법 정보 유포시 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다."
+            placeholder='개인정보를 공용 및 요청하거나 명예훼손, 무단 광고, 불법 정보 유포시 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다.'
           />
           <EditTextAreaBottom>
             <EditTextCount>{editTextCount}/500</EditTextCount>
             <EditBtns>
-              <EditBtn type="submit" ref={submitRef}>
+              <EditBtn type='submit' ref={submitRef}>
                 수정하기
               </EditBtn>
               <EditBtn
-                className="cancel"
-                type="button"
+                className='cancel'
+                type='button'
                 onClick={onClickCancelEdit}
                 ref={cancelRef}
                 onKeyDown={(e) =>
@@ -150,7 +176,11 @@ export default function ReviewListItemUI({
         </EditTextAreaForm>
       ) : (
         <>
-          <ReviewContents inactive={reviewItem.isBlock||(reviewItem.spoiler && !showSpoilerData)}>
+          <ReviewContents
+            inactive={
+              reviewItem.isBlock || (reviewItem.spoiler && !showSpoilerData)
+            }
+          >
             {reviewItem.isBlock
               ? "신고에 의해 블라인드 처리된 리뷰입니다."
               : reviewItem.spoiler
@@ -182,24 +212,28 @@ export default function ReviewListItemUI({
             >
               {setDateFormate(reviewItem.createdAt.seconds * 1000)}
             </ReviewCreatedAt>
-            {userData&&userData.displayName === reviewItem.reviewer ? (
+            {userData && userData.displayName === reviewItem.reviewer ? (
               <>
                 <ReviewItemBtn
-                  type="button"
+                  type='button'
                   onClick={() => {
                     setIsEdit(true);
-                    rateRef.current.firstElementChild.focus();
+                    if(rateRef.current&&rateRef.current.firstElementChild){
+                    (rateRef.current.firstElementChild as HTMLElement).focus();
+                    }
                   }}
                   ref={editBtnRef}
                 >
                   수정
                 </ReviewItemBtn>
-                <ReviewItemBtn type="button" onClick={onClickRemove}>
+                <ReviewItemBtn type='button' onClick={onClickRemove}>
                   삭제
                 </ReviewItemBtn>
               </>
             ) : (
-              !reviewItem.isBlock&&<ReviewItemBtn onClick={onClickReport}>신고</ReviewItemBtn>
+              !reviewItem.isBlock && (
+                <ReviewItemBtn onClick={onClickReport}>신고</ReviewItemBtn>
+              )
             )}
           </ReviewItemBottom>
         </>

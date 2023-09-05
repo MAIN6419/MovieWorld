@@ -1,29 +1,36 @@
 import React, { useRef, useState } from "react";
-import {
-  editReview,
-  removeReview,
-  reviewReport,
-} from "../../../firebase/reviewAPI";
 import ReviewListItemUI from "./ReviewListItem.presenter";
 import { resolveWebp } from "../../../libray/webpSupport";
 import { sweetConfirm, sweetToast } from "../../../sweetAlert/sweetAlert";
-import { optKeyboardFocus } from "../../../libray/optKeyBoard.js";
+import { optKeyboardFocus } from "../../../libray/optKeyBoard";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEditReview, fetchRemoveReview, fetchReportReview } from "../../../slice/reviewSlice";
+import {
+  fetchEditReview,
+  fetchRemoveReview,
+  fetchReportReview
+} from "../../../slice/reviewSlice";
 import { getUser } from "../../../firebase/loginAPI";
 import { mypageSlice } from "../../../slice/mypageSlice";
+import { IReviewData } from "../../../firebase/firebaseAPIType";
+import { AppDispatch, RootState } from "../../../store/store";
+
+interface IProps {
+  reviewData: IReviewData[];
+  reviewItem: IReviewData;
+  movieId: number;
+}
 export default function ReviewListItem({
   reviewData,
   reviewItem,
-  movieId,
-}) {
-  const dispatch = useDispatch();
-  const mypageData = useSelector((state) => state.mypage.data);
-  const userData = useSelector((state) => state.user.data);
-  const rateRef = useRef(null);
-  const submitRef = useRef(null);
-  const cancelRef = useRef(null);
-  const editBtnRef = useRef(null);
+  movieId
+}: IProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const mypageData = useSelector((state: RootState) => state.mypage.data);
+  const userData = useSelector((state: RootState) => state.user.data);
+  const rateRef = useRef<HTMLDivElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const editBtnRef = useRef<HTMLButtonElement>(null);
   const [showSpoilerData, setShowSpoilerData] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editValue, setEditValue] = useState(reviewItem.contents);
@@ -32,7 +39,7 @@ export default function ReviewListItem({
     reviewItem.contents.length
   );
   const [editSpoiler, setEditSpoiler] = useState(reviewItem.spoiler);
-  const onChangeEditValue = (e) => {
+  const onChangeEditValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length === 1 && e.target.value === " ") {
       return;
     }
@@ -47,7 +54,7 @@ export default function ReviewListItem({
     setIsEdit(false);
   };
 
-  const onClickEdit = (e) => {
+  const onClickEdit = (e: React.FormEvent) => {
     e.preventDefault();
     if (
       editValue === reviewItem.contents &&
@@ -63,7 +70,7 @@ export default function ReviewListItem({
         uid: userData.uid,
         rating: editRating,
         contents: editValue,
-        spoiler: editSpoiler,
+        spoiler: editSpoiler
       };
       const newReviewData = reviewData.map((item) => {
         if (item.id === reviewItem.id) {
@@ -73,7 +80,7 @@ export default function ReviewListItem({
             reviewerImg: userData.photoURL,
             rating: editRating,
             contents: editValue,
-            spoiler: editSpoiler,
+            spoiler: editSpoiler
           };
         }
         return item;
@@ -81,7 +88,9 @@ export default function ReviewListItem({
       dispatch(fetchEditReview({ movieId, editData, newReviewData }));
       setIsEdit(false);
       setTimeout(() => {
-        editBtnRef.current.focus();
+        if (editBtnRef.current) {
+          editBtnRef.current.focus();
+        }
       }, 0);
     };
     sweetConfirm("정말 수정하시겠습니까?", "수정", "취소", cb);
@@ -104,7 +113,7 @@ export default function ReviewListItem({
       return;
     }
     const user = await getUser();
-    const isReport = user.reportList.find(id=>id===reviewItem.id);
+    const isReport = user?.reportList.find((id:string) => id === reviewItem.id);
     if (isReport) {
       sweetToast("이미 신고한 리뷰입니다.", "warning");
       return;

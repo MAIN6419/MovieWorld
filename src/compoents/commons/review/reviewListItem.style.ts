@@ -25,7 +25,6 @@ export const ReviewItemRate = styled(Rate)`
     .ant-rate-star:not(:last-child) {
     margin-inline-end: 3px;
   }
-
 `;
 
 export const ReviewItemRateCount = styled.strong`
@@ -38,9 +37,9 @@ export const ReviewerWrapper = styled.div`
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
-  justify-content: ${props=>props.isEdit&&"space-between"};
-  padding: ${props=>props.isEdit&&"5px 0"};
-  
+  justify-content: ${(props: { isEdit: boolean }) =>
+    props.isEdit && "space-between"};
+  padding: ${(props: { isEdit: boolean }) => props.isEdit && "5px 0"};
 `;
 
 export const ReviewerImg = styled.img`
@@ -63,7 +62,8 @@ export const Reviewer = styled.span`
 `;
 
 export const ReviewContents = styled.p`
-  color: ${(props) => (props.inactive ? "rgba(189,189,189)" : "#fff")};
+  color: ${(props: { inactive: boolean }) =>
+    props.inactive ? "rgba(189,189,189)" : "#fff"};
   margin-left: 10px;
   font-size: 16px;
   margin-bottom: 5px;
