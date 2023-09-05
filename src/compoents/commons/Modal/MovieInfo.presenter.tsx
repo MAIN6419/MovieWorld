@@ -28,7 +28,7 @@ import {
   ModalCardWrapper,
   MovieContetnsTag,
   MovieContentsInfoItem,
-  MovieContentsInfo,
+  MovieContentsInfo
 } from "./movieInfo.style";
 import Review from "../review/Review";
 import { optKeyboardFocus } from "../../../libray/optKeyBoard";
@@ -39,6 +39,26 @@ import "swiper/css/scrollbar";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { SwiperSlide } from "swiper/react";
 import ModalTopbutton from "../topButton/ModalTopbutton";
+import {  IVideoData } from "../../../api/movieAPIType";
+
+interface IProps {
+  modalCardWrapperRef: React.RefObject<HTMLDivElement>;
+  modalCardRef: React.RefObject<HTMLDivElement>;
+  isPlay: boolean;
+  setIsPlay: React.Dispatch<React.SetStateAction<boolean>>;
+  islike: boolean;
+  videoUrl: string;
+  videoData: IVideoData;
+  isMedium: boolean;
+  isSmall: boolean;
+  onClickClose: () => void;
+  onClickPlay: (vedio: string) => void;
+  onClickLike: () => void;
+  filterRef: React.RefObject<HTMLButtonElement>;
+  iframeRef: React.RefObject<HTMLIFrameElement>;
+  closeBtnRef: React.RefObject<HTMLButtonElement>;
+  likeBtnRef: React.RefObject<HTMLButtonElement>;
+}
 
 export default function MovieInfoUI({
   modalCardWrapperRef,
@@ -56,22 +76,22 @@ export default function MovieInfoUI({
   filterRef,
   iframeRef,
   closeBtnRef,
-  likeBtnRef,
-}) {
+  likeBtnRef
+}: IProps) {
   return (
     <ModalWrapper>
-      <ModalTitle className="a11y-hidden">영화정보</ModalTitle>
+      <ModalTitle className='a11y-hidden'>영화정보</ModalTitle>
       <ModalDim onClick={onClickClose}></ModalDim>
       <ModalCardWrapper ref={modalCardWrapperRef}>
         <ModalCard
-          className="modalCard"
+          className='modalCard'
           ref={modalCardRef}
-          tabIndex="0"
-          onKeyDown={(e) => {
+          tabIndex={0}
+          onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
             if (e.keyCode === 27) {
               onClickClose();
             }
-            if (e.target.classList.contains("modalCard")) {
+            if ((e.target as HTMLElement).classList.contains("modalCard")) {
               optKeyboardFocus(e, closeBtnRef.current);
             }
           }}
@@ -83,21 +103,25 @@ export default function MovieInfoUI({
                   <Iframe
                     ref={iframeRef}
                     src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1&mute=1&loop=1&playlist=${videoUrl}`}
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
-                    allowfullscreen
+                    title='YouTube video player'
+                    // frameborder={"0"}
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;'
+                    // allowfullscreen
                   />
                 </IframeWrapper>
               </>
             ) : (
               <MovieImg
                 style={
-                  videoData.backdrop_path && {
-                    background: `url(https://image.tmdb.org/t/p/${
-                      isMedium ? "w780" : isSmall ? "w500" : "w1280"
-                    }${videoData.backdrop_path}) no-repeat top center / cover`,
-                  }
+                  videoData.backdrop_path
+                    ? {
+                        background: `url(https://image.tmdb.org/t/p/${
+                          isMedium ? "w780" : isSmall ? "w500" : "w1280"
+                        }${
+                          videoData.backdrop_path
+                        }) no-repeat top center / cover`
+                      }
+                    : {}
                 }
               ></MovieImg>
             )}
@@ -146,10 +170,10 @@ export default function MovieInfoUI({
                 <MovieLike>
                   찜
                   <MovieLikeBtn
-                    type="button"
+                    type='button'
                     onClick={onClickLike}
                     like={islike}
-                    aria-label="찜"
+                    aria-label='찜'
                     onKeyDown={(e) => {
                       optKeyboardFocus(e, closeBtnRef.current);
                     }}
@@ -175,37 +199,37 @@ export default function MovieInfoUI({
                 slidesPerView={4}
                 spaceBetween={10}
                 pagination={{
-                  type: "fraction",
+                  type: "fraction"
                 }}
                 breakpoints={{
                   800: {
                     slidesPerView: 4,
-                    slidesPerGroup: 4,
+                    slidesPerGroup: 4
                   },
                   600: {
                     slidesPerView: 3,
-                    slidesPerGroup: 3,
+                    slidesPerGroup: 3
                   },
                   340: {
                     slidesPerView: 2,
-                    slidesPerGroup: 2,
+                    slidesPerGroup: 2
                   },
                   0: {
                     slidesPerView: 1,
-                    slidesPerGroup: 1,
-                  },
+                    slidesPerGroup: 1
+                  }
                 }}
               >
                 {videoData.videos.results.map((video) => {
                   return (
                     <SwiperSlide key={video.key}>
                       <VideoThumbnailBtn
-                        type="button"
+                        type='button'
                         onClick={() => onClickPlay(video.key)}
                       >
                         <VideoThumbnail
                           src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
-                          alt="영화 관련영상"
+                          alt='영화 관련영상'
                         />
                       </VideoThumbnailBtn>
                     </SwiperSlide>
@@ -223,7 +247,7 @@ export default function MovieInfoUI({
 
           <CloseBtn
             onClick={() => {
-              if (isPlay) {
+              if (isPlay&&modalCardRef.current) {
                 setIsPlay(false);
                 modalCardRef.current.focus();
                 return;
@@ -237,7 +261,7 @@ export default function MovieInfoUI({
                 : optKeyboardFocus(e, filterRef.current, likeBtnRef.current);
             }}
           >
-            <span className="a11y-hidden">닫기</span>
+            <span className='a11y-hidden'>닫기</span>
           </CloseBtn>
         </ModalCard>
         {<ModalTopbutton modalRef={modalCardRef} />}

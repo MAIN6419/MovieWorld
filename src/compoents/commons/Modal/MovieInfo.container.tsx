@@ -9,49 +9,61 @@ import {
   fetchAddLike,
   fetchLikeList,
   fetchRemoveLike,
-  likeSlice,
+  likeSlice
 } from "../../../slice/likeSlice";
-import { fetchVideoData, movieDataSlice } from "../../../slice/movieData.slice";
+import { fetchVideoData, movieDataSlice } from "../../../slice/movieDataslice";
 import { mypageSlice } from "../../../slice/mypageSlice";
+import { IMovieData, IVideoData } from "../../../api/movieAPIType";
+import { AppDispatch, RootState } from "../../../store/store";
+
+interface IProps {
+  movieData: IMovieData | IVideoData;
+  setIsOpenMovieInfo: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export default function MovieInfo({
   movieData,
-  setIsOpenMovieInfo,
-  // 좋아요를 누를 시 mypage 데이터를 수정하기 위해 추가
-}) {
-  const user = useSelector((state) => state.user.data);
-  const mypageData = useSelector((state) => state.mypage.data);
-  const dispatch = useDispatch();
-  const islike = useSelector((state) => state.like.islike);
-  const isExceed = useSelector((state) => state.like.isExceed);
-  const videoData = useSelector((state) => state.movieData.videoData.data);
+  setIsOpenMovieInfo // 좋아요를 누를 시 mypage 데이터를 수정하기 위해 추가
+}: IProps) {
+  const user = useSelector((state: RootState) => state.user.data);
+  const mypageData = useSelector((state: RootState) => state.mypage.data);
+  const dispatch = useDispatch<AppDispatch>();
+  const islike = useSelector((state: RootState) => state.like.islike);
+  const isExceed = useSelector((state: RootState) => state.like.isExceed);
+  const videoData = useSelector(
+    (state: RootState) => state.movieData.videoData.data
+  );
   const [isPlay, setIsPlay] = useState(false);
   const [videoUrl, setVideoUrl] = useState("");
   const isMedium = useMediaQuery({
-    query: "(max-width: 780px)and(min-width:501px)",
+    query: "(max-width: 780px)and(min-width:501px)"
   });
   const isSmall = useMediaQuery({ query: "(max-width: 500px)" });
-  const modalCardRef = useRef(null);
-  const filterRef = useRef(null);
-  const iframeRef = useRef(null);
-  const closeBtnRef = useRef(null);
-  const likeBtnRef = useRef(null);
-  const modalCardWrapperRef = useRef(null);
+  const modalCardRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<HTMLButtonElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const likeBtnRef = useRef<HTMLButtonElement>(null);
+  const modalCardWrapperRef = useRef<HTMLDivElement>(null);
 
   const onClickClose = () => {
-    modalCardWrapperRef.current.style.animation = "fadeOut 0.6s";
+    if (modalCardWrapperRef.current) {
+      modalCardWrapperRef.current.style.animation = "fadeOut 0.6s";
+    }
     setTimeout(() => {
       setIsOpenMovieInfo(false);
       document.body.style.overflow = "auto";
     }, 500);
   };
 
-  const onClickPlay = (vedio) => {
+  const onClickPlay = (vedio: string) => {
     if (!videoData.videos || !videoData.videos.results.length) {
       sweetToast("현재 영상이 존재하지 않습니다!", "warning");
       return;
     }
-    modalCardRef.current.scroll({ top: 0, behavior: "smooth" });
+    if (modalCardRef.current) {
+      modalCardRef.current.scroll({ top: 0, behavior: "smooth" });
+    }
     setVideoUrl(vedio);
     setIsPlay(true);
   };
@@ -74,7 +86,7 @@ export default function MovieInfo({
         const patternAlphabet = /[a-zA-Z]/;
         const patternHangul = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         const orderLevelDesc = [patternNumber, patternAlphabet, patternHangul];
-        const getLevel = (str) => {
+        const getLevel = (str: string) => {
           const index = orderLevelDesc.findIndex((pattern) =>
             pattern.test(str)
           );
@@ -107,7 +119,7 @@ export default function MovieInfo({
 
   useEffect(() => {
     dispatch(movieDataSlice.actions.resetVideoData());
-    dispatch(fetchVideoData(movieData));
+    dispatch(fetchVideoData(movieData as IMovieData));
   }, []);
 
   useLayoutEffect(() => {
@@ -123,7 +135,7 @@ export default function MovieInfo({
 
       window.onpopstate = () => {
         history.go(1);
-        this.handleGoback();
+        history.back();
       };
       window.onpopstate = () => {
         onClickClose();
@@ -132,13 +144,13 @@ export default function MovieInfo({
   }, []);
 
   useEffect(() => {
-    if (isPlay) {
+    if (isPlay && iframeRef.current) {
       iframeRef.current.focus();
     }
   }, [isPlay]);
 
   useEffect(() => {
-    if (videoData.id) modalCardRef.current.focus();
+    if (videoData.id && modalCardRef.current) modalCardRef.current.focus();
   }, [videoData]);
 
   return (
@@ -152,7 +164,6 @@ export default function MovieInfo({
           videoData={videoData}
           islike={islike}
           videoUrl={videoUrl}
-          setVideoUrl={setVideoUrl}
           isMedium={isMedium}
           isSmall={isSmall}
           onClickClose={onClickClose}

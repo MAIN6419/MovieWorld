@@ -233,7 +233,7 @@ export const MovieLikeBtn = styled.button`
     height: 20px;
   }
   transition: all 0.2s;
-  background: ${(props) =>
+  background: ${(props:{ like: boolean }) =>
     props.like
       ? `url(${
           document.body.classList.contains("webp")
