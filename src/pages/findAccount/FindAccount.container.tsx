@@ -2,18 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useValidationInput } from "../../hook/useValidationInput";
 import FindAccountUI from "./FindAccount.presenter";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChangePassowrd, fetchFindEmail, userSlice } from "../../slice/userSlice";
+import {
+  fetchChangePassowrd,
+  fetchFindEmail,
+  userSlice
+} from "../../slice/userSlice";
+import { AppDispatch, RootState } from "../../store/store";
 
 export default function FindAccount() {
-  const dispatch = useDispatch();
-  const findEmailValue = useSelector(state=>state.user.findEmailValue);
-  const findPasswordValue = useSelector(state=>state.user.findPasswordValue);
+  const dispatch = useDispatch<AppDispatch>();
+  const findEmailValue = useSelector(
+    (state: RootState) => state.user.findEmailValue
+  );
+  const findPasswordValue = useSelector(
+    (state: RootState) => state.user.findPasswordValue
+  );
   const [
     displayNameValue,
     displayNameValid,
     onChangeDisplayName,
     setDisplayNameValue,
-    setDisplayNameValid,
+    setDisplayNameValid
   ] = useValidationInput("", "displayName", false);
 
   const [emailValue, emailValid, onChangeEmail, setEmailValue, setEmailValid] =
@@ -45,14 +54,24 @@ export default function FindAccount() {
     setPhoneValid({ errorMsg: "", valid: false });
   };
 
-  const onClickFindEmail = async (e) => {
+  const onClickFindEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(fetchFindEmail({displayNameValue, phoneValue: phoneValue.replace(/-/g, "")}))
+    dispatch(
+      fetchFindEmail({
+        displayNameValue,
+        phoneValue: phoneValue.replace(/-/g, "")
+      })
+    );
   };
 
-  const onClickFindPassword = async (e) => {
+  const onClickFindPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(fetchChangePassowrd({emailValue, phoneValue: phoneValue.replace(/-/g, "")}))
+    dispatch(
+      fetchChangePassowrd({
+        emailValue,
+        phoneValue: phoneValue.replace(/-/g, "")
+      })
+    );
   };
 
   // 전체 input이 유효하다면 버튼 활성화
@@ -72,9 +91,9 @@ export default function FindAccount() {
     }
   }, [displayNameValid, emailValid, phoneValid]);
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(userSlice.actions.resetFindAccountValue());
-  },[])
+  }, []);
 
   return (
     <FindAccountUI

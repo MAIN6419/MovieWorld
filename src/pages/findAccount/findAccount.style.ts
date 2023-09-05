@@ -31,7 +31,7 @@ export const FormMenuLi = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => (props.active ? "#fff" : "#292a2b")};
+  background-color: ${(props: {active: boolean}) => (props.active ? "#fff" : "#292a2b")};
 `;
 export const FormMenuBtn = styled.button`
   width: 100%;
@@ -40,7 +40,7 @@ export const FormMenuBtn = styled.button`
   font-weight: bold;
   border: none;
   background: none;
-  color: ${(props) => (props.active ? "#292a2b" : "#fff")};
+  color: ${(props: {active: boolean}) => (props.active ? "#292a2b" : "#fff")};
   cursor: pointer;
   @media screen and (max-width: 431px) {
     font-size: 16px;

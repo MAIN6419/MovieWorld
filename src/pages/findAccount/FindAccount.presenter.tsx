@@ -9,11 +9,39 @@ import {
   FormMenuLi,
   LoginLink,
   Title,
-  Wrapper,
+  Wrapper
 } from "./findAccount.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 
+interface IProps {
+  findPasswordMenu: boolean;
+  onClickFindEmailMenu: () => void;
+  onClickFindPwMenu: (e: React.MouseEvent) => void;
+  onClickFindPassword: (e: React.FormEvent<HTMLFormElement>) => void;
+  onClickFindEmail: (e: React.FormEvent<HTMLFormElement>) => void;
+  findEmailValue: string | boolean;
+  emailValue: string;
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  emailValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  displayNameValue: string;
+  onChangeDisplayName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  displayNameValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  phoneValue: string;
+  onChangePhone: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  phoneValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  findPasswordValue: boolean;
+  disabled: boolean;
+}
 export default function FindAccountUI({
   findPasswordMenu,
   onClickFindEmailMenu,
@@ -31,16 +59,16 @@ export default function FindAccountUI({
   onChangePhone,
   phoneValid,
   findPasswordValue,
-  disabled,
-}) {
+  disabled
+}: IProps) {
   return (
     <Wrapper>
-      <Title className="a11y-hidden">이메일 비밀번호 찾기</Title>
+      <Title className='a11y-hidden'>이메일 비밀번호 찾기</Title>
       <FormMenu>
         <FormMenuLi active={!findPasswordMenu}>
           <FormMenuBtn
             active={!findPasswordMenu}
-            type="button"
+            type='button'
             onClick={onClickFindEmailMenu}
           >
             이메일 찾기
@@ -49,7 +77,7 @@ export default function FindAccountUI({
         <FormMenuLi active={findPasswordMenu}>
           <FormMenuBtn
             active={findPasswordMenu}
-            type="button"
+            type='button'
             onClick={onClickFindPwMenu}
           >
             비밀번호 찾기
@@ -72,9 +100,9 @@ export default function FindAccountUI({
             {findPasswordMenu ? (
               <>
                 <UserInput
-                  type="text"
+                  type='text'
                   label={"이메일"}
-                  id={"input-email"}
+                  inputId={"input-email"}
                   placeholder={"이메일을 입력해주세요."}
                   value={emailValue}
                   onChange={onChangeEmail}
@@ -113,9 +141,9 @@ export default function FindAccountUI({
           </>
         )}
         {findEmailValue || findPasswordValue ? (
-          <LoginLink to="/login">로그인 하러가기</LoginLink>
+          <LoginLink to='/login'>로그인 하러가기</LoginLink>
         ) : (
-          <FindAccountBtn type="submit" disabled={disabled}>
+          <FindAccountBtn type='submit' disabled={disabled}>
             {findPasswordMenu ? "비밀번호 찾기" : "이메일 찾기"}
           </FindAccountBtn>
         )}
