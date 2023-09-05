@@ -14,10 +14,10 @@ import { useSelector } from "react-redux";
 import Main from "./pages/main/Main";
 import NotFound from "./pages/notFound/NotFound";
 import { detectWebpSupport } from "./libray/webpSupport";
+import { RootState } from './store/store';
 
 function App() {
-  const userData = useSelector((state) => state.user.data);
-
+  const userData = useSelector((state: RootState) => state.user.data);
   // webp 지원유무가 확인 되었을때 컴포넌트를 렌더링 시키위해 사용
   const [webpChecked, setWebpChecked] = useState(false); 
 
