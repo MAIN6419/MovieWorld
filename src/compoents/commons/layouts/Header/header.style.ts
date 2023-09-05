@@ -114,7 +114,8 @@ export const UserMenuSelect = styled.button`
 export const UserMenuSelectIcon = styled.img`
   width: 20px;
   height: 20px;
-  transform: ${(props) => (props.active ? "rotate(-180deg)" : "rotate(0deg)")};
+  transform: ${(props: { active: boolean }) =>
+    props.active ? "rotate(-180deg)" : "rotate(0deg)"};
   transition: all 0.5s;
   @media screen and (max-width: 486px) {
     width: 14px;

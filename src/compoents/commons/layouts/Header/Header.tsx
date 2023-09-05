@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { SyntheticEvent, useRef, useState } from "react";
 import {
   HeaderBar,
   HeaderLink,
@@ -17,7 +17,7 @@ import {
   UserMenuOpection,
   UserMenuOpectionList,
   UserMenuSelect,
-  UserMenuSelectIcon,
+  UserMenuSelectIcon
 } from "./header.style";
 import { useLocation } from "react-router-dom";
 import { resolveWebp } from "../../../../libray/webpSupport";
@@ -25,13 +25,14 @@ import { optKeyboardFocus } from "../../../../libray/optKeyBoard";
 import { sweetConfirm } from "../../../../sweetAlert/sweetAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLogout } from "../../../../slice/userSlice";
+import { AppDispatch, RootState } from "../../../../store/store";
 
 export default function Header() {
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user.data);
+  const dispatch = useDispatch<AppDispatch>();
+  const userData = useSelector((state: RootState) => state.user.data);
   const pathname = useLocation().pathname;
-  const menuItemLinkRef = useRef(null);
-  const menuItemBtnRef = useRef(null);
+  const menuItemLinkRef = useRef<HTMLAnchorElement>(null);
+  const menuItemBtnRef = useRef<HTMLButtonElement>(null);
   const [isUserMenu, setIsUserMenu] = useState(false);
 
   const onClickUserMenu = () => {
@@ -41,47 +42,39 @@ export default function Header() {
   return (
     <HeaderBar>
       <HeaderTitle>
-        <HeaderLogoLink to="/main" onClick={() => setIsUserMenu(false)}>
+        <HeaderLogoLink to='/main' onClick={() => setIsUserMenu(false)}>
           <HeaderLogo
             src={resolveWebp("/assets/webp/icon-logo.webp", "svg")}
-            alt="MovieWorld"
+            alt='MovieWorld'
           />
         </HeaderLogoLink>
       </HeaderTitle>
       <HeaderRight>
-        <HeaderSearchLink to="/search" onClick={() => setIsUserMenu(false)}>
+        <HeaderSearchLink to='/search' onClick={() => setIsUserMenu(false)}>
           <HeaderSearchIcon
-            src={resolveWebp(
-              "/assets/webp/icon-search.webp",
-              "svg"
-            )}
-            alt="검색"
+            src={resolveWebp("/assets/webp/icon-search.webp", "svg")}
+            alt='검색'
           />
         </HeaderSearchLink>
         {userData && userData.displayName && (
           <UserProfileImg
             src={
               userData.photoURL ||
-              resolveWebp(
-                
-                "/assets/webp/icon-defaultProfile.webp",
-                "svg"
-              )
+              resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
             }
-            onError={(e) =>
-              (e.target.src = resolveWebp(
-              
+            onError={(e: SyntheticEvent<HTMLImageElement, Event>) =>
+              ((e.target as HTMLImageElement).src = resolveWebp(
                 "/assets/webp/icon-defaultProfile.webp",
                 "svg"
               ))
             }
-            alt="유저 프로필 이미지"
+            alt='유저 프로필 이미지'
           />
         )}
         <HeaderLinks>
           {userData && userData.displayName ? (
             <UserNicknameWrapper
-              tabIndex="0"
+              tabIndex={0}
               onClick={onClickUserMenu}
               onKeyDown={(e) => {
                 if (e.keyCode === 13 || e.keyCode === 32) {
@@ -91,14 +84,11 @@ export default function Header() {
               }}
             >
               <UserNickname>{userData.displayName} 님</UserNickname>
-              <UserMenuSelect tabIndex="-1">
+              <UserMenuSelect tabIndex={-1}>
                 <UserMenuSelectIcon
-                  src={resolveWebp(
-                    "/assets/webp/icon-downArrow.webp",
-                    "svg"
-                  )}
+                  src={resolveWebp("/assets/webp/icon-downArrow.webp", "svg")}
                   active={isUserMenu}
-                  alt="유저 메뉴 버튼"
+                  alt='유저 메뉴 버튼'
                 />
               </UserMenuSelect>
               {isUserMenu && (
@@ -106,13 +96,13 @@ export default function Header() {
                   <UserMenuOpection>
                     <UserMenuItemLink
                       ref={menuItemLinkRef}
-                      to="/mypage"
+                      to='/mypage'
                       onClick={() => setIsUserMenu(false)}
                       onKeyDown={(e) => {
                         if (e.keyCode === 27) {
                           setIsUserMenu(false);
                         } else if (e.keyCode === 13 || e.keyCode === 32) {
-                          menuItemLinkRef.current.click();
+                          menuItemLinkRef.current?.click();
                         }
                         optKeyboardFocus(
                           e,
@@ -140,7 +130,7 @@ export default function Header() {
                           setIsUserMenu(false);
                         } else if (e.keyCode === 13 || e.keyCode === 32) {
                           e.preventDefault();
-                          menuItemBtnRef.current.click();
+                          menuItemBtnRef.current?.click();
                         }
                         optKeyboardFocus(
                           e,
@@ -159,13 +149,13 @@ export default function Header() {
           ) : (
             <>
               {pathname === "/signup" ? (
-                <HeaderLink to="/login">로그인</HeaderLink>
+                <HeaderLink to='/login'>로그인</HeaderLink>
               ) : pathname === "/login" ? (
-                <HeaderLink to="/signup">회원가입</HeaderLink>
+                <HeaderLink to='/signup'>회원가입</HeaderLink>
               ) : (
                 <>
-                  <HeaderLink to="/login">로그인</HeaderLink>
-                  <HeaderLink to="/signup">회원가입</HeaderLink>
+                  <HeaderLink to='/login'>로그인</HeaderLink>
+                  <HeaderLink to='/signup'>회원가입</HeaderLink>
                 </>
               )}
             </>
