@@ -1,8 +1,13 @@
 import { debounce } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { duplication } from "../firebase/validationAPI";
+import { IUserData } from '../firebase/firebaseAPIType';
 
-export const useValidationInput = (initialValue, type, checkDuplication) => {
+export const useValidationInput = (
+  initialValue: string,
+  type: string,
+  checkDuplication: boolean
+) => {
   const displayNameReg = /^[a-zA-z0-9]{4,10}$/;
   const emailReg = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
@@ -13,7 +18,7 @@ export const useValidationInput = (initialValue, type, checkDuplication) => {
   const [typeInfo, setTypeInfo] = useState({
     errorMsg: "",
     duplicationMsg: "",
-    reg: "",
+    reg: / /
   });
 
   // type에따라 typeInfo 값 설정
@@ -22,35 +27,35 @@ export const useValidationInput = (initialValue, type, checkDuplication) => {
       setTypeInfo({
         errorMsg: "4-10자 영문, 영문+숫자를 입력해주세요.",
         duplicationMsg: "중복된 닉네임입니다.",
-        reg: displayNameReg,
+        reg: displayNameReg
       });
     } else if (type === "email") {
       setTypeInfo({
         errorMsg: "유효한 이메일을 입력해주세요.",
         duplicationMsg: "중복된 이메일입니다.",
-        reg: emailReg,
+        reg: emailReg
       });
     } else if (type === "password") {
       setTypeInfo({
         errorMsg: "8-16자 특수문자, 숫자, 영문을 포함해야합니다.",
         duplicationMsg: "",
-        reg: passwordReg,
+        reg: passwordReg
       });
     } else if (type === "phone") {
       setTypeInfo({
         errorMsg: "유효한 휴대폰 번호를 입력하세요.",
         duplicationMsg: "이미 사용중인 휴대폰 번호 입니다.",
-        reg: phoneReg,
+        reg: phoneReg
       });
     }
   }, []);
 
-  const onChangeValue = (e) => {
+  const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value.trim());
     validation(e.target.value.trim());
   };
 
-  const validation = (value) => {
+  const validation = (value: string) => {
     if (type === "phone" && value.length < 12) {
       setValid({ errorMsg: typeInfo.errorMsg, valid: false });
       return;
@@ -74,11 +79,12 @@ export const useValidationInput = (initialValue, type, checkDuplication) => {
         type
       );
       // 프로필 변경시 기존 자신의 닉네임은 중복검사 제외 하기 위해 사용
-      const user = JSON.parse(localStorage.getItem("user")) || "";
+      const storedUser = localStorage.getItem("user");
+      const user: IUserData = storedUser ? JSON.parse(storedUser) : "";
       if (isDulplcation && user?.displayName !== value) {
         setValid({
           errorMsg: typeInfo.duplicationMsg,
-          valid: false,
+          valid: false
         });
       } else {
         setValid({ errorMsg: "", valid: true });
@@ -87,5 +93,5 @@ export const useValidationInput = (initialValue, type, checkDuplication) => {
     [typeInfo]
   );
 
-  return [value, valid, onChangeValue, setValue, setValid];
+  return [value, valid, onChangeValue, setValue, setValid] as const;
 };
