@@ -58,7 +58,11 @@
 ### 📆 개발기간
 **개발완료: 2023.07.05 ~ 2023.08.07**
 
-**오류, 수정사항 수정 및 Redux 적용 : 2023. 08.07 ~ 2023. 08.15**
+**프로젝트 개발 이후에도 새로 학습한 내용을 프로젝트에 적용하였습니다.**
+
+**오류, 수정사항 수정 및 Redux 적용 : 2023.08.07 ~ 2023.08.15**
+
+**TypeScript 적용 : 2023.09.02 ~ 2023.09.03**
 
 🔗[Redux-toolkit Slice, Store 구성 및 설명](https://github.com/MAIN6419/MovieWorld/wiki/Redux-Slice-Store-%EC%BD%94%EB%93%9C-%EB%B0%8F-%EC%84%A4%EB%AA%85)
 
@@ -67,7 +71,7 @@
 ### ⚙ 개발환경
 |프론트엔드|벡엔드|디자인|배포, 관리|
 |---|---|---|---|
-|<img alt="Html" src ="https://img.shields.io/badge/HTML5-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/> <img alt="CSS" src ="https://img.shields.io/badge/CSS3-1572B6.svg?&style=for-the-badge&logo=CSS3&logoColor=white"/> <img alt="JavaScript" src ="https://img.shields.io/badge/JavaScriipt-F7DF1E.svg?&style=for-the-badge&logo=JavaScript&logoColor=black"/> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/styled-components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=pink"> <img src="https://img.shields.io/badge/redux-toolkit-764ABC?style=for-the-badge&logo=redux&logoColor=fff">|<img src ="https://img.shields.io/badge/theMovieDB-01B4E4.svg?&style=for-the-badge&logo=themoviedatabase&logoColor=black"/> <img src ="https://img.shields.io/badge/firebase-FFCA28.svg?&style=for-the-badge&logo=firebase&logoColor=black"/>|<img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" width=120>|<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">|
+|<img alt="Html" src ="https://img.shields.io/badge/HTML5-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/> <img alt="CSS" src ="https://img.shields.io/badge/CSS3-1572B6.svg?&style=for-the-badge&logo=CSS3&logoColor=white"/> <img alt="JavaScript" src ="https://img.shields.io/badge/JavaScript-F7DF1E.svg?&style=for-the-badge&logo=JavaScript&logoColor=black"/> <img alt="TypeScript" src ="https://img.shields.io/badge/TypeScript-3178C6.svg?&style=for-the-badge&logo=TypeScript&logoColor=white"/> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/styled-components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=pink"> <img src="https://img.shields.io/badge/redux-toolkit-764ABC?style=for-the-badge&logo=redux&logoColor=fff">|<img src ="https://img.shields.io/badge/theMovieDB-01B4E4.svg?&style=for-the-badge&logo=themoviedatabase&logoColor=black"/> <img src ="https://img.shields.io/badge/firebase-FFCA28.svg?&style=for-the-badge&logo=firebase&logoColor=black"/>|<img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" width=120>|<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">|
 <br>
 
 ### 🔩 벡엔드 구성
@@ -81,7 +85,7 @@
 |axios|서버 통신|
 |browser-image-compression|이미지 압축|
 |history|모바일 뒤로가기 구현|
-|lodash|debouncing, throttling 구현|
+|lodash|debouncing, throttling 사용|
 |react-rotuer-dom|라우팅 구현|
 |react-intersetion-observer|무한 스크롤 구현|
 |react-responsive|반응형 구현|
@@ -584,8 +588,6 @@ export default function MypageMenu() {
   const limitPage = 20;
   const [ref, inview] = useInView();
   const [menu, setMenu] = useState("like");
-  // 초기 렌더링 시 Blank 컴포넌트가 잠깐 나오는 현상을 방지하기 위해 사용
-  // isLoading으로 처리하려 했지만 로딩시간이 짧을 경우 깜빡거림 현상으로 인해 UX적으로 안좋아 이 방식 사용
   const [notData, setNotData] = useState(true);
   const isMoblie = useMediaQuery({ query: "(max-width:486px)" });
 
@@ -725,7 +727,7 @@ export const imgCompression = async (file) => {
 #### ③ 점진적 로딩 기법 및 lazy-loading를 통한 이미지 최적화
 - **점진적 로딩 기법**를 통해 이미지가 로딩될 때 원본 이미지 대신 저화질의 이미지를 보여줌으로써 UX를 향상 시켰습니다.
 - **react-intersection-observer** 라이브러리를 이용하여 **lazy-loading**를 구현하였습니다.
-- 이를 통해 이미지가 화면에서 나타날 때 이미지를 불러올 수 있도록 설정하여 로딩시간을 단축 시킬수 있습니다.
+- 이를 통해 이미지가 화면에서 나타날 때 이미지를 불러올 수 있도록 설정하여 로딩시간을 단축 시킬 수 있습니다.
 - 이 두 가지 기법을 이미지에 적용하기 위해 ProgressiveImg 컴포넌트를 만들고, 이미지에 적용시켜 주었습니다.
 
 - ProgressvieImg Props
@@ -783,25 +785,25 @@ export default function ProgressiveImg({
 #### ④ 최신 이미지 형식 Webp 적용
 - WebP 이미지는 JPEG나 PNG에 비해 압축률이 높고, 더 작은 파일 크기를 가지며, 높은 품질을 제공하는 이미지 형식입니다.
 - Webp 이미지 형식은 구 브라우저는 지원하지 않기 때문에 점진적 향상 기법을 이용하여 다르게 처리해 주었습니다.
-- Webp 이미지가 지원이 된다면 body 태그에 webp라는 className를 추가해주었습니다.
-- body className를 통해 이미지 형식이 다르게 적용되도록 처리하였습니다.
+- Webp 이미지가 지원이 된다면 body 태그에 webp classList를 추가해주고, Webp 이미지가 지원되지 않는다면 no-webp classList를 추가해 주었습니다.
+- body classList를 통해 이미지 형식이 다르게 적용되도록 처리하였습니다.
 - 구 브라우저에서는 svg 이미지 형식이 적용되도록 처리하였습니다.
 - Webp가 지원되는 브라우저에서너 Webp 이미지가 적용되도록 처리하였습니다.
 - detectWebpSupport, resolveWebp 함수를 만들어 이를 적용시켜 주었습니다.
  
 - detectWebpSupport
-  - webpdata에 1x1 픽셀 크기의 WebP 형식의 이미지 데이터를 base64로 인코딩한 문자열을 할당합니다.
+  - webpdata에 1x1 픽셀 크기의 Webp 형식의 이미지 데이터를 base64로 인코딩한 문자열을 할당합니다.
   - 이미지 로딩이 성공적으로 완료되거나 에러가 발생했을 때 callback 함수가 실행됩니다.
   - webp 이미지가 로딩 되고, webp이미지 지원여부 확인을 기다리기 위해 Promise를 이용해 비동기 처리를 해주었습니다.
-  - image.src에 webpdata를 할당하여, 생성한 빈 이미지 객체가 해당 WebP 이미지를 로딩하도록 합니다.
-  - callback 함수에서는 event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별합니다.
-  - 브라우저가 WebP 이미지를 지원하는 경우 document.body 요소의 classList에 "webp"를 추가합니다.
+  - image.src에 webpdata를 할당하여, 생성한 빈 이미지 객체가 해당 Webp 이미지를 로딩하도록 합니다.
+  - callback 함수에서는 event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 Webp 이미지를 지원하는지 여부를 판별합니다.
+  - 브라우저가 Webp 이미지를 지원하는 경우 document.body 요소의 classList에 "webp"를 추가합니다.
   - 지원하지 않는 브라우저라면 document.body 요소의 classList에 "no-webp"를 추가합니다.
  
 - resolveWebp
    - webpSupported: webp지원 유무, img : Webp 이미지 경로, fallbackExt : Webp 이미지 형식 대신 사용할 이미지 형식
    - ext에 이미지 형식을 저장합니다.
-   - webpSupported가 false인 경우, ext이 webp인 경우에 webp이미지 경로 대신 webp 대신 사용할 이미지 형식 경로를 반환합니다.
+   - webpSupported가 false인 경우, ext이 webp인 경우에 webp 이미지 경로 대신 webp 대신 사용할 이미지 형식 경로를 반환합니다.
    - replace 메서드를 이용해서 이미지경로를 수정합니다. /webp 제거 후, .webp를 대체할 이미지 형식으로 교체합니다.
    - 현재 프로젝트에서 사용 중인 이미지 경로 예시 : img/assets/webp/webpImg.webp => img/assets/svgImg.svg
 
@@ -818,10 +820,8 @@ export default function ProgressiveImg({
       // event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별
       const result = event?.type === "load" && image.width === 1;
       if (result) {
-        document.body.classList.add("webp");
         resolve(true); // WebP 지원됨
       } else {
-        document.body.classList.add("no-webp");
         resolve(false); // WebP 지원되지 않음
       }
     };
