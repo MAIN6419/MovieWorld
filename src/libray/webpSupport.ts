@@ -6,7 +6,10 @@ export async function detectWebpSupport() {
     const webpdata =
       "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=";
 
-    const callback = (event) => {
+    const callback = (event: Event | string) => {
+      if(typeof event === 'string'){
+        return console.error(event);
+      }
       // event.type이 "load"인 경우와 이미지의 너비(image.width)가 1 픽셀인 경우를 검사하여 브라우저가 WebP 이미지를 지원하는지 여부를 판별
       const result = event?.type === "load" && image.width === 1;
       if (result) {
@@ -22,7 +25,7 @@ export async function detectWebpSupport() {
   });
 }
 // webpSupported: webp 지원 유무, img: webp 이미지 경로, fallbackExt: webp 이미지 대체 이미지 형식
-export const resolveWebp = (img, fallbackExt) => {
+export const resolveWebp = (img:string, fallbackExt:string) => {
   const webpSupported = document.body.classList.contains("webp");
   // 이미지 포맷
   const ext = img.split(".").pop();

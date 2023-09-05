@@ -1,6 +1,6 @@
 import imageCompression from "browser-image-compression"
 
-export const imgCompression = async (file) => {
+export const imgCompression = async (file:File) => {
   try{
     const options = {
         maxSizeMB: 10, // 이미지 최대 용량

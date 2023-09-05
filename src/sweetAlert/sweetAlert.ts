@@ -1,7 +1,11 @@
-import Swal from "sweetalert2";
+import Swal, { SweetAlertIcon } from "sweetalert2";
 import "./sweetAlert.css";
-import 'sweetalert2/dist/sweetalert2.min.css';
-export const sweetToast = (title, icon = null, timer = 2000) => {
+import "sweetalert2/dist/sweetalert2.min.css";
+export const sweetToast = (
+  title: string,
+  icon?: SweetAlertIcon,
+  timer = 2000
+) => {
   return Swal.fire({
     toast: true,
     title,
@@ -13,19 +17,18 @@ export const sweetToast = (title, icon = null, timer = 2000) => {
 };
 
 export const sweetConfirm = (
-  title,
-  confirmButtonText,
-  cancelButtonText,
-  cb
+  title: string,
+  confirmButtonText: string,
+  cancelButtonText:string,
+  cb:()=>void
 ) => {
   return Swal.fire({
     title,
-    showCloseButton: true,
+    showCloseButton: false,
     showCancelButton: true,
     focusConfirm: true,
     confirmButtonText,
-    cancelButtonText,
-    showCloseButton: false,
+    cancelButtonText
   }).then(({ isConfirmed }) => {
     if (isConfirmed) {
       cb();
