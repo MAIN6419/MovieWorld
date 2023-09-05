@@ -6,6 +6,16 @@ import { imgCompression } from "../../libray/imagCompression";
 import { sweetToast } from "../../sweetAlert/sweetAlert";
 import { useDispatch } from "react-redux";
 import { fetchSignup } from "../../slice/signupSlice";
+import { AppDispatch } from '../../store/store';
+
+interface IProps {
+  emailValue: string,
+  passwordValue: string,
+  phoneValue: string,
+  setProfile: React.Dispatch<React.SetStateAction<boolean>>,
+  setPercentage: React.Dispatch<React.SetStateAction<string>>,
+  setNext: React.Dispatch<React.SetStateAction<boolean>>,
+}
 
 export default function ProfileSetting({
   emailValue,
@@ -14,21 +24,20 @@ export default function ProfileSetting({
   setProfile,
   setPercentage,
   setNext,
-  isLoading,
-}) {
-  const dispatch = useDispatch();
+}: IProps) {
+  const dispatch = useDispatch<AppDispatch>();
 
-  const imgInputRef = useRef();
+  const imgInputRef = useRef<HTMLInputElement>(null);
   // 회원가입 버튼 활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
   const [previewImg, setPreviewImg] = useState(
     resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
   );
-  const [uploadImg, setUploadImg] = useState("");
+  const [uploadImg, setUploadImg] = useState<File | "">("");
   const [displayNameValue, displayNameValid, onChangeDislayName] =
     useValidationInput("", "displayName", true);
 
-  const imgValidation = (file) => {
+  const imgValidation = (file: File) => {
     // 파일 확인
     if (!file) {
       return false;
@@ -57,11 +66,12 @@ export default function ProfileSetting({
     return true;
   };
 
-  const onChangeImg = async (e) => {
+  const onChangeImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(!e.target.files) return;
     const file = e.target.files[0];
     const isValid = imgValidation(file);
     if (!isValid) return;
-    const { compressedFile, preview } = await imgCompression(file);
+    const { compressedFile, preview } = await imgCompression(file) as { compressedFile: File; preview: string; };
     setPreviewImg(preview);
     setUploadImg(compressedFile);
   };
@@ -71,7 +81,7 @@ export default function ProfileSetting({
     setUploadImg("");
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
       fetchSignup({

@@ -11,11 +11,29 @@ import {
   ProfileImgResetBtn,
   ProfileImgWrapper,
   SignupBtn,
-  SignupForm,
+  SignupForm
 } from "./signup.style";
 import UserInput from "../../compoents/commons/userInput/UserInput";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
-import Loading from "../../compoents/commons/loading/Loading";
+
+interface IProps {
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  imgInputRef: React.RefObject<HTMLInputElement>;
+  onChangeImg: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  previewImg: string;
+  onClickImgReset: () => void;
+  displayNameValue: string;
+  onChangeDislayName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  displayNameValid: {
+    errorMsg: string;
+    valid: boolean;
+  };
+  disabled: boolean;
+  setProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  setPercentage: React.Dispatch<React.SetStateAction<string>>;
+  setNext: React.Dispatch<React.SetStateAction<boolean>>;
+  resolveWebp:(img: string, fallbackExt: string) => string;
+}
 
 export default function ProfileSettingUI({
   handleSubmit,
@@ -30,34 +48,36 @@ export default function ProfileSettingUI({
   setProfile,
   setPercentage,
   setNext,
-  resolveWebp,
-
-}) {
+  resolveWebp
+}: IProps) {
   return (
     <SignupForm onSubmit={handleSubmit}>
       <ProfileImgWrapper>
-        <ProfileImgLabel className="a11y-hidden">이미지</ProfileImgLabel>
+        <ProfileImgLabel className='a11y-hidden'>이미지</ProfileImgLabel>
         <ProfileImgInput
-          type="file"
+          type='file'
           ref={imgInputRef}
-          className="a11y-hidden"
+          className='a11y-hidden'
           onChange={onChangeImg}
-          accept="image/jpg,image/jpeg, image/png, image/bmp, image/tif, image/heic"
+          accept='image/jpg,image/jpeg, image/png, image/bmp, image/tif, image/heic'
         />
         <ProfileImgButton
-          type="button"
-          onClick={() => imgInputRef.current.click()}
+          type='button'
+          onClick={() => imgInputRef.current&&imgInputRef.current.click()}
         >
           <ProfileImg
             src={previewImg}
-            alt="유저 프로필 이미지"
-            onError={(e) =>
-              e.target.value = resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
+            alt='유저 프로필 이미지'
+            onError={(e: any) =>
+              (e.target.value = resolveWebp(
+                "/assets/webp/icon-defaultProfile.webp",
+                "svg"
+              ))
             }
           />
         </ProfileImgButton>
-        <ProfileImgResetBtn type="button" onClick={onClickImgReset}>
-          <span className="a11y-hidden">초기화</span>
+        <ProfileImgResetBtn type='button' onClick={onClickImgReset}>
+          <span className='a11y-hidden'>초기화</span>
         </ProfileImgResetBtn>
         <ProfileImgDescList>
           <ProfileImgDesc>
@@ -73,9 +93,9 @@ export default function ProfileSettingUI({
       </ProfileImgWrapper>
       <InputWrapper>
         <UserInput
-          type="text"
+          type='text'
           label={"닉네임"}
-          id={"input-nickname"}
+          inputId={"input-nickname"}
           placeholder={"4-10자 영문, 영문 + 숫자"}
           value={displayNameValue}
           onChange={onChangeDislayName}
@@ -87,12 +107,12 @@ export default function ProfileSettingUI({
         )}
       </InputWrapper>
 
-      <SignupBtn type="submit" disabled={disabled}>
+      <SignupBtn type='submit' disabled={disabled}>
         회원가입
       </SignupBtn>
       <PrevBtn
-        className="prev"
-        type="button"
+        className='prev'
+        type='button'
         onClick={() => {
           setProfile(false);
           setPercentage("50%");
