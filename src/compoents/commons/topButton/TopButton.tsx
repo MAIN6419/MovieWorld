@@ -3,7 +3,7 @@ import { Btn } from "./topButton.style";
 
 export default function TopButton() {
   const [isShow, setIsShow] = useState(false);
-  const topBtnRef = useRef(null);
+  const topBtnRef = useRef<HTMLButtonElement>(null);
 
   const scrollToTop = () => {
     window.scroll({
