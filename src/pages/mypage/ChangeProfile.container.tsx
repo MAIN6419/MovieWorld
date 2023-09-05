@@ -10,29 +10,38 @@ import { sweetToast } from "../../sweetAlert/sweetAlert";
 import { useDispatch } from "react-redux";
 import { fetchChangeProfile, userSlice } from "../../slice/userSlice";
 import { mypageSlice } from "../../slice/mypageSlice";
+import { IUserData } from "../../firebase/firebaseAPIType";
+import { AppDispatch } from '../../store/store';
 
-export default function ChangeProfile({
-  user,
-  setIsProfileEdit,
-}) {
-  const dispatch = useDispatch();
+interface IProps {
+  user: IUserData;
+  setIsProfileEdit: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function ChangeProfile({ user, setIsProfileEdit }: IProps) {
+  const dispatch = useDispatch<AppDispatch>();
   const isMoblie = useMediaQuery({
-    query: "(max-width:486px)",
+    query: "(max-width:486px)"
   });
-  const imgInputRef = useRef(null);
-  const imgBtnRef = useRef(null);
-  const submitBtnRef = useRef(null);
-  const cancelBtnRef = useRef(null);
+  const imgInputRef = useRef<HTMLInputElement>(null);
+  const imgBtnRef = useRef<HTMLButtonElement>(null);
+  const submitBtnRef = useRef<HTMLButtonElement>(null);
+  const cancelBtnRef = useRef<HTMLButtonElement>(null);
   const [previewImg, setPreviewImg] = useState(user.photoURL);
-  const [uploadImg, setUploadImg] = useState("");
-  const [displayNameValue, displayNameValid, onChnageDisplayName, setDisplayNameValue, setDisplayNameValid] =
-    useValidationInput(user.displayName, "displayName", true);
+  const [uploadImg, setUploadImg] = useState<File | "">("");
+  const [
+    displayNameValue,
+    displayNameValid,
+    onChnageDisplayName,
+    ,
+    setDisplayNameValid
+  ] = useValidationInput(user.displayName, "displayName", true);
 
   const onClickChangeImg = () => {
-    imgInputRef.current.click();
+    imgInputRef.current && imgInputRef.current.click();
   };
 
-  const imgValidation = (file) => {
+  const imgValidation = (file: File) => {
     // 파일 확인
     if (!file) {
       return false;
@@ -61,11 +70,15 @@ export default function ChangeProfile({
     return true;
   };
 
-  const onChangeImg = async (e) => {
+  const onChangeImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
     const file = e.target.files[0];
     const isValid = imgValidation(file);
     if (!isValid) return;
-    const { compressedFile, preview } = await imgCompression(file);
+    const { compressedFile, preview } = (await imgCompression(file)) as {
+      compressedFile: File;
+      preview: string;
+    };
     setPreviewImg(preview);
     setUploadImg(compressedFile);
   };
@@ -83,9 +96,9 @@ export default function ChangeProfile({
     }
     dispatch(mypageSlice.actions.setIsLoading(true));
     onClickCancel();
-    await dispatch(fetchChangeProfile({uploadImg, displayNameValue}))
+    await dispatch(fetchChangeProfile({ uploadImg, displayNameValue }));
     dispatch(mypageSlice.actions.setIsLoading(false));
-    dispatch(userSlice.actions.refreshUser())
+    dispatch(userSlice.actions.refreshUser());
   };
 
   useEffect(() => {
@@ -94,7 +107,7 @@ export default function ChangeProfile({
 
       window.onpopstate = () => {
         history.go(1);
-        this.handleGoback();
+        history.back();
       };
       window.onpopstate = () => {
         onClickCancel();
@@ -103,8 +116,8 @@ export default function ChangeProfile({
   }, []);
 
   useEffect(() => {
-    imgBtnRef.current.focus();
-    setDisplayNameValid({errorMsg:"", valid: true})
+    imgBtnRef.current&&imgBtnRef.current.focus();
+    setDisplayNameValid({ errorMsg: "", valid: true });
   }, []);
   return (
     <ChangeProfileUI

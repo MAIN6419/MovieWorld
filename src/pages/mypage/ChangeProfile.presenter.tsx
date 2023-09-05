@@ -15,11 +15,28 @@ import {
   ProfileForm,
   ProfileImg,
   ProfileImgWrapper,
-  Title,
+  Title
 } from "./changeProfile.style";
 import ErrorMsg from "../../compoents/commons/errorMsg/ErrorMsg";
 import { optKeyboardFocus } from "../../libray/optKeyBoard";
+import { SweetAlertResult } from "sweetalert2";
 
+interface IProps {
+  onClickCancel: () => void;
+  imgInputRef: React.RefObject<HTMLInputElement>;
+  imgBtnRef: React.RefObject<HTMLButtonElement>;
+  submitBtnRef: React.RefObject<HTMLButtonElement>;
+  cancelBtnRef: React.RefObject<HTMLButtonElement>;
+  onChangeImg: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  previewImg: string;
+  onClickChangeImg: () => void;
+  displayNameValue: string;
+  onChnageDisplayName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  displayNameValid: { errorMsg: string; valid: boolean };
+  isMoblie: boolean;
+  onClickSubmit: () => Promise<SweetAlertResult<any> | undefined>;
+  resolveWebp: (img: string, fallbackExt: string) => string;
+}
 export default function ChangeProfileUI({
   onClickCancel,
   imgInputRef,
@@ -34,12 +51,12 @@ export default function ChangeProfileUI({
   displayNameValid,
   isMoblie,
   onClickSubmit,
-  resolveWebp,
-}) {
+  resolveWebp
+}: IProps) {
   return (
     <ModalWrapper>
       <Dim onClick={onClickCancel}>
-        <span className="a11y-hidden">dim</span>
+        <span className='a11y-hidden'>dim</span>
       </Dim>
       <ModalCard
         onKeyDown={(e) => {
@@ -51,27 +68,22 @@ export default function ChangeProfileUI({
         <Title>프로필 수정</Title>
         <ProfileForm>
           <ProfileImgWrapper>
-            <ImgInput type="file" ref={imgInputRef} onChange={onChangeImg} />
+            <ImgInput type='file' ref={imgInputRef} onChange={onChangeImg} />
             <ProfileImg
               src={
                 previewImg ||
-                resolveWebp(
-                  
-                  "/assets/webp/icon-defaultProfile.webp",
-                  "svg"
-                )
+                resolveWebp("/assets/webp/icon-defaultProfile.webp", "svg")
               }
-              onError={(e) =>
+              onError={(e: any) =>
                 (e.target.src = resolveWebp(
-                  
                   "/assets/webp/icon-defaultProfile.webp",
                   "svg"
                 ))
               }
-              alt="프로필 이미지"
+              alt='프로필 이미지'
             />
             <ChangeImgBtn
-              type="button"
+              type='button'
               onClick={onClickChangeImg}
               ref={imgBtnRef}
               onKeyDown={(e) => {
@@ -84,7 +96,7 @@ export default function ChangeProfileUI({
           <DisplayNameWrapper>
             <DisplayNameLabel>닉네임</DisplayNameLabel>
             <DisplayNameInput
-              type="text"
+              type='text'
               value={displayNameValue}
               onChange={onChnageDisplayName}
             />
@@ -112,14 +124,14 @@ export default function ChangeProfileUI({
         </ProfileForm>
         <ProfileEditBtns>
           <ProfileEditBtn
-            type="button"
+            type='button'
             onClick={onClickSubmit}
             ref={submitBtnRef}
           >
             확인
           </ProfileEditBtn>
           <ProfileEditBtn
-            type="button"
+            type='button'
             onClick={onClickCancel}
             ref={cancelBtnRef}
             onKeyDown={(e) => {
