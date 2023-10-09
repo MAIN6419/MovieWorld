@@ -7,7 +7,7 @@
 #### 배포 URL :  🎞 [MovieWorld](https://movieworlds.site)
 
 ## 🙋‍♂️ 프로젝트 소개
-![thumbnail](https://github.com/MAIN6419/MovieWorld/assets/113427991/bbd6d268-71d5-4be6-9d89-dc4f5af989b9)
+![thumbnail](https://github.com/NamJongtae/MovieWorld/assets/113427991/bbd6d268-71d5-4be6-9d89-dc4f5af989b9)
 
 - **MovieWorld**는 다양한 영화 정보를 제공하고 리뷰할 수 있는 사이트 입니다.
 - 로그인 없이 다양한 영화 정보를 무료로 제공받아 볼 수 있습니다.
@@ -64,7 +64,7 @@
 
 **TypeScript 적용 : 2023.09.02 ~ 2023.09.03**
 
-🔗[Redux-toolkit Slice, Store 구성 및 설명](https://github.com/MAIN6419/MovieWorld/wiki/Redux-Slice-Store-%EC%BD%94%EB%93%9C-%EB%B0%8F-%EC%84%A4%EB%AA%85)
+🔗[Redux-toolkit Slice, Store 구성 및 설명](https://github.com/NamJongtae/MovieWorld/wiki/Redux-Slice-Store-%EC%BD%94%EB%93%9C-%EB%B0%8F-%EC%84%A4%EB%AA%85)
 
 <br>
 
@@ -98,17 +98,17 @@
 <br>
 
 ### 🛠 프로젝트 관리
-- <a href="https://github.com/MAIN6419/MovieWorld/issues">GitHub Issue</a>
+- <a href="https://github.com/NamJongtae/MovieWorld/issues">GitHub Issue</a>
   - 빠른 issue 생성을 위해 issue 템플릿을 만들어 사용하였습니다.
   - issue label을 생성하여 어떤 작업을 히는지 구분하였습니다.
   - issue를 통해 구현할 내용과 체크리스트를 만들어 어떤 작업을 할지 리스트 만들어 관리하였습니다.
   
-![issue](https://github.com/MAIN6419/MovieWorld/assets/113427991/a6eac61d-9a1a-4472-8169-a81c4084c6dd)
+![issue](https://github.com/NamJongtae/MovieWorld/assets/113427991/a6eac61d-9a1a-4472-8169-a81c4084c6dd)
 
-- <a href="https://github.com/users/MAIN6419/projects/3/views/1?layout=board">GitHub Project</a>
+- <a href="https://github.com/users/NamJongtae/projects/3/views/1?layout=board">GitHub Project</a>
   - 프로젝트 보드의 이슈 목록을 통해 개발 과정과 진행 상황을 한 눈에 알아 볼 수 있었습니다.
   
-![project](https://github.com/MAIN6419/MovieWorld/assets/113427991/9f346e43-c02f-4b1a-b2b0-38bbb6e93a63)
+![project](https://github.com/NamJongtae/MovieWorld/assets/113427991/9f346e43-c02f-4b1a-b2b0-38bbb6e93a63)
 
 ### 📃 GitHub 컨벤션
 어떤 작업을 했는지 파악하기 위해 컨벤션을 정하여 commit과 isuue를 관리하였습니다.
@@ -135,28 +135,28 @@
 
 
 ### 📍 구현 기능 미리보기 ( 제목 클릭 시 해당 기능 상세설명으로 이동됩니다. )
-|[🔗시작 화면](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#splash-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗로그인](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗소셜 로그인](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)|
+|[🔗시작 화면](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#splash-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗로그인](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗소셜 로그인](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---|---|
-|![splash](https://github.com/MAIN6419/MovieWorld/assets/113427991/f76eb405-15c2-492b-a4a1-18026542ada0)|![로그인](https://github.com/MAIN6419/MovieWorld/assets/113427991/29100817-5dfb-4c80-8864-b9c5fc205d94)|![소셜로그인](https://github.com/MAIN6419/MovieWorld/assets/113427991/49532fab-92ff-4a90-b888-eecabec9328c)|
+|![splash](https://github.com/NamJongtae/MovieWorld/assets/113427991/f76eb405-15c2-492b-a4a1-18026542ada0)|![로그인](https://github.com/NamJongtae/MovieWorld/assets/113427991/29100817-5dfb-4c80-8864-b9c5fc205d94)|![소셜로그인](https://github.com/NamJongtae/MovieWorld/assets/113427991/49532fab-92ff-4a90-b888-eecabec9328c)|
 
-|[🔗메인 페이지](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗영화정보-리뷰(작성,수정,삭제,신고)](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗영화정보-찜, 관련영상](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|
+|[🔗메인 페이지](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗영화정보-리뷰(작성,수정,삭제,신고)](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗영화정보-찜, 관련영상](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|
 |:---:|:---:|:---:|
-|![메인페이지](https://github.com/MAIN6419/MovieWorld/assets/113427991/f0a290a2-2747-466a-bc88-aad4bab06e7d)|![영화정보-리뷰(작성,수정,삭제,신고)](https://github.com/MAIN6419/MovieWorld/assets/113427991/d34bff8b-264e-45bc-a5b7-61ad4ff302b5)|![영화정보-찜,관련영상](https://github.com/MAIN6419/MovieWorld/assets/113427991/85e8329e-d2b9-4035-8ab2-ad811129888d)|
+|![메인페이지](https://github.com/NamJongtae/MovieWorld/assets/113427991/f0a290a2-2747-466a-bc88-aad4bab06e7d)|![영화정보-리뷰(작성,수정,삭제,신고)](https://github.com/NamJongtae/MovieWorld/assets/113427991/d34bff8b-264e-45bc-a5b7-61ad4ff302b5)|![영화정보-찜,관련영상](https://github.com/NamJongtae/MovieWorld/assets/113427991/85e8329e-d2b9-4035-8ab2-ad811129888d)|
 
 
-|[🔗영화정보-스포일러, 필터](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗마이페이지-찜 목록](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-리뷰 목록](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|
+|[🔗영화정보-스포일러, 필터](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EC%98%81%ED%99%94%EC%A0%95%EB%B3%B4-%EB%AA%A8%EB%8B%AC%EC%B0%BD)|[🔗마이페이지-찜 목록](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-리뷰 목록](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---|---|
-|![영화정보-스포일러,필터](https://github.com/MAIN6419/MovieWorld/assets/113427991/92a112c9-e7f9-49c5-a694-f37279f6c18f)|![검색페이지](https://github.com/MAIN6419/MovieWorld/assets/113427991/53cfc978-b692-4423-b519-596fb2d24154)|![마이페이지-찜](https://github.com/MAIN6419/MovieWorld/assets/113427991/6618aaa4-33eb-490f-aad3-4ff61804cfdf)|
+|![영화정보-스포일러,필터](https://github.com/NamJongtae/MovieWorld/assets/113427991/92a112c9-e7f9-49c5-a694-f37279f6c18f)|![검색페이지](https://github.com/NamJongtae/MovieWorld/assets/113427991/53cfc978-b692-4423-b519-596fb2d24154)|![마이페이지-찜](https://github.com/NamJongtae/MovieWorld/assets/113427991/6618aaa4-33eb-490f-aad3-4ff61804cfdf)|
 
 
-|[🔗마이페이지-찜](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-프로필변경](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-비밀번호변경](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|
+|[🔗마이페이지-찜](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-프로필변경](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗마이페이지-비밀번호변경](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A7%88%EC%9D%B4-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---|---|
-![마이페이지-리뷰](https://github.com/MAIN6419/MovieWorld/assets/113427991/219bf865-cb1c-47da-bc38-25cfe2e92ddc)|![마이페이지-프로필변경](https://github.com/MAIN6419/MovieWorld/assets/113427991/2b7ce702-b9d8-4553-a9f3-bbeb3bf5daed)|![마이페이지-비밀번호변경](https://github.com/MAIN6419/MovieWorld/assets/113427991/60e8e763-fd62-4b92-93f1-02244aeca31e)|
+![마이페이지-리뷰](https://github.com/NamJongtae/MovieWorld/assets/113427991/219bf865-cb1c-47da-bc38-25cfe2e92ddc)|![마이페이지-프로필변경](https://github.com/NamJongtae/MovieWorld/assets/113427991/2b7ce702-b9d8-4553-a9f3-bbeb3bf5daed)|![마이페이지-비밀번호변경](https://github.com/NamJongtae/MovieWorld/assets/113427991/60e8e763-fd62-4b92-93f1-02244aeca31e)|
 <div align="center">
   
-|[🔗로그아웃](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%95%84%EC%9B%83)|[🔗404 페이지](https://github.com/MAIN6419/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#404-%ED%8E%98%EC%9D%B4%EC%A7%80)|
+|[🔗로그아웃](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#%EB%A1%9C%EA%B7%B8%EC%95%84%EC%9B%83)|[🔗404 페이지](https://github.com/NamJongtae/MovieWorld/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85#404-%ED%8E%98%EC%9D%B4%EC%A7%80)|
 |---|---
-|![로그아웃](https://github.com/MAIN6419/MovieWorld/assets/113427991/b68cd800-f3dc-4515-8be1-a2cd917393ff)|![404](https://github.com/MAIN6419/MovieWorld/assets/113427991/b433b410-d52b-42ed-8f0a-442bed365709)|
+|![로그아웃](https://github.com/NamJongtae/MovieWorld/assets/113427991/b68cd800-f3dc-4515-8be1-a2cd917393ff)|![404](https://github.com/NamJongtae/MovieWorld/assets/113427991/b433b410-d52b-42ed-8f0a-442bed365709)|
 
 </div>
 <br>
@@ -323,7 +323,7 @@ export const getSearchData = async (keyword, page) => {
   - subColletion 아래 docs id로 commentId를 주어 reivew 데이터를 구분해주었습니다.
   - docs 아래로는 리뷰 정보가 저장되는 field가 존재합니다.
 
-&nbsp;&nbsp; ![reviewList_db구조](https://github.com/MAIN6419/MovieWorld/assets/113427991/eb156848-078e-437a-a613-c5d2aa9c6104)
+&nbsp;&nbsp; ![reviewList_db구조](https://github.com/NamJongtae/MovieWorld/assets/113427991/eb156848-078e-437a-a613-c5d2aa9c6104)
 
 - #### 유저의 db구조
   - user 컬렉션 아래 docs id로 각 계정의 uid를 주어 user 데이터를 구분해주었습니다.
@@ -333,7 +333,7 @@ export const getSearchData = async (keyword, page) => {
   - docs 아래로는 영화 정보가 저장되는 field가 존재합니다.
   
 
-&nbsp;&nbsp; ![user_db구조](https://github.com/MAIN6419/MovieWorld/assets/113427991/7a7ff4ce-3023-4180-920f-481d9f65b617)
+&nbsp;&nbsp; ![user_db구조](https://github.com/NamJongtae/MovieWorld/assets/113427991/7a7ff4ce-3023-4180-920f-481d9f65b617)
 - #### 리뷰작성 API의 세 가지 처리
   - reviewList docs 중 해당 영화에 subColletion 아래 docs에 리뷰 데이터를 생성 
   - 마이페이지의 리뷰목록에서 해당 영화 데이터를 불러오기 위해 리뷰한 user 문서의 아래 subCollection인 reviewListMovieInfo 아래 docs에 리뷰한 영화의 정보를 저장 
@@ -477,13 +477,13 @@ export const reviewReport = async (movieId, reviewData) => {
  - 리뷰 작성시 스포일러가 포함된 글을 작성하고 싶은 유저가 존재하기 때문에 스포일러가 포함된 리뷰를 작성시에 스포일러가 포함되는 글이 있다는 체크 기능을 만들어
 다른 유저가 리뷰를 볼 때 블라인드 처리 되도록 구현하였습니다.
 
-&nbsp;&nbsp; ![스포일러 작성](https://github.com/MAIN6419/MovieWorld/assets/113427991/da38090e-e1b8-4524-9538-3e3288304337)
+&nbsp;&nbsp; ![스포일러 작성](https://github.com/NamJongtae/MovieWorld/assets/113427991/da38090e-e1b8-4524-9538-3e3288304337)
 
  - spoiler라는 값을 통해 해당 리뷰가 spoiler가 포함된 리뷰인지 아닌지를 구분합니다.
  - spoiler가 true 값이면 기존 contents 대신 '스포일러가 포함된 리뷰입니다.'를 출력합니다.
  - 옆에 제공된 보기 버튼을 누를 시 해당 contents가 출력되도록 구현하였습니다.
 
-&nbsp;&nbsp; ![스포일러 보기](https://github.com/MAIN6419/MovieWorld/assets/113427991/fb84eec1-75cc-432a-b84b-697dfef7e908)
+&nbsp;&nbsp; ![스포일러 보기](https://github.com/NamJongtae/MovieWorld/assets/113427991/fb84eec1-75cc-432a-b84b-697dfef7e908)
 
 아래 코드에서는 reviewItem.spoiler를 통해 스포일러가 포함된 리뷰인지 아닌지를 구분하였습니다.
 
@@ -641,7 +641,7 @@ export default function MypageMenu() {
 
 - 무한 스크롤 적용 화면
 
-&nbsp;&nbsp; ![무한스크롤](https://github.com/MAIN6419/MovieWorld/assets/113427991/a2b9e4c3-91e7-4e7a-8068-9895ceff6390)
+&nbsp;&nbsp; ![무한스크롤](https://github.com/NamJongtae/MovieWorld/assets/113427991/a2b9e4c3-91e7-4e7a-8068-9895ceff6390)
 
 <br>
  
@@ -670,12 +670,12 @@ export default function MypageMenu() {
 
 - 검색 디바운싱 적용 전
   
-&nbsp;&nbsp; ![검색디바운싱-적용전](https://github.com/MAIN6419/MovieWorld/assets/113427991/ed484ef8-8d8b-4789-9918-ba40ac39c6d7)
+&nbsp;&nbsp; ![검색디바운싱-적용전](https://github.com/NamJongtae/MovieWorld/assets/113427991/ed484ef8-8d8b-4789-9918-ba40ac39c6d7)
 
   
 - 검색 디바운싱 적용 후
   
-&nbsp;&nbsp; ![검색디바운싱-적용후](https://github.com/MAIN6419/MovieWorld/assets/113427991/efabf5cd-4499-4760-b532-af0f35fff4ed)
+&nbsp;&nbsp; ![검색디바운싱-적용후](https://github.com/NamJongtae/MovieWorld/assets/113427991/efabf5cd-4499-4760-b532-af0f35fff4ed)
 
 <br>
    
@@ -716,7 +716,7 @@ export const imgCompression = async (file) => {
 }
 ```
 
-&nbsp;&nbsp; ![이미지압축](https://github.com/MAIN6419/MovieWorld/assets/113427991/4b31b196-8c10-4188-a5e5-46fe0d613938)
+&nbsp;&nbsp; ![이미지압축](https://github.com/NamJongtae/MovieWorld/assets/113427991/4b31b196-8c10-4188-a5e5-46fe0d613938)
 
 - 이미지 압축 전
   - 이미지 크기 : 578MB
@@ -848,13 +848,13 @@ export default function ProgressiveImg({
   - 이미지 리소스 : 약 68MB
   - 로딩 속도 : 5.8초
 
- &nbsp;&nbsp; ![이미지최적화전](https://github.com/MAIN6419/MovieWorld/assets/113427991/6633b215-0ac1-4990-b5f9-dc41a084c071)
+ &nbsp;&nbsp; ![이미지최적화전](https://github.com/NamJongtae/MovieWorld/assets/113427991/6633b215-0ac1-4990-b5f9-dc41a084c071)
 
 - 이미지 최적화 후
   - 이미지 리소스 : **67MB => 8.9MB (58MB 단축)**
   - 로딩 속도 : **5.8초 => 3.5초 (2.3초 단축)**
 
- &nbsp;&nbsp; ![이미지최적화후](https://github.com/MAIN6419/MovieWorld/assets/113427991/996929d3-4ec2-4e5f-8606-a6a83b3f8bef)
+ &nbsp;&nbsp; ![이미지최적화후](https://github.com/NamJongtae/MovieWorld/assets/113427991/996929d3-4ec2-4e5f-8606-a6a83b3f8bef)
  
 #### (8) 웹 접근성 키보드 포커싱 최적화 
 - 모달 창에서 키보드 포커싱 최적화하기 위해 optKeyboardFocus 함수를 생성하였습니다.
@@ -888,13 +888,13 @@ export const optKeyboardFocus = (e, previousTarget, nextTarget = null) => {
 - 키보드 포커싱 최적화 처리 전
   - 키보드 포커싱이 모달 창 밖으로 벗어나는 것을 볼 수 있습니다.
     
- &nbsp;&nbsp; ![키보드최적화전](https://github.com/MAIN6419/MovieWorld/assets/113427991/d10ba7fe-5c7c-45af-bdb7-d04a79a84e6d)
+ &nbsp;&nbsp; ![키보드최적화전](https://github.com/NamJongtae/MovieWorld/assets/113427991/d10ba7fe-5c7c-45af-bdb7-d04a79a84e6d)
 
 - 키보드 포커싱 최적화 처리 후
   - 키보드 포커싱이 모달 창 밖으로 벗어나지 않는 것을 볼 수 있습니다.
   - esc키를 눌러 모달 창이 닫히는 것을 볼 수 있습니다.
     
- &nbsp;&nbsp; ![키보드최적화후](https://github.com/MAIN6419/MovieWorld/assets/113427991/0f1718b7-9ed4-4a15-9a55-f364b57dc68e)
+ &nbsp;&nbsp; ![키보드최적화후](https://github.com/NamJongtae/MovieWorld/assets/113427991/0f1718b7-9ed4-4a15-9a55-f364b57dc68e)
  
 #### (9) sweetAlert2
 - alert창과 confirm창을 커스텀 하기위해 **sweetAlert2** 라이브러리를 활용하였습니다.
@@ -945,7 +945,7 @@ export const sweetConfirm = (
 ```
 - sweetAlert2 적용 화면
 
-&nbsp;&nbsp; ![sweetAlert2적용](https://github.com/MAIN6419/MovieWorld/assets/113427991/23d0631b-e769-4176-84fc-af92334df97f)
+&nbsp;&nbsp; ![sweetAlert2적용](https://github.com/NamJongtae/MovieWorld/assets/113427991/23d0631b-e769-4176-84fc-af92334df97f)
 
 ### 🔫 트러블 슈팅
 #### (1) Search 페이지에서 검색 후 요소 클릭 시 스크롤이 올라가는 이슈
@@ -974,12 +974,12 @@ export const sweetConfirm = (
 - 이슈 해결 전
   - 스크롤을 내린 후 클릭 시 스크롤이 위로 올라 오는 것을 볼 수 있습니다.
   
-![search오류수정전](https://github.com/MAIN6419/MovieWorld/assets/113427991/eea7df4d-48c6-402a-87aa-3b3c63c8f482)
+![search오류수정전](https://github.com/NamJongtae/MovieWorld/assets/113427991/eea7df4d-48c6-402a-87aa-3b3c63c8f482)
 
 - 이슈 해결 후
   - 스크롤을 내린 후 클릭 시 스크롤이 유지되는 것을 볼 수 있습니다.
     
-![search오류 해결후](https://github.com/MAIN6419/MovieWorld/assets/113427991/ee0e4f5f-6017-44ae-a717-f09808eba7fb)
+![search오류 해결후](https://github.com/NamJongtae/MovieWorld/assets/113427991/ee0e4f5f-6017-44ae-a717-f09808eba7fb)
   
 #### (2) Mypage 찜 목록에서 찜 해제 후 다시 추가 시 기존 찜 목록의 정렬과 다르게 정렬 되는 이슈
 - 원인 : firebase의 정렬 기준이 javascript 정렬 기준과 달라서 발생한 문제였습니다.
@@ -1035,12 +1035,12 @@ MovieInfo.container 컴포넌트 onClickLike 함수 코드
 - 이슈 해결 전
   - 찜 목록을 제거 후 다시 추가 하면 정렬 순서가 다르게 적용 되는 것을 볼 수 있습니다.
     
-![정렬오류수정전](https://github.com/MAIN6419/MovieWorld/assets/113427991/dd3319a7-ed52-4b95-a195-ed417c9bdcc0)
+![정렬오류수정전](https://github.com/NamJongtae/MovieWorld/assets/113427991/dd3319a7-ed52-4b95-a195-ed417c9bdcc0)
 
 - 이슈 해결 후
   - 찜 목록을 제거 후 다시 추가 하면 정렬 순서가 동일하게 적용 되는 것을 볼 수 있습니다.
     
-![정렬오루수정후](https://github.com/MAIN6419/MovieWorld/assets/113427991/ab86b8b8-a017-403b-8a40-c2fb8988bde7)
+![정렬오루수정후](https://github.com/NamJongtae/MovieWorld/assets/113427991/ab86b8b8-a017-403b-8a40-c2fb8988bde7)
 
 => 위 해결 방법으로 해결 했지만 찜 목록의 **데이터가 많아질 경우** 성능 이슈가 발생할 문제가 있어, 추가적인 방법을 생각하였습니다.
 
