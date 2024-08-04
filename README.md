@@ -4,7 +4,7 @@
 |------------|--------|
 | test@a.com | asdzxc123! |
 
-#### 배포 URL :  🎞 [MovieWorld](https://movieworlds.site)
+#### 배포 URL :  🎞 [MovieWorld](https://movieworld-site.netlify.app/main)
 
 ## 🙋‍♂️ 프로젝트 소개
 ![thumbnail](https://github.com/NamJongtae/MovieWorld/assets/113427991/bbd6d268-71d5-4be6-9d89-dc4f5af989b9)
